@@ -109,10 +109,6 @@ ggplot( d, aes( ages, fill = visits ) ) +
     geom_bar( stat = "count", position = "stack" ) +
     facet_grid( . ~ sex )
 
-ggplot( d, aes( ages, CT_S_1_NUM_VALUE, fill = visit ) ) +
-    geom_bar( stat = "identity", position = "stack" ) +
-    facet_grid( . ~ sex )
-
 # an dieser Stelle erkennen, dass eine einfache Einteilung
 # in Kinder mit hohen Kalzitoninwerten und niedrige ein Problem
 # darstellen koennte
