@@ -10,7 +10,7 @@ require( dplyr )
 
 require( lubridate )
 
-require( readxl )
+quire( readxl )
 
 require( lifecuration )
 
@@ -21,7 +21,8 @@ d88 <- get.data( ldb, "D00088" )
 ## Aequivalent zu Aufklaerungsgespraeche
 d171 <- get.data( ldb, "D00171", remove.D.name = T )
 
-## Personaldaten
+    
+# Personaldaten
 persdat <- get.persdat( ldb )
 
 ##
@@ -34,10 +35,8 @@ t865 <- t865[ 5.5 < t865$age & t865$age < 18, ]
 ## Familien
 d192 <- get.data( ldb, "D00192", remove.D.name = T )
 d192 <- unique( d192[, c( "SIC", "FAMILY_ID" ) ] )
-
 u.sics <- unique( t865$SIC[ !t865$SIC %in% d192$SIC ] )
 d192.b <- data.frame( SIC = u.sics, FAMILY_ID = 1 : length( u.sics ) )
-
 d192 <- rbind( d192, d192.b )
 
 t865 <- merge( t865, d192, by = c( "SIC" ), all.x = T )
@@ -58,7 +57,8 @@ lms.params$succ <- 0
 
 for( p in c( 1 : nrow( lms.params ) ) ) {
 
-    print( p )
+
+       print( p )
     print( lms.params[ p, ] )
 
     dat  <- na.omit( t865[ t865$sex == lms.params$sex[ p ], c( paste0( "Dat_Sing.SPL_SPRECH_", lms.params$sp.lvl[ p ] ), "age", "sex", "FAMILY_ID" ) ] )
@@ -86,7 +86,8 @@ for( p in c( 1 : nrow( lms.params ) ) ) {
             group_by( FAMILY_ID ) %>%
             sample_n( 1 )
 
-        print( "fitting" )
+    
+            print( "fitting" )
 
         tr.obj <- try(
             mm <- lms(

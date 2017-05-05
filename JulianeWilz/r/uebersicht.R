@@ -7,6 +7,7 @@ library( dplyr )
 library( ggplot2 )
 library( GGally )
 library( Hmisc )
+library( pwr )
 
 setwd( "~/LIFE/github-tpeschel/life-for-postgraduates/JulianeWilz/data/")
 
@@ -238,7 +239,24 @@ mean( sapply( c( 1 : 1000 ), function( d ) shapiro.test( sample( d.m.high$CA_S_N
 mean( sapply( c( 1 : 1000 ), function( d ) shapiro.test( sample( d.f.high$CA_S_NUM_VALUE, 1000, replace = T ) - sample( d.f.low$CA_S_NUM_VALUE, 1000, replace = T ) )$statistic ) )
 mean( sapply( c( 1 : 1000 ), function( d ) shapiro.test( sample( d.f.high$CA_S_NUM_VALUE, 1000, replace = T ) - sample( d.f.low$CA_S_NUM_VALUE, 1000, replace = T ) )$p ) )
 
-t.test( d.m.high$CA_S_NUM_VALUE, d.m.low$CA_S_NUM_VALUE )
-t.test( d.f.high$CA_S_NUM_VALUE, d.f.low$CA_S_NUM_VALUE )
+t.t.m <-
+    t.test( d.m.high$CA_S_NUM_VALUE, d.m.low$CA_S_NUM_VALUE )
 
+summary( d.m.high$CA_S_NUM_VALUE )
+plot( d.m.high$CA_S_NUM_VALUE )
+sd( d.m.high$CA_S_NUM_VALUE )
 
+summary( d.m.low$CA_S_NUM_VALUE )
+plot( d.m.low$CA_S_NUM_VALUE )
+sd( d.m.low$CA_S_NUM_VALUE )
+
+summary( t.t.m )
+
+t.t.f <-
+    t.test( d.f.high$CA_S_NUM_VALUE, d.f.low$CA_S_NUM_VALUE )
+
+pwr.t2n.test( 
+    n1 = length( d.f.low$CA_S_NUM_VALUE ), 
+    n2 = length( d.f.high$CA_S_NUM_VALUE ), 
+    d = t.t.m$statistic, 
+    power = NULL )
