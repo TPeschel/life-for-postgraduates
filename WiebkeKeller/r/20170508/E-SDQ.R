@@ -10,33 +10,33 @@ library( lubridate )
 tbl.esdq.ges <-
     tbl[ !is.na( tbl$E_SDQ_GES_SCORE ), ]
 
-table( tbl.esdq.ges$E_SDQ_GES_SCORE, tbl.esdq.ges$SEX )
+table( tbl.esdq.ges$E_SDQ_GES_SCORE, tbl.esdq.ges$sex )
 
 summary( tbl.esdq.ges$E_SDQ_GES_SCORE )
 
 ggplot( 
     tbl.esdq.ges,
-    aes( E_SDQ_GES_SCORE, fill = SEX ) ) +
-    geom_bar( binwidth = 1 ) +
-    facet_grid( . ~ SEX ) +
+    aes( as.factor( E_SDQ_GES_SCORE ), fill = sex ) ) +
+    geom_histogram( stat = "count" ) +
+    facet_grid( . ~ sex ) +
     theme_bw( ) +
-    scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
-    labs( title = "Besuche E-SDQ-Gesamtscore" )
+    scale_fill_brewer( type = "qual", palette = 6, direction = -1, guide=F ) +
+    labs( title = "Besuche E-SDQ-Gesamtscore", legend = element_blank( ) )
 
 ##Wie viele Besuche haben auffälliges Ergebnis (>17), bzw. grenzwertiges
 #Ergebnis(14-16)
 tbl.17 <-
     tbl.esdq.ges[ tbl.esdq.ges$E_SDQ_GES_SCORE >= 17, ]
 
-table( tbl.17$E_SDQ_GES_SCORE, tbl.17$SEX )
+table( tbl.17$E_SDQ_GES_SCORE, tbl.17$sex )
 
 summary( tbl.17$E_SDQ_GES_SCORE )
 
 ggplot( 
     tbl.17,
-    aes( E_SDQ_GES_SCORE, fill = SEX ) ) +
+    aes( E_SDQ_GES_SCORE, fill = sex ) ) +
     geom_bar( binwidth = 1 ) +
-    facet_grid( . ~ SEX ) +
+    facet_grid( . ~ sex ) +
     theme_bw( ) +
     scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
     labs( title = "Besuche E-SDQ-Gesamtscore >= 17" )
@@ -44,15 +44,15 @@ ggplot(
 tbl.14.16 <-
     tbl.esdq.ges[ between( tbl.esdq.ges$E_SDQ_GES_SCORE, 14, 16.99 ), ]
 
-table( tbl.14.16$E_SDQ_GES_SCORE, tbl.14.16$SEX )
+table( tbl.14.16$E_SDQ_GES_SCORE, tbl.14.16$sex )
 
 summary( tbl.14.16$E_SDQ_GES_SCORE )
 
 ggplot( 
     tbl.14.16,
-    aes( E_SDQ_GES_SCORE, fill = SEX ) ) +
+    aes( E_SDQ_GES_SCORE, fill = sex ) ) +
     geom_bar( binwidth = 1 ) +
-    facet_grid( . ~ SEX ) +
+    facet_grid( . ~ sex ) +
     theme_bw( ) +
     scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
     labs( title = "Besuche E-SDQ-Gesamtscore zwischen 14 und 16" )

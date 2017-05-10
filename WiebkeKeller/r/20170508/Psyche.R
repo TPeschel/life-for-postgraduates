@@ -10,7 +10,7 @@ my.theme <-
 
 tbl.all <- read_excel("PV0332_Gesamt_Join.xlsx")
 
-tbl.disease <- read_excel("PV0332_D00127_NODUP.xlsx")
+tbl.disease <- read_excel("old/PV0332_D00127_NODUP.xlsx")
 
 tbl.all$JAHR <-
   year( tbl.all$E_SDQ_EDAT )
@@ -47,36 +47,49 @@ ggplot(
 
 tbl.depres <- tbl[!is.na(tbl$C_DISEASE_TX_DEPRES),]
 
-table(tbl.depres$C_DISEASE_TX_DEPRES, tbl.depres$sex)
+tbl.small <- as.data.frame( table( tbl.depres$C_DISEASE_TX_DEPRES, tbl.depres$sex ) )
 
-summary(tbl.depres$C_DISEASE_TX_DEPRES)
+ggplot( tbl.small, aes( Var2, log10( Freq ), fill = Var1 ) ) +
+    geom_histogram( stat = "identity", position = "dodge" )
+
 
 ggplot( 
-  tbl.depres, 
-  aes( C_DISEASE_TX_DEPRES, fill = sex ) ) + 
-  geom_bar( stat = "count" ) +
-  facet_grid( . ~ sex ) +
-  my.theme +
-  scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
-  labs( title = "Besuche Depression" )
+    tbl.depres, 
+    aes( as.factor( C_DISEASE_TX_DEPRES ), fill = sex ) ) + 
+    geom_bar( ) +
+    facet_grid( . ~ sex ) +
+    my.theme +
+    scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
+    labs( title = "Besuche Depression" )
 ##Kann man das vielleicht noch anders einstellen, damit man die Erkrankten
 #auch im Plot erkennt?
+#Ja so:
+ggplot( 
+    tbl.depres, 
+    aes( as.factor( C_DISEASE_TX_DEPRES ), fill = sex ) ) + 
+    geom_bar( ) +
+    facet_grid( . ~ sex ) +
+    my.theme +
+    scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
+    labs( title = "Besuche Depression" ) +
+    scale_y_log10( )
+
 
 ##Wie viele Besuche haben psychische Erkrankungen?
-
 tbl.psy <- tbl[!is.na(tbl$C_DISEASE_TX_PSY),]
 
-table(tbl.psy$C_DISEASE_TX_PSY, tbl.psy$sex)
+plot( table(tbl.psy$C_DISEASE_TX_PSY, tbl.psy$sex) )
 
 summary(tbl.psy$C_DISEASE_TX_PSY)
 
 ggplot( 
   tbl.psy, 
-  aes( C_DISEASE_TX_PSY, fill = sex ) ) + 
+  aes( as.factor( C_DISEASE_TX_PSY ), fill = sex ) ) + 
   geom_bar( stat = "count" ) +
   facet_grid( . ~ sex ) +
   my.theme +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
+  scale_y_log10( ) +
   labs( title = "Besuche Psychische Erkrankungen" )
 
 ##Wie viele Kinder haben ADHS?
@@ -96,6 +109,7 @@ ggplot(
   facet_grid( . ~ sex ) +
   my.theme +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
+  scale_y_log10( ) +
   labs( title = "Kinder ADHS" )
 
 ##Wie viele Kinder haben Depressionen?
@@ -115,6 +129,7 @@ ggplot(
   facet_grid( . ~ sex ) +
   my.theme +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
+  scale_y_log10( ) +
   labs( title = "Kinder Depression" )
 
 ##Wie viele Kinder haben psychische Erkrankungen?
@@ -135,3 +150,4 @@ ggplot(
   my.theme +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
   labs( title = "Kinder Psychische Erkrankungen" )
+

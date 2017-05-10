@@ -1,4 +1,5 @@
-setwd("../../data/")
+#setwd("../../data/")
+setwd("~/LIFE/github-tpeschel/life-for-postgraduates/WiebkeKeller/data/" )
 
 library( dplyr )
 library( ggplot2 )
@@ -10,7 +11,7 @@ my.theme <-
 
 tbl.all <- read_excel("PV0332_Gesamt_Join.xlsx")
 
-tbl.disease <- read_excel("PV0332_D00127_NODUP.xlsx")
+tbl.disease <- read_excel("old/PV0332_D00127_NODUP.xlsx")
 
 tbl.all$JAHR <-
   year( tbl.all$E_SDQ_EDAT )
@@ -61,7 +62,6 @@ ggplot(
   labs( title = "Besuche Allergie" )
 
 ##Wie viele Besuche haben Neurodermitis?
-
 tbl.neuroder <- tbl[!is.na(tbl$C_DISEASE_TX_NEURODER),]
 
 table(tbl.neuroder$C_DISEASE_TX_NEURODER, tbl.neuroder$sex)

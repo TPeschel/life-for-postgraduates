@@ -6,20 +6,21 @@
 ##################Vorbereitung##########################################
 ########################################################################
 
-source("H:/R/connectionWIN.r")
-#verbindung mit lifedatnbank (über mandys account)
+#source("H:/R/connectionWIN.r")
+source( "~/connection/connection.r" )
+#verbindung mit lifedatnbank (?ber mandys account)
 
 library(lifecuration)
-#lädte pakete, die fur datenbank geschrieben wurden
+#l?dte pakete, die fur datenbank geschrieben wurden
 
 persdat <- get.persdat(ldb)
 #holt datei "persdat" (infos zu geschlecht, alter, geburtstag) aus der datenbank (ldb) und nennt sie persdat
 
-medien <- get.data(ldb, "T00156")
-medien <- add.persdat.age(persdat, medien)
-show.dups(medien, sic = "SIC", zp = "SGROUP")
-medien <- remove.duplicates(medien, sic = "SIC", zp = "SGROUP")
-table(medien$SGROUP)
+medien <- get.data( ldb, "T00156" )
+medien <- add.persdat.age( persdat, medien )
+show.dups( medien, sic = "SIC", zp = "SGROUP" )
+medien <- remove.duplicates( medien, sic = "SIC", zp = "SGROUP" )
+table( medien$SGROUP )
 
 freizeit_sb <- get.data(ldb, "T00159")
 show.dups(freizeit_sb, sic = "SIC", zp = "SGROUP")
@@ -53,13 +54,13 @@ save(bmi, schulform, fams, freizeit_sb, medien, persdat, ses, noten, file = "201
 library("dplyr")
 
 medien$T00156_F0009 <- recode(medien$T00156_F0009,
-                              `1` = 0, `2` = 0.5, `3` = 1.5, `4` = 3.5, `5` = 5) 
+                              `1` = 0, `2` = 0.5, `3` = 1.5, `4` = 3.5, `5` = 5)
 medien$T00156_F0010 <- recode(medien$T00156_F0010,
-                              `1` = 0, `2` = 0.5, `3` = 1.5, `4` = 3.5, `5` = 5) 
+                              `1` = 0, `2` = 0.5, `3` = 1.5, `4` = 3.5, `5` = 5)
 medien$T00156_F0011 <- recode(medien$T00156_F0011,
-                              `1` = 0, `2` = 0.5, `3` = 1.5, `4` = 3.5, `5` = 5) 
+                              `1` = 0, `2` = 0.5, `3` = 1.5, `4` = 3.5, `5` = 5)
 medien$T00156_F0012 <- recode(medien$T00156_F0012,
-                              `1` = 0, `2` = 0.5, `3` = 1.5, `4` = 3.5, `5` = 5) 
+                              `1` = 0, `2` = 0.5, `3` = 1.5, `4` = 3.5, `5` = 5)
 medien$T00156_F0013 <- recode(medien$T00156_F0013,
                               `1` = 0, `2` = 0.5, `3` = 1.5, `4` = 3.5, `5` = 5)
 
@@ -104,7 +105,6 @@ noten$T00152_F0021 [ms4] <- noten$T00152_F0025 [ms4]
 ms5 <- is.na(noten$T00152_F0022)
 noten$T00152_F0022 [ms5] <- noten$T00152_F0026 [ms5]
 
-
 ms6 <- is.na(noten$T00152_F0023)
 noten$T00152_F0023 [ms6] <- noten$T00152_F0027 [ms6]
 
@@ -122,17 +122,15 @@ table(noten$T00152_F0022)
 #noten <- subset(noten, T00152_F0020 <6)
 
 ############################################
-#bestimmte Schulformen rausschmeißen
+#bestimmte Schulformen rausschmei?en
 ###########################
 
 table(schulform$D00175_K_SCHULE)
-#noch-nicht-schüler und grundschüler raus
-schulform <- subset(schulform, D00175_K_SCHULE >1)
-#nicht-merh-schüler raus:
-schulform <- subset(schulform, D00175_K_SCHULE <8)
-
-
-#gesamtschüler und förderschüler und hauptschüler mit realschülern verbinden
+#noch-nicht-sch?ler und grundsch?ler raus
+#nicht-merh-sch?ler raus:
+schulform <- subset( schulform, D00175_K_SCHULE > 1 & D00175_K_SCHULE < 8 )
+table(schulform$D00175_K_SCHULE)
+#gesamtsch?ler und f?rdersch?ler und hauptsch?ler mit realsch?lern verbinden
 schulform$D00175_K_SCHULE <- recode(schulform$D00175_K_SCHULE,
                                        `2` = 2, `3` = 2, `4` = 2, `5` = 2, `6` = 1, `7` = 2) 
 #schulform als faktor
@@ -140,69 +138,79 @@ schulform$D00175_K_SCHULE <- as.factor(schulform$D00175_K_SCHULE)
 #1 entspricht ymnasium, 2 entspricht Nicht-Gymnasium
 
 #####################################
-#####zusammenfügen##################
+#####zusammenf?gen##################
 ####################################
 
-med_frei <- merge(medien, freizeit_sb,
-                      by = c("SIC","SGROUP"),
-                      all.x = T)
+med_frei <- merge( medien, freizeit_sb[ , names( freizeit_sb ) != "EDAT" ],
+                      by = c( "SIC", "SGROUP" ),
+                      all.x = T )
 
-med_frei_noten <- merge(med_frei, noten,
+med_frei_noten <- merge( med_frei, noten[ , names( noten ) != "EDAT" ],
                               by = c("SIC","SGROUP"),
                               all.x = T)
 
-med_frei_noten_bmi <- merge(med_frei_noten, bmi,
+med_frei_noten_bmi <- merge(med_frei_noten, bmi[ , names( bmi ) != "EDAT" ],
                             by = c("SIC","SGROUP"),
                             all.x = T)
 
-med_frei_noten_bmi_schulform <- merge(med_frei_noten_bmi, schulform,
+med_frei_noten_bmi_schulform <- merge(med_frei_noten_bmi, schulform[ , names( schulform ) != "EDAT" ],
                             by = c("SIC","SGROUP"),
                             all.x = T)
 
-med_frei_noten_fams <- merge(med_frei_noten_bmi_schulform, fams,
+med_frei_noten_fams <- merge( med_frei_noten_bmi_schulform, fams,
                              by = c("SIC"),
                              all.x = T)
-med_frei_noten_fams$EDAT.YEAR <- year(med_frei_noten_fams$EDAT.x)
-ses$EDAT.YEAR <- year(ses$EDAT)
 
+med_frei_noten_fams$EDAT.YEAR <- year( med_frei_noten_fams$EDAT )
 
-med_frei_ses_noten_bmi <- merge (med_frei_noten_fams, ses,
+ses$EDAT.YEAR <- year( ses$EDAT )
+
+med_frei_ses_noten_bmi <- merge (med_frei_noten_fams, ses[ , names( ses ) != "EDAT" ],
                              by = c("SIC","EDAT.YEAR"),
                              all.x = T)
 
 #######################################
-#####fällebeschränkung#################
+#####f?llebeschr?nkung#################
 #######################################
 
 #Alternative: schneidet nach komma ab
 med_frei_ses_noten_bmi$age2 <- floor(med_frei_ses_noten_bmi$age)
 
-#beschränkung auf 10 bis 17 jährige
-mfqs_noten <- med_frei_ses_noten_bmi[between(med_frei_ses_noten_bmi$age, 10.0000, 17.9999),]
-mfqs_noten <- med_frei_ses_noten_bmi[med_frei_ses_noten_bmi$age >= 10.0000 & med_frei_ses_noten_bmi$age < 17.9999,]
-mfqs_noten <- mfqs_noten[mfqs_noten$age2 >= 10.0000 & mfqs_noten$age2 < 17.9999,]
+#beschr?nkung auf 10 bis 17 j?hrige
+mfqs_noten <- med_frei_ses_noten_bmi[ med_frei_ses_noten_bmi$age >= 10 & med_frei_ses_noten_bmi$age < 18, ]
 
-summary(mfqs_noten$age)
-hist(mfqs_noten$age)
+summary( mfqs_noten$age )
+
+hist( mfqs_noten$age )
 
 #Variable "Jahr" berechnen
-mfqs_noten$year <- substr(mfqs_noten$EDAT.x, 3,4)
-mfqs_noten$year <- as.numeric(mfqs_noten$year)
+mfqs_noten$year <- as.numeric( substr( mfqs_noten$EDAT, 3, 4 ) )
 
-#beschränkung auf ersten besuch
-mfqs_noten <- mfqs_noten[order(mfqs_noten$SIC, mfqs_noten$age),]
+#beschr?nkung auf ersten besuch
+mfqs_noten <- mfqs_noten[ order( mfqs_noten$SIC, mfqs_noten$age ),]
 mfqs_1_noten <- mfqs_noten[!duplicated(mfqs_noten$SIC),]
 
-#Geschwister rausschmeißen
+# ich wuerde es so machen, da man nicht weiss, ob duplicated in Zukunft auch den ersten behaelt und alle nachkommenden Zeilen rauswirft 
+# mfqs_2_noten <-
+#     mfqs_noten %>%
+#     group_by( SIC ) %>%
+#     mutate( min.age = min( age ) ) %>%
+#     ungroup( ) %>%
+#     subset( min.age == age )
+    
+#Geschwister rausschmei?en
 sum(duplicated(mfqs_1_noten$D00202_FAM_ID))
 mfqs_1_noten <- mfqs_1_noten[!duplicated(mfqs_1_noten$D00202_FAM_ID),]
 
-#Kinder mit vollständigen daten zu T1
-mfqs_1_noten_neu <- subset(mfqs_1_noten, D00177_SCORE_FAM >0)
+#Kinder mit vollst?ndigen daten zu T1
+mfqs_1_noten_neu <- subset(mfqs_1_noten, D00177_SCORE_FAM >0)   ## verstehe ich nicht SCORE_FAM geht doch erst bei 3 los
+
+summary( mfqs_1_noten$D00177_SCORE_FAM) ## willst Du nicht vll die NA's rausschmeissen?
 
 table(mfqs_1_noten$age2, mfqs_1_noten$D00175_K_SCHULE)
 
 summary(mfqs_1_noten_neu$age)
+
 prop.table(table(mfqs_1_noten_neu$sex))
 prop.table(table(mfqs_1_noten_neu$T00152_F0020))
 prop.table(table(mfqs_1_noten_neu$T00152_F0021))
@@ -260,7 +268,7 @@ table(mfqs_1_noten$D00175_K_SCHULE)
 #####################################################
 
 ####################################################
-#####bezüglich einzelner medien#####################
+#####bez?glich einzelner medien#####################
 #####################################################
 
 (lm.tv.ageetc <- lm(mfqs_1_noten$T00156_F0009 ~ mfqs_1_noten$age + mfqs_1_noten$sex + mfqs_1_noten$D00177_SCORE_FAM + mfqs_1_noten$year + mfqs_1_noten$D00175_K_SCHULE))
@@ -268,28 +276,58 @@ summary(lm.tv.ageetc)
 confint(lm.tv.ageetc, level = 0.95)
 #age, ses, schulform
 
+## Bin mir nicht sicher, ob das koscher ist,
+table(mfqs_1_noten$T00156_F0010)
+## da es so aussieht, als haetten viele Kinder ueberhaupt keine Konsole,
+## haetten sie eine, spielten sie wahrscheinlich auch damit.
+## moeglicherweise, falls noch nicht geschehen und ueberhaupt moeglich,
+## sollte man nur die auswaehlen, die im Besitz einer Konsole sind.
+
 (lm.kons.ageetc <- lm(mfqs_1_noten$T00156_F0010 ~ mfqs_1_noten$age + mfqs_1_noten$sex + mfqs_1_noten$D00177_SCORE_FAM + mfqs_1_noten$year + mfqs_1_noten$D00175_K_SCHULE))
 summary(lm.kons.ageetc)
 confint(lm.kons.ageetc, level = 0.95)
 #Sex, ses, schulform
+
+## Hier scheinen alle Zugang zu einem PC zu haben ##########
+table(mfqs_1_noten$T00156_F0011)
+############################################################
 
 (lm.pc.ageetc <- lm(mfqs_1_noten$T00156_F0011 ~ mfqs_1_noten$age + mfqs_1_noten$sex + mfqs_1_noten$D00177_SCORE_FAM + mfqs_1_noten$year + mfqs_1_noten$D00175_K_SCHULE))
 summary(lm.pc.ageetc)
 confint(lm.pc.ageetc, level = 0.95)
 #age, sex, ses
 
+## Was immer Beschaeftigen mit Musik bedeutet, es scheinen alle Zugang zu haben ###
+table(mfqs_1_noten$T00156_F0012)
+###################################################################################
+
 (lm.mus.ageetc <- lm(mfqs_1_noten$T00156_F0012 ~ mfqs_1_noten$age + mfqs_1_noten$sex + mfqs_1_noten$D00177_SCORE_FAM + mfqs_1_noten$year + mfqs_1_noten$D00175_K_SCHULE))
 summary(lm.mus.ageetc)
 confint(lm.mus.ageetc, level = 0.95)
 #age, sex, schulform
+
+## Handy ist dasselbe Problem wie beim PC
+table(mfqs_1_noten$T00156_F0013)
 
 (lm.han.ageetc <- lm(mfqs_1_noten$T00156_F0013 ~ mfqs_1_noten$age + mfqs_1_noten$sex + mfqs_1_noten$D00177_SCORE_FAM + mfqs_1_noten$year + mfqs_1_noten$D00175_K_SCHULE))
 summary(lm.han.ageetc)
 confint(lm.han.ageetc, level = 0.95)
 #age, sex, ses, year, schulform
 
-xx <- glm(D00175_K_SCHULE ~ age + sex + D00177_SCORE_FAM + year + medien_bild + frei_sport + D00040_BMI_SDS, family = binomial, data = mfqs_1_noten)
+mfqs_2_noten <- 
+    mfqs_1_noten[!is.na( mfqs_1_noten$age ) &!is.na( mfqs_1_noten$sex ) &!is.na( mfqs_1_noten$D00177_SCORE_FAM ) &!is.na( mfqs_1_noten$medien_bild ) &!is.na( mfqs_1_noten$frei_sport ) &!is.na( mfqs_1_noten$D00040_BMI_SDS ) &!is.na( mfqs_1_noten$year ) &!is.na( mfqs_1_noten$D00175_K_SCHULE ) , ]
+
+cdplot( D00175_K_SCHULE ~ sex, data = mfqs_1_noten)
+( xx <- glm(D00175_K_SCHULE ~ age * sex * D00177_SCORE_FAM * year * medien_bild * frei_sport * D00040_BMI_SDS, family = binomial, data = mfqs_1_noten) )
+( xx <- glm(D00175_K_SCHULE ~ age + sex + D00177_SCORE_FAM + year + medien_bild + frei_sport + D00040_BMI_SDS, family = binomial, data = mfqs_1_noten) )
 summary(xx)
+
+mfqs_2_noten$f.v <- xx$fitted.values
+
+library(ggplot2)
+
+ggplot( mfqs_2_noten, aes( frei_sport, f.v ) ) + 
+    geom_point( )
 
 yy <- glm(D00175_K_SCHULE ~ age + sex + D00177_SCORE_FAM + year + D00040_BMI_SDS
           + T00156_F0009
@@ -299,12 +337,12 @@ yy <- glm(D00175_K_SCHULE ~ age + sex + D00177_SCORE_FAM + year + D00040_BMI_SDS
           + T00159_F0016
           + T00159_F0017
           + frei_sport, family = binomial, data = mfqs_1_noten)
+
 summary(yy)
 
 ####################################################
-#####bezüglich aller medien#####################
+#####bez?glich aller medien#####################
 #####################################################
-
 (lm.med_all.ses.age.sex <- lm(mfqs_1_noten$medien_all ~ mfqs_1_noten$age + mfqs_1_noten$sex + mfqs_1_noten$D00177_SCORE_FAM + mfqs_1_noten$year + mfqs_1_noten$D00175_K_SCHULE))
 summary(lm.med_all.ses.age.sex)
 #age, ses, schulform
@@ -314,7 +352,7 @@ summary(lm.med_all.ses.age.sex)
 plot(mfqs_1_noten$D00175_K_SCHULE, mfqs_1_noten$medien_bild)
 
 ##########################################
-#bezüglich anderer freizeitgruppen########
+#bez?glich anderer freizeitgruppen########
 ###########################################
 
 (lm.sport.ageetc <- lm(mfqs_1_noten$frei_sport ~ mfqs_1_noten$age + mfqs_1_noten$sex + mfqs_1_noten$D00177_SCORE_FAM + mfqs_1_noten$year + mfqs_1_noten$D00175_K_SCHULE))
@@ -334,7 +372,7 @@ confint(lm.sport_ohneverein.ageetc, level = 0.95)
 
 
 ####################################
-#zusammenhänge########################
+#zusammenh?nge########################
 #####################################
 
 #MATHE:
@@ -460,7 +498,7 @@ summary(lm.noten_s.einzeln)
 
 
 ##############################
-#längsschnitt
+#l?ngsschnitt
 #################################
 
 mfqs_noten$EDAT.x = NULL
@@ -495,7 +533,7 @@ mfqs_noten1.2 <- mfqs_noten1.2[between(mfqs_noten1.2$diff.time.1, 0.5, 1.5),]
 mfqs_noten1.2[mfqs_noten1.2$diff.time.1 > 1.5,"SIC"]
 mfqs_noten1.2[mfqs_noten1.2$diff.time.1 < 0.5,"SIC"]
 
-#Geschwister rausschmeißen
+#Geschwister rausschmei?en
 sum(duplicated(mfqs_noten1.2$D00202_FAM_ID.1))
 mfqs_noten1.2 <- mfqs_noten1.2[!duplicated(mfqs_noten1.2$D00202_FAM_ID.1),]
 
@@ -707,7 +745,7 @@ summary(lm.medien_bild)
 
 plot(mfqs_noten1.2$T00152_F0022.1, mfqs_noten1.2$medien_bild.2)
 
-#vorhersage sportliche aktivität
+#vorhersage sportliche aktivit?t
 (lm.sport <- lm(mfqs_noten1.2$frei_sport.2 ~ mfqs_noten1.2$T00152_F0020.1
                  + mfqs_noten1.2$T00152_F0021.1
                  + mfqs_noten1.2$T00152_F0022.1
@@ -723,7 +761,7 @@ lm.beta(lm.sport)
 #sportnote 
 
 ##############
-#korrelationen/stabilität
+#korrelationen/stabilit?t
 ############################
 
 

@@ -7,20 +7,20 @@ library(readxl)
 
 ##Wie viele Besuche machen Sport im Verein?
 tbl.sp.verein.bp1 <- tbl[ !is.na(tbl$FB_FV_BP1_SP_VEREIN_K),]
-table(tbl.sp.verein.bp1$FB_FV_BP1_SP_VEREIN_K, tbl.sp.verein.bp1$SEX)
+table(tbl.sp.verein.bp1$FB_FV_BP1_SP_VEREIN_K, tbl.sp.verein.bp1$sex)
 summary(tbl.sp.verein.bp1$FB_FV_BP1_SP_VEREIN_K)
 ggplot( 
   tbl.sp.verein.bp1,
-  aes( FB_FV_BP1_SP_VEREIN_K, fill = SEX ) ) +
+  aes( FB_FV_BP1_SP_VEREIN_K, fill = sex ) ) +
   geom_bar( binwidth = 1 ) +
-  facet_grid( . ~ SEX ) +
+  facet_grid( . ~ sex ) +
   theme_bw( ) +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
   labs( title = "Besuche Sport im Verein" )
 
 ##Wie viele Besuche machen mindestens 1x pro Woche Sport im Verein?
 tbl.sp.verein.bp1.2 <- tbl.sp.verein.bp1[tbl.sp.verein.bp1$FB_FV_BP1_SP_VEREIN_K >=2,]
-table(tbl.sp.verein.bp1.2$FB_FV_BP1_SP_VEREIN_K, tbl.sp.verein.bp1.2$SEX)
+addmargins(table(tbl.sp.verein.bp1.2$FB_FV_BP1_SP_VEREIN_K, tbl.sp.verein.bp1.2$sex))
 summary(tbl.sp.verein.bp1.2$FB_FV_BP1_SP_VEREIN_K)
 ggplot( 
   tbl.sp.verein.bp1.2,
