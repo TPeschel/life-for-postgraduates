@@ -76,7 +76,7 @@ freizeit_sb$T00159_F0016 <- recode(freizeit_sb$T00159_F0016,
                                    `0` = 0, `1` = 0.5, `2` = 1.5, `3` = 4, `4` = 6)
 freizeit_sb$T00159_F0017 <- recode(freizeit_sb$T00159_F0017, 
                                    `0` = 0, `1` = 0.5, `2` = 1.5, `3` = 4, `4` = 6)
-freizeit_sb$frei_sport <- freizeit_sb$T00159_F0016 + freizeit_sb$T00159_F0017
+freizeit_sb$frei_sport <- freizeit_sb$T00159_F0016 + freizeit_sb$T00159_F0017  ## sicher? nicht lieber durch 2 teilen?
 
 #####################################################################################################################
 #####noten umkodieren#################
@@ -237,11 +237,7 @@ sd(mfqs_1_noten_neu$frei_sport, na.rm=TRUE)
 hist(mfqs_1_noten_neu$frei_sport)
 
 mean(mfqs_1_noten_neu$T00156_F0009, na.rm=TRUE)
-
-
 sd(mfqs_1_noten_neu$T00156_F0009, na.rm=TRUE)
-
-
 summary(mfqs_1_noten_neu$T00156_F0009, na.rm=TRUE)
 
 prop.table(table(mfqs_1_noten_neu$D00175_K_SCHULE))
@@ -317,12 +313,14 @@ confint(lm.han.ageetc, level = 0.95)
 mfqs_2_noten <- 
     mfqs_1_noten[!is.na( mfqs_1_noten$age ) &!is.na( mfqs_1_noten$sex ) &!is.na( mfqs_1_noten$D00177_SCORE_FAM ) &!is.na( mfqs_1_noten$medien_bild ) &!is.na( mfqs_1_noten$frei_sport ) &!is.na( mfqs_1_noten$D00040_BMI_SDS ) &!is.na( mfqs_1_noten$year ) &!is.na( mfqs_1_noten$D00175_K_SCHULE ) , ]
 
-cdplot( D00175_K_SCHULE ~ sex, data = mfqs_1_noten)
+ggplot(mfqs_2_noten, aes( frei_sport, D00175_K_SCHULE ) ) +
+    geom_bar( stat = "identity", position = "fill", aes( fill = D00175_K_SCHULE) )
+    
+cdplot( D00175_K_SCHULE ~ frei_sport, data = mfqs_1_noten)
 ( xx <- glm(D00175_K_SCHULE ~ age * sex * D00177_SCORE_FAM * year * medien_bild * frei_sport * D00040_BMI_SDS, family = binomial, data = mfqs_1_noten) )
 ( xx <- glm(D00175_K_SCHULE ~ age + sex + D00177_SCORE_FAM + year + medien_bild + frei_sport + D00040_BMI_SDS, family = binomial, data = mfqs_1_noten) )
 summary(xx)
 
-mfqs_2_noten$f.v <- xx$fitted.values
 
 library(ggplot2)
 
