@@ -3,10 +3,11 @@ library( "ggplot2" )
 library( "dplyr" )
 
 ## Setze hier den Pfad zum Verzeichnis Deiner Dateien
-setwd( "../data_neu_20160929" )
+#setwd( "../data_neu_20160929" )
+setwd( "~/LIFE/github-tpeschel/life-for-postgraduates/MaximilianeWagner/data/data_neu_20160929" )
 
 ## Lade beide Tabellen
-t1 <- read_excel( "20161110_Probenliste_AGa (1).xlsx" )
+t1 <- read_excel( "../20161110_Probenliste_AGa (1).xlsx" )
 t2 <- read_excel( "PV208_Probauswahl2_20160929.xlsx" )
 
 t1.names <- "Materialnummer" ##names( t1 )

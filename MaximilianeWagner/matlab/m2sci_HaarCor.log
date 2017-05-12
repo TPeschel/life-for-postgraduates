@@ -1,0 +1,22 @@
+   ****** Beginn der mfile2sci() Sitzung ******
+   Datei, die konvertiert werden soll /home/tpeschel/LIFE/github-tpeschel/life-for-postgraduates/MaximilianeWagner/matlab/HaarCor.m
+   Pfad der resultierenden Datei: /home/tpeschel/LIFE/github-tpeschel/life-for-postgraduates/MaximilianeWagner/matlab/
+   Rekursiver Modus AUS
+   Nur doppelte Werte in der M-Datei verwenden: NEIN
+   Wortreicher Modus: 3
+   formatierten Code erzeugen JA
+   M-Datei lesen...
+   M-Datei lesen: Fertig
+   Syntax Modifikation...
+   Syntax Modifikation: Fertig
+   Makro nach Baum Konversion...
+   Konversion von M-tree...
+   !! L.6: Unbekannte  Funktion JoinmitCortisolohneSIC nicht konvertiert, original aufgerufene Sequenz verwendet.
+   !! L.24: Matlab Funktion  figure ist noch nicht konvertiert.
+   !! L.24: Matlab Funktion figure noch nicht konvertiert, original aufgerufene Sequenz verwendt.
+   L.24: (Warnung: Namenskonflikt: Funktions Name wurde von figure nach %figure geändert).
+   !! L.25: Matlab Funktion plotmatrix noch nicht konvertiert, original aufgerufene Sequenz verwendt.
+   !! L.26: Matlab Funktion  gcf ist noch nicht konvertiert.
+   !! L.26: Matlab Funktion print noch nicht konvertiert, original aufgerufene Sequenz verwendt.
+   L.26: (Warnung: Namenskonflikt: Funktions Name wurde von print nach %print geändert).
+   !! L.32: Matlab Zusatzprogramme hat corr Funktion nicht konvertiert, original aufgerufene Sequenz verwendet.
