@@ -4,7 +4,7 @@ library( "dplyr" )
 
 ## Setze hier den Pfad zum Verzeichnis Deiner Dateien
 #setwd( "../data_neu_20160929" )
-setwd( "~/LIFE/github-tpeschel/life-for-postgraduates/MaximilianeWagner/data/data_neu_20160929" )
+setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/data/data_neu_20160929" )
 
 ## Lade beide Tabellen
 t1 <- read_excel( "../20161110_Probenliste_AGa (1).xlsx" )
@@ -39,7 +39,6 @@ t3 <- t3[ !is.na( t3$Cortisol ), ]
 
 t3 <- t3[ t3$Cortisol < 50, ]
 t3$log.Cortisol <- log10( t3$Cortisol )
-t3$chi2.Cortisol <- sqrt( t3$Cortisol )
 
 t3$pub.cat <- cut( 
     t3$C_PUB_STAT_PUB_STATUS, 
@@ -71,6 +70,7 @@ mean( t3$log.Cortisol[ t3$sex == "male" & t3$pub.cat == "postpubertal" ], na.rm 
 mean( t3$log.Cortisol[ t3$sex == "female" & t3$pub.cat == "postpubertal" ], na.rm = T )
 
 aggregate( t3$log.Cortisol, list( t3$sex, t3$pub.cat ), mean )
+aggregate( t3$log.Cortisol, list( t3$sex, t3$pub.cat ), length )
 
 t3 %>%
     group_by( sex, pub.cat ) %>%

@@ -14,8 +14,6 @@ library(openxlsx)
 Daten <- read_excel( "PV0116_GesamtJoin.xlsx" )
 Daten <- Daten[ !is.na( Daten$CT_S_1_NUM_VALUE ), ]
 
-
-
 diseases <- c( "C_DISEASE_TX_SD_ALLG", "C_DISEASE_TX_SD_HYPER",
                "C_DISEASE_TX_SD_HYPO", "C_DISEASE_TX_VITD", "C_DISEASE_TX_DM1", "C_DISEASE_TX_DM2", 
                "C_DISEASE_TX_BLUT", "C_DISEASE_TX_GERIN", 
@@ -43,20 +41,45 @@ df <- Daten
 
 nrow(df)
 
-# for( d in diseases ) {
-#   
-#   df <- df[ df[ ,d ] == 0 | is.na(df[ ,d ]), ]
-# }
-
-# nrow( df )
-
+# So testest Du, ob alle durch diseases ausgewaehlten Spalten keine Missings enthalten.
+# Ich empfehle aber, diese Zeile nicht auszufuehren, da Dir so viele Werte verloren gehen.
+# Geht man davon aus, dass der Proband nur krank ist, wenn tatsaechlich irgendwo eine 1 steht,
+# dann kannst Du die Missings uebersehen.
+# VARIANTE A
 df.diseases <-
-    df[ rowSums( df[ ,diseases ] ) == 1, ]
+    df[ complete.cases( df[ , diseases ] ), ]
 
-apply( df, 1, any )
-nrow( df.diseases )
+# Fuehre lieber diese Zeile aus!
+# VARIANTE B
+df.diseases <- df
 
-View( df.diseases[ ,c( "CT_S_1_SIC", "CT_S_1_GRUPPE", diseases ) ] )
+# Die Funktion "filter.for.certain.values" filtert alle Zeilen, die bei irgendeiner Krankheit eine 1 stehen haben, aus.
+# NAs werden nicht beachtet.
+# Moechtest Du diese aber auch raushaben, dann fuehre vorher Variante A aus statt Variante B!
+# Das ganze dauert einen kleinen Moment
+filter.for.certain.values <-
+function( d, cols ) {
+    
+    j = 1
+    
+    for( i in 1 : nrow( d ) ) {
+    
+        if( !any( !is.na( d[ i , cols ] ) & d[ i , cols ] == 1 ) ) {
+            
+            d[ j, ] <- d[ i, ]
+            
+            j <- j + 1
+        }
+    }
+    
+    ( df.diseases <- df.diseases[ 1 : j - 1, ] )
+}
+
+df.diseases <- 
+    filter.for.certain.values( df.diseases, diseases )
+
+
+
 
 df <- Daten
 
@@ -155,6 +178,16 @@ write.xlsx(x = NeueTabelle110517 , file = "NeueTabelle110517excel.xlsx")
 
 
 
+x <- data.frame(a = 1:7, beta = exp(-3:3), logic = c(TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE))
+# compute the list mean for each list element
+lapply(x,mean)
+# median and quartiles for each list element
+lapply(x, quantile, probs = 1:3/4)
+sapply(x, quantile)
+i39 <- sapply(3:9, seq) # list of vectors
+sapply(i39, fivenum)
 
+hist(replicate(100, mean(rexp(10))))
+rexp(1)
 
-
+plot(rexp(200))
