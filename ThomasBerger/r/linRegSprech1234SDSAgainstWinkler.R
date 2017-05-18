@@ -20,6 +20,8 @@ load( file = "~/LIFE/github-tpeschel/life-for-postgraduates/ThomasBerger/results
 #load( file = "~/LIFE/github-tpeschel/R/ThomasBerger/results/refs.Rda" )
 #load( file = "~/LIFE/github-tpeschel/R/ThomasBerger/results/data.sprech.Rda" )
 
+d <- data.sprech
+
 ## -WINKLER ######################################################################################################################
 d$Winkler <-
     cut( 

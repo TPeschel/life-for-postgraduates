@@ -13,7 +13,8 @@ library( WriteXLS )
 ## day of computation
 date.today <- gsub( x = Sys.Date( ), pattern = "-1perFam", replacement = "" )
 
-load( file = "~/LIFE/github-tpeschel/R/ThomasBerger/results/refs.Rda" )
+#load( file = "~/LIFE/github-tpeschel/R/ThomasBerger/results/refs.Rda" )
+load( file = "~/LIFE/github-tpeschel/life-for-postgraduates/ThomasBerger/results/refs.Rda" )
 
 tbl <-
     rbind(
