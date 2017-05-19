@@ -9,7 +9,7 @@ setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/data/data_neu_20160929" 
 ## Lade beide Tabellen
 t1 <- read_excel( "../20161110_Probenliste_AGa (1).xlsx" )
 t2 <- read_excel( "PV208_Probauswahl2_20160929.xlsx" )
-
+t1 <- t1[ -1, ]
 t1.names <- "Materialnummer" ##names( t1 )
 t2.names <- "Materialnummer" ##names( t2 )
 t3.names <- t1.names[ t1.names %in% t2.names ]
@@ -25,7 +25,7 @@ t1.names <- c( t3.names, t1.interests )
 t2.names <- c( t3.names, t2.interests )
 
 ## Zusammenfuegen beider Tabellen ueber die Materialnummer
-t3 <- merge( t1[ ,t1.names ], t2[ , t2.names ], by = t3.names )
+t3 <- merge( t1[ , t1.names ], t2[ , t2.names ], by = t3.names )
 
 ## Zeige alle Namen, die die auf .x enden sind aus t1 und .y aus t2
 names( t3 )
@@ -38,7 +38,7 @@ t3$Cortisol <- as.numeric( t3$Cortisol )
 t3 <- t3[ !is.na( t3$Cortisol ), ]
 
 t3 <- t3[ t3$Cortisol < 50, ]
-t3$log.Cortisol <- log10( t3$Cortisol )
+t3$log.Cortisol <- log( t3$Cortisol )
 
 t3$pub.cat <- cut( 
     t3$C_PUB_STAT_PUB_STATUS, 
@@ -55,14 +55,9 @@ ggplot( t3, aes( x=pub.cat, y=log.Cortisol  ) ) +
     geom_rug( aes( color = pub.cat ) ) +
     facet_grid(. ~ sex )
 
-ggplot( t3, aes( x=pub.cat, y=chi2.Cortisol  ) ) +
-    geom_boxplot( ) +
-    geom_rug( aes( color = pub.cat ) ) +
-    facet_grid(. ~ sex )
-
 table( t3$sex, t3$pub.cat )
 
-mean( t3$log.Cortisol[ t3$sex == "male" & t3$pub.cat == "prepubertal" ], na.rm = T )
+exp( mean( t3$log.Cortisol[ t3$sex == "male" & t3$pub.cat == "prepubertal" ], na.rm = T ) )
 mean( t3$log.Cortisol[ t3$sex == "female" & t3$pub.cat == "prepubertal" ], na.rm = T )
 mean( t3$log.Cortisol[ t3$sex == "male" & t3$pub.cat == "pubertal" ], na.rm = T )
 mean( t3$log.Cortisol[ t3$sex == "female" & t3$pub.cat == "pubertal" ], na.rm = T )

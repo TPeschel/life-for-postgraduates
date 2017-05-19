@@ -44,7 +44,7 @@ d <-
     na.omit( d )
 
 
-breaks_ <- seq( 6, 18, 1 )
+breaks_ <- seq( 6, 18, .5 )
 labels_ <- breaks_[-1]
 
 d$age.cat <-
@@ -53,34 +53,69 @@ d$age.cat <-
         breaks_,
         labels_ )
 
-d.s <-
+d.f0.means <-
     melt( 
         d %>%
         group_by( age.cat, sex ) %>%
         summarise(
             n = n( ), 
             m.f0.1 = mean( d.f0.1 ),
-            #sd.f0.1 = sd( d.f0.1 ),
+            #m.spl.1 = mean( d.spl.1 ),
             m.f0.2 = mean( d.f0.2 ),
-            #sd.f0.2 = sd( d.f0.2 ),
+            #m.spl.2 = mean( d.spl.2 ),
             m.f0.3 = mean( d.f0.3 ),
-            #sd.f0.3 = sd( d.f0.3 ),
-            m.f0.4 = mean( d.f0.4 )#,
-            #sd.f0.4 = sd( d.f0.4 )
+            #m.spl.3 = mean( d.spl.3 ),
+            m.f0.4 = mean( d.f0.4 )
+            #m.spl.4 = mean( d.spl.4 )
             ),
         c( "sex", "age.cat", "n" ) )
         
+d.f0.err.low <-
+    melt( 
+        d %>%
+        group_by( age.cat, sex ) %>%
+        summarise(
+            n = n( ), 
+            low.err.f0.1  = mean( d.f0.1, na.rm = T ) - sd( d.f0.1, na.rm = T ),
+            low.err.f0.2  = mean( d.f0.2, na.rm = T ) - sd( d.f0.2, na.rm = T ),
+            low.err.f0.3  = mean( d.f0.3, na.rm = T ) - sd( d.f0.3, na.rm = T ),
+            low.err.f0.4  = mean( d.f0.4, na.rm = T ) - sd( d.f0.4, na.rm = T )
+            ),
+        c( "sex", "age.cat", "n" ) )
 
-ggplot( d.s, aes( age.cat, value, group = variable, linetype = variable ) ) +
+d.f0.err.high <-
+    melt( 
+        d %>%
+        group_by( age.cat, sex ) %>%
+        summarise(
+            n = n( ), 
+            high.err.f0.1 = mean( d.f0.1, na.rm = T ) + sd( d.f0.1, na.rm = T ),
+            high.err.f0.2 = mean( d.f0.2, na.rm = T ) + sd( d.f0.2, na.rm = T ),
+            high.err.f0.3 = mean( d.f0.3, na.rm = T ) + sd( d.f0.3, na.rm = T ),
+            high.err.f0.4 = mean( d.f0.4, na.rm = T ) + sd( d.f0.4, na.rm = T )
+            ),
+        c( "sex", "age.cat", "n" ) )
+
+ddd <- rbind( d.f0.means, rbind( d.f0.err.low, d.f0.err.high ) )
+
+ggplot( 
+    d.f0.means, 
+    aes( 
+        age.cat, 
+        value, 
+        group = variable, 
+        linetype = variable ) ) +
     geom_hline( yintercept = 0 ) +
     geom_smooth( method = "loess",alpha = .1 ) +
     geom_point( aes( size = n ), alpha = .3 ) +
-    geom_point( aes(  ),size = .1, alpha = .3 ) +
     geom_path( alpha = .3 ) +
-    geom_text( aes( label = as.character( round( value, 1) ) ), col = "#4080ff", nudge_y = 1 ) +
+    geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#4080a0", nudge_y = -1 ) +
+    geom_text( aes( label = as.character( n ) ), col = "#80a0c0", nudge_y = +1 ) +
     facet_grid( variable ~ sex ) +
+    scale_linetype_discrete( name = "fundamental frequency [Hz]", breaks = c( "m.f0.1", "m.f0.2", "m.f0.3", "m.f0.4" ), labels = c( "softest speaking voice", "conversational voice", "classroom voice", "shouting voice" ) ) + 
     geom_path( aes( age.cat, value, group = variable, linetype = variable ), alpha = .2 ) +
-    labs( title = "age related means of monthly increase of frequencies for type speech I-IV", x = "age [y]", y = TeX( "$\\frac{\\Delta f_{0}}{\\Delta t}\\;\\left[\\frac{Hz}{month}\\right]}$") ) +
+    #geom_errorbar( )
+    labs( title = "age related means of monthly increase of frequencies for speech type I-IV", x = "age [y]", y = TeX( "$\\frac{\\Delta f_{0}}{\\Delta t}\\;\\left[\\frac{Hz}{month}\\right]}$") ) +
     theme_bw( )
 
 d.m <- d[ d$sex == "male", ]
@@ -88,7 +123,7 @@ d.f <- d[ d$sex == "female", ]
 
 ggplot( d, aes( age.cat ) ) + geom_bar( ) + facet_grid( . ~ sex )
 
-n <- 151
+n <- 31
 w <- rep( 1 / n, n )
 
 d.m$m.f0.1f <- stats::filter( d.m$d.f0.1, w, sides = 2 )
@@ -96,10 +131,10 @@ d.m$m.f0.2f <- stats::filter( d.m$d.f0.2, w, sides = 2 )
 d.m$m.f0.3f <- stats::filter( d.m$d.f0.3, w, sides = 2 )
 d.m$m.f0.4f <- stats::filter( d.m$d.f0.4, w, sides = 2 )
 
-ggplot( d.m ) +
-    geom_point( aes( age - .5, d.f0.4 ), col = "blue" ) +
-    geom_point( aes( age - .5, m.f0.4f ), col = "red" ) +
-    #geom_smooth( aes( age - .5, m.f0.4f ), col = "black" ) +
+ggplot( arrange( d.m, age ) ) +
+    geom_point( aes( age, d.f0.4 ), col = "blue" ) +
+    geom_path( aes( age, m.f0.4f ), col = "red" ) +
+    geom_smooth( aes( age, m.f0.4f ), col = "black" ) +
 #    geom_smooth( ) +
     facet_grid( . ~ sex )
 
