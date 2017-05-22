@@ -182,7 +182,9 @@ for( mg in params ) {
             "text",
             label = "female",
             y = max( perc.single.girls$value[ perc.single.girls$variable == levels( perc.single.girls$variable )[5] & perc.single.girls$age == 15 ] ),
-            x = 15 ) + 
+            x = 15,
+            size = 8 ) + 
+        theme_bw( ) +
         mytheme
 
     ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_FEMALE_bw_", date.today, ".png" ) )    
@@ -209,7 +211,7 @@ for( mg in params ) {
             ),
             colour = "black" ) +
         scale_x_continuous( breaks = c( 5 : 18 ) ) +
-        labs( title = titles[ mg ], x = "age [y]", y = "frequency [Hz]" ) +
+        labs( title = titles[ mg ], x = "age [y]", y = "fundamental frequency [Hz]" ) +
         annotate(
             "text",
             x = 18.2,
@@ -225,7 +227,9 @@ for( mg in params ) {
             "text",
             label = "male",
             y = max( perc.single.boys$value[ perc.single.boys$variable == levels( perc.single.boys$variable )[5] & perc.single.boys$age == 15 ] ),
-            x = 15 ) + 
+            x = 15,
+            size = 8 ) + 
+        theme_bw( ) +
         mytheme
 
         ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_MALE_bw_", date.today, ".png" ) )
@@ -354,7 +358,7 @@ ggplot(
         ),
         colour = "black" ) +
     scale_x_continuous( breaks = c( 5 : 18 ) ) +
-    labs( title = titles[ 4 ], x = "age [y]", y = "frequency [Hz]" ) +
+    labs( title = titles[ 4 ], x = "age [y]", y = "fundamental frequency [Hz]" ) +
     annotate(
         "text",
         x = 18.2,
@@ -365,12 +369,14 @@ ggplot(
         parse = T, 
         vjust = 0.8, 
         hjust = 0.5 ) +
-        annotate(
-            "text",
-            label = "female",
-            y = max( perc.single.girls$value[ perc.single.girls$variable == levels( perc.single.girls$variable )[5] & perc.single.girls$age == 15 ] ),
-            x = 15 ) +
-    theme_bw( ) + mytheme
+    annotate(
+        "text",
+        label = "female",
+        y = max( perc.single.girls$value[ perc.single.girls$variable == levels( perc.single.girls$variable )[5] & perc.single.girls$age == 15 ] ),
+        x = 15,
+        size = 8 ) +
+    theme_bw( ) + 
+    mytheme
 
 ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_FEMALE_bw_", date.today, ".png" ) )
 
@@ -394,7 +400,7 @@ ggplot(
             linetype = variable ),
         colour = "black" ) +
     scale_x_continuous( breaks = c( 5 : 18 ) ) +
-    labs( title = titles[ 4 ], x = "age [y]", y = "frequency [Hz]" ) +
+    labs( title = titles[ 4 ], x = "age [y]", y = "fundamental frequency [Hz]" ) +
     annotate(
         "text",
         x = 18.2,
@@ -404,13 +410,15 @@ ggplot(
         inherit.aes = T, 
         parse = T,
         vjust = 0.8,
-        hjust = 0.5 ) + 
-        annotate(
-            "text",
-            label = "male",
-            y = max( perc.single.boys$value[ perc.single.boys$variable == levels( perc.single.boys$variable )[5] & perc.single.boys$age == 15 ] ),
-            x = 15 ) +
-    theme_bw( ) + mytheme
+        hjust = 0.5 ) +
+    annotate(
+        "text",
+        label = "male",
+        y = max( perc.single.boys$value[ perc.single.boys$variable == levels( perc.single.boys$variable )[5] & perc.single.boys$age == 15 ] ),
+        x = 15,
+        size = 8 ) +
+    theme_bw( ) +
+    mytheme
 
 ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_MALE_bw_", date.today, ".png" ) )
         

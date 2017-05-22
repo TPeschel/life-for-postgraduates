@@ -37,6 +37,15 @@ medik <- c( "CHILD_MED_H_METFORMIN", "CHILD_MED_H_INSULIN", "CHILD_MED_H_LTHYROX
             "CHILD_MED_H_DESMOPRESS",  "CHILD_MED_H_GLUCO_CORT",
             "CHILD_MED_H_TESTO", "CHILD_MED_H_ASTHMA")
 
+summ <-
+    function( curr.row ) {
+        
+        sum( !is.na( curr.row ) & curr.row == 1 )
+    }
+
+mdk.dss <-
+    c( medik, diseases )
+
 
 # Das ist die neue Funktion, die Dir alle Mediks und Diseases rausfiltert und die NAs zu auf 0 setzt
 filter.for.reasonable.values <-
@@ -61,20 +70,17 @@ filter.for.reasonable.values <-
             apply(
                 df[ , interesting.cols ],
                 1,
-                sum
+                summ
             )
         
         df <- 
             df[ df$sum.of.ones < 1, ]
         
-        df$sum.of.ones <- 
-            NULL
+#        df$sum.of.ones <- 
+#            NULL
         
         df
     }
-
-mdk.dss <-
-    c( medik, diseases )
 
 df <- 
     filter.for.reasonable.values( df, mdk.dss )
