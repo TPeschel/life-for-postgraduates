@@ -43,8 +43,14 @@ d <-
 d <- 
     na.omit( d )
 
-breaks_ <- seq( 6, 18, 1 )
-labels_ <- breaks_[-1]
+months <-
+    6
+
+breaks_ <-
+    seq( 6, 18, months / 12 )
+
+labels_ <-
+    breaks_[-1]
 
 d$age.cat <-
     cut(
@@ -99,4 +105,6 @@ ggplot(
     labs( title = "age related means of monthly increase of frequencies for speech type I-IV", x = "age [y]", y = TeX( "$\\frac{\\Delta f_{0}}{\\Delta t}\\;\\left[\\frac{Hz}{month}\\right]}$") ) +
     theme_bw( ) 
         
+ggsave( filename = "meansOfChanges.pdf", width = 30, height = 19 )
+
 
