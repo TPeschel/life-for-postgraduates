@@ -11,7 +11,8 @@ d <-
 d <- 
     na.omit( d )
 
-months <- 6
+months <-
+    6
 
 breaks_ <-
     seq( 6, 18, months / 12 )
