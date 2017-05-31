@@ -33,8 +33,8 @@ summary(tbl.hs.ch$S010293_F0027)
 
 ggplot( 
   tbl.hs.ch,
-  aes( S010293_F0027, fill = SEX ) ) +
-  geom_bar( binwidth = 1 ) +
+  aes( as.factor( S010293_F0027 ), fill = SEX ) ) +
+  geom_histogram( binwidth = 1, stat = "count" ) +
   facet_grid( . ~ SEX ) +
   theme_bw( ) +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
@@ -50,8 +50,8 @@ summary(tbl.ab.ch$S010293_F0039)
 
 ggplot( 
   tbl.ab.ch,
-  aes( S010293_F0039, fill = SEX ) ) +
-  geom_bar( binwidth = 1 ) +
+  aes( as.factor( S010293_F0039 ), fill = SEX ) ) +
+  geom_histogram( binwidth = 1, stat = "count" ) +
   facet_grid( . ~ SEX ) +
   theme_bw( ) +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
@@ -67,8 +67,8 @@ summary(tbl.asthma.ch$S010293_F0041)
 
 ggplot( 
   tbl.asthma.ch,
-  aes( S010293_F0041, fill = SEX ) ) +
-  geom_bar( binwidth = 1 ) +
+  aes( as.factor( S010293_F0041 ), fill = SEX ) ) +
+  geom_histogram( binwidth = 1, stat = "count" ) +
   facet_grid( . ~ SEX ) +
   theme_bw( ) +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
@@ -85,8 +85,8 @@ summary(tbl.nase.ch.knd$score.ges)
 
 ggplot( 
   tbl.nase.ch.knd,
-  aes( score.ges, fill = SEX ) ) +
-  geom_bar( binwidth = 1 ) +
+  aes( as.factor( score.ges ), fill = SEX ) ) +
+  geom_histogram( binwidth = 1, stat = "count" ) +
   facet_grid( . ~ SEX ) +
   theme_bw( ) +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
@@ -145,3 +145,4 @@ ggplot(
   theme_bw( ) +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
   labs( title = "Kinder Asthma" )
+

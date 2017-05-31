@@ -16,9 +16,9 @@ summary( tbl.esdq.ges$E_SDQ_GES_SCORE )
 
 ggplot( 
     tbl.esdq.ges,
-    aes( as.factor( E_SDQ_GES_SCORE ), fill = sex ) ) +
+    aes( as.factor( E_SDQ_GES_SCORE ), fill = SEX ) ) +
     geom_histogram( stat = "count" ) +
-    facet_grid( . ~ sex ) +
+    facet_grid( . ~ SEX ) +
     theme_bw( ) +
     scale_fill_brewer( type = "qual", palette = 6, direction = -1, guide=F ) +
     labs( title = "Besuche E-SDQ-Gesamtscore", legend = element_blank( ) )
@@ -28,15 +28,15 @@ ggplot(
 tbl.17 <-
     tbl.esdq.ges[ tbl.esdq.ges$E_SDQ_GES_SCORE >= 17, ]
 
-table( tbl.17$E_SDQ_GES_SCORE, tbl.17$sex )
+table( tbl.17$E_SDQ_GES_SCORE, tbl.17$SEX )
 
 summary( tbl.17$E_SDQ_GES_SCORE )
 
 ggplot( 
     tbl.17,
-    aes( E_SDQ_GES_SCORE, fill = sex ) ) +
+    aes( E_SDQ_GES_SCORE, fill = SEX ) ) +
     geom_bar( binwidth = 1 ) +
-    facet_grid( . ~ sex ) +
+    facet_grid( . ~ SEX ) +
     theme_bw( ) +
     scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
     labs( title = "Besuche E-SDQ-Gesamtscore >= 17" )
@@ -44,15 +44,15 @@ ggplot(
 tbl.14.16 <-
     tbl.esdq.ges[ between( tbl.esdq.ges$E_SDQ_GES_SCORE, 14, 16.99 ), ]
 
-table( tbl.14.16$E_SDQ_GES_SCORE, tbl.14.16$sex )
+table( tbl.14.16$E_SDQ_GES_SCORE, tbl.14.16$SEX )
 
 summary( tbl.14.16$E_SDQ_GES_SCORE )
 
 ggplot( 
     tbl.14.16,
-    aes( E_SDQ_GES_SCORE, fill = sex ) ) +
-    geom_bar( binwidth = 1 ) +
-    facet_grid( . ~ sex ) +
+    aes( as.factor( E_SDQ_GES_SCORE ), fill = SEX ) ) +
+    geom_histogram( binwidth = 1, stat = "count" ) +
+    facet_grid( . ~ SEX ) +
     theme_bw( ) +
     scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
     labs( title = "Besuche E-SDQ-Gesamtscore zwischen 14 und 16" )

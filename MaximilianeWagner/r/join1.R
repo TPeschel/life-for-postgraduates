@@ -9,9 +9,12 @@ setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/data/data_neu_20160929" 
 ## Lade beide Tabellen
 t1 <- read_excel( "../20161110_Probenliste_AGa (1).xlsx" )
 t2 <- read_excel( "PV208_Probauswahl2_20160929.xlsx" )
+
 t1 <- t1[ -1, ]
+
 t1.names <- "Materialnummer" ##names( t1 )
 t2.names <- "Materialnummer" ##names( t2 )
+
 t3.names <- t1.names[ t1.names %in% t2.names ]
 
 t1.interests <- c( "Cortisol" )
