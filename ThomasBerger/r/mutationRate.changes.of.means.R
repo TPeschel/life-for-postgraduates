@@ -12,13 +12,13 @@ d <-
     na.omit( d )
 
 months <-
-    6
+    12
 
 breaks_ <-
     seq( 6, 18, months / 12 )
 
 labels_ <-
-    breaks_[ -1 ]
+    as.factor( as.numeric( as.character( breaks_[ -1 ] ) ) - months / 24 )
 
 d$age.cat <-
     cut(
@@ -63,4 +63,4 @@ ggplot( d.df, aes( as.numeric( as.character( age.cat ) ), value ) ) +
     geom_hline( yintercept = 0 ) +
     theme_bw( )
 
-ggsave( filename = "changesOfMeans.pdf", width = 30, height = 19 )
+ggsave( filename = "changesOfMeans12Months.pdf", width = 30, height = 19 )
