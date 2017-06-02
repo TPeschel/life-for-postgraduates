@@ -7,7 +7,7 @@ library( "dplyr" )
 setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/data/data_neu_20160929" )
 
 ## Lade beide Tabellen
-t1 <- read_excel( "../20161110_Probenliste_AGa (1).xlsx" )
+t1 <- read_excel( "20161110_Probenliste_AGa (1).xlsx" )
 t2 <- read_excel( "PV208_Probauswahl2_20160929.xlsx" )
 t1 <- t1[ -1, ]
 t1.names <- "Materialnummer" ##names( t1 )
@@ -45,8 +45,8 @@ t3$pub.cat <- cut(
     breaks = c( 0, 1, 4, 6 ), 
     labels = c( "prepubertal", "pubertal", "postpubertal" ) )
 
-ggplot( t3, aes( x=pub.cat, y=Cortisol  ) ) +
-    geom_boxplot( ) +
+ggplot( t3, aes( x=C_ANTHRO_AGE, y=Cortisol  ) ) +
+    geom_point( ) +
     geom_rug( aes( color = pub.cat ) ) +
     facet_grid(. ~ sex )
 
@@ -92,6 +92,7 @@ ggplot( t3, aes( x=C_ANTHRO_AGE, y=log.Cortisol, color = pub.cat ) ) +
 ##    geom_smooth( color = "gray", alpha = .2 ) +
     geom_rug( ) + 
     facet_grid( . ~ sex )
+
 
 ggplot( t3, aes( y=log.Cortisol, x=t3$C_ANTHRO_KH_BMI_ORIG, color = pub.cat ) ) +
     theme_bw( ) +
