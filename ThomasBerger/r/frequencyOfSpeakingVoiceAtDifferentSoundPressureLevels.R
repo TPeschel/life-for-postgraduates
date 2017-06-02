@@ -33,7 +33,7 @@ t865 <- get.data.with.aliases( ldb, "T00865" )
 t865 <- add.persdat.age( persdat = persdat, t865 )
 
 ## we are interested only in kid's age between 5.5 and 18
-t865 <- t865[ 5.5 < t865$age & t865$age < 18, ]
+t865 <- t865[ 6 < t865$age & t865$age < 18, ]
 
 ## families
 ## SozDem
@@ -105,14 +105,31 @@ f0.spl <-
 f0.spl <- 
     na.omit( f0.spl )
 
+pal <-
+    rep(
+        rgb( seq( 0, .8, length.out = 3 ), seq( 0, .7, length.out = 3 ), seq( 0, .6, length.out = 3 ) ), 4 )
+    #rgb( runif( 32, 0, 1 ), runif( 32, 0, 1 ), runif( 32, 0, 1 )  )
+
+txt.pos <-
+    f0.spl %>%
+    group_by( variable, sex ) %>%
+    summarise(
+        y = mean( value.y ),
+        x = min( ifelse( sex == "male", max( value.x ) + 15, min( value.x ) - 15 ) ) )
+
 ggplot( 
     f0.spl, 
-    aes( x = value.x, y = value.y, alpha = age.cat, col = variable ) ) +
+    aes( x = value.x, y = value.y, col = age.cat ) ) +
     geom_path( aes( group = age.cat ) ) +
-    geom_point( shape = 3, size = 5 ) +
-    geom_text( aes( label = age.cat ) ) +
-    facet_grid( . ~ sex  ) +
-    scale_color_brewer( type = "div", palette = 1 ) +
-    theme_light( )
-        
-f0.spl[ f0.spl$age.cat == "18",]
+    geom_point( shape = 3, size = 3 ) +
+    facet_grid( . ~ sex ) +
+    scale_color_discrete( "age [y]" ) +
+    labs( 
+        title = "sound pressure vs fundamental frequency",
+        x = "fundamental frequency [Hz]", 
+        y = "sound pressure [dB]",
+        subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
+    theme_bw( ) +
+    geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ) ) 
+
+ggsave( filename = "ageRelatedFrequenciesOfSpeakingVoiceAtDifferentSoundPressureLevels.png", width = 15, height = 9 )
