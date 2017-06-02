@@ -1,13 +1,29 @@
-push( )
-
 setwd( "~/LIFE/life-for-postgraduates/ThomasBerger/results/" )
 
 mytheme <- theme( 
     legend.position = "none", 
     axis.text  = element_text( size = 14 ),
-    axis.title = element_text( size = 14 )#,
-    #panel.grid = element_blank( ) 
-    )
+    axis.title = element_text( size = 14 ),
+    panel.grid = element_blank( ) )
+
+positions.of.sex.in.graphs <-
+    data.frame( 
+        type = rep( 1 : 4, 2 ),
+        sex  = c( rep( "male", 4 ), rep( "female", 4 ) ),
+        x    = c( 16, 16, 16, 8, 15.5, 14, 15, 14 ),
+        y    = c( 275, 275, 310, 110, 300, 75, 325, 410 ) )
+
+colored <-
+    T
+
+if( colored ) {
+    line.colors <-
+        c( "firebrick", "orangered", "forestgreen", "orangered", "firebrick" )
+} else {
+    line.colors <-
+        c( "#a0a0a0", "#808080", "#505050", "#808080", "#a0a0a0" ) 
+}
+        
 
 ## transforms percentiles to real world values relating to Box-Cox-Cole-Green-Distribution
 calc.vals.bccg <-
@@ -152,8 +168,8 @@ for( mg in params ) {
             colour = variable,
             group = paste( variable, which ) 
         ) ) +
-#        geom_line( alpha = 0.1 ) +
-#        scale_colour_manual( values = c( "firebrick", "orangered", "forestgreen", "orangered", "firebrick" ) ) +
+        geom_line( alpha = 0.1 ) +
+        scale_colour_manual( values = line.colors ) +
         scale_linetype_manual( values = c( 3, 2, 1, 2, 3 ) ) +
         geom_line( 
             data = perc.sum.girls, 
@@ -173,7 +189,6 @@ for( mg in params ) {
             y = labelsdf.g$value,
             label = paste0("P[",labelsdf.g$label,"]"),
             colour = "black",
-    #        inherit.aes = T, 
             parse = T, 
             vjust = 0.8, 
             hjust = 0.5 ) +
@@ -181,13 +196,13 @@ for( mg in params ) {
         annotate(
             "text",
             label = "female",
-            y = max( perc.single.girls$value[ perc.single.girls$variable == levels( perc.single.girls$variable )[5] & perc.single.girls$age == 15 ] ),
-            x = 15,
+            y = positions.of.sex.in.graphs$y[ positions.of.sex.in.graphs$sex == "female" & positions.of.sex.in.graphs$type == mg ],
+            x = positions.of.sex.in.graphs$x[ positions.of.sex.in.graphs$sex == "female" & positions.of.sex.in.graphs$type == mg ],
             size = 8 ) + 
         theme_bw( ) +
         mytheme
 
-    ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_FEMALE_bw_", date.today, ".png" ) )    
+    ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_FEMALE_", ifelse( colored, "col_", "bw_" ), date.today, ".png" ) )    
 
     ggplot( 
         perc.single.boys,
@@ -197,8 +212,8 @@ for( mg in params ) {
             colour = variable,
             group = paste( variable, which ) 
         ) ) +
-#        geom_line( alpha = 0.1 ) +
-#        scale_colour_manual( values = c( "firebrick", "orangered", "forestgreen", "orangered", "firebrick" ) ) +
+        geom_line( alpha = 0.1 ) +
+        scale_colour_manual( values = line.colors ) +
         scale_linetype_manual( values = c( 3, 2, 1, 2, 3 ) ) +
         geom_line( 
             data = perc.sum.boys, 
@@ -218,7 +233,6 @@ for( mg in params ) {
             y = labelsdf.b$value,
             label = paste0("P[",labelsdf.b$label,"]"),
             colour = "black",
-            inherit.aes = T, 
             parse = T, 
             vjust = 0.8, 
             hjust = 0.5 ) +
@@ -226,13 +240,13 @@ for( mg in params ) {
         annotate(
             "text",
             label = "male",
-            y = max( perc.single.boys$value[ perc.single.boys$variable == levels( perc.single.boys$variable )[5] & perc.single.boys$age == 15 ] ),
-            x = 15,
+            y = positions.of.sex.in.graphs$y[ positions.of.sex.in.graphs$sex == "male" & positions.of.sex.in.graphs$type == mg ],
+            x = positions.of.sex.in.graphs$x[ positions.of.sex.in.graphs$sex == "male" & positions.of.sex.in.graphs$type == mg ],
             size = 8 ) + 
         theme_bw( ) +
         mytheme
 
-        ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_MALE_bw_", date.today, ".png" ) )
+        ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_MALE_", ifelse( colored, "col_", "bw_" ), date.today, ".png" ) )
 }
 
 mg <- 4
@@ -344,8 +358,8 @@ ggplot(
         colour = variable,
         group = paste( variable, which ) 
     ) ) +
-##        geom_line( alpha = 0.1 ) +
-##        scale_colour_manual( values = c( "firebrick", "orangered", "forestgreen", "orangered", "firebrick" ) ) +
+        geom_line( alpha = 0.1 ) +
+        scale_colour_manual( values = line.colors ) +
     scale_linetype_manual( values = c( 3, 2, 1, 2, 3 ) ) +
     geom_line(
         data = perc.sum.girls,
@@ -365,20 +379,19 @@ ggplot(
         y = labelsdf.g$value,
         label = paste0("P[",labelsdf.g$label,"]"),
         colour = "black",
-        inherit.aes = T, 
         parse = T, 
         vjust = 0.8, 
         hjust = 0.5 ) +
     annotate(
         "text",
         label = "female",
-        y = max( perc.single.girls$value[ perc.single.girls$variable == levels( perc.single.girls$variable )[5] & perc.single.girls$age == 15 ] ),
-        x = 15,
+        y = positions.of.sex.in.graphs$y[ positions.of.sex.in.graphs$sex == "female" & positions.of.sex.in.graphs$type == 4 ],
+        x = positions.of.sex.in.graphs$x[ positions.of.sex.in.graphs$sex == "female" & positions.of.sex.in.graphs$type == 4 ],
         size = 8 ) +
     theme_bw( ) + 
     mytheme
 
-ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_FEMALE_bw_", date.today, ".png" ) )
+ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_FEMALE_", ifelse( colored, "col_", "bw_" ), date.today, ".png" ) )
 
 ggplot(
     perc.single.boys,
@@ -387,8 +400,8 @@ ggplot(
         y = value,
         colour = variable,
         group = paste( variable, which ) ) ) +
-##        geom_line( alpha = 0.1 ) +
-##        scale_colour_manual( values = c( "firebrick", "orangered", "forestgreen", "orangered", "firebrick" ) ) +
+        geom_line( alpha = 0.1 ) +
+        scale_colour_manual( values = line.colors ) +
     scale_linetype_manual( values = c( 3, 2, 1, 2, 3 ) ) +
     geom_line( 
         data = perc.sum.boys, 
@@ -407,19 +420,18 @@ ggplot(
         y = labelsdf.b$value,
         label = paste0("P[",labelsdf.b$label,"]"),
         colour = "black",
-        inherit.aes = T, 
         parse = T,
         vjust = 0.8,
         hjust = 0.5 ) +
     annotate(
         "text",
         label = "male",
-        y = max( perc.single.boys$value[ perc.single.boys$variable == levels( perc.single.boys$variable )[5] & perc.single.boys$age == 15 ] ),
-        x = 15,
+        y = positions.of.sex.in.graphs$y[ positions.of.sex.in.graphs$sex == "male" & positions.of.sex.in.graphs$type == 4 ],
+        x = positions.of.sex.in.graphs$x[ positions.of.sex.in.graphs$sex == "male" & positions.of.sex.in.graphs$type == 4 ],
         size = 8 ) +
     theme_bw( ) +
     mytheme
 
-ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_MALE_bw_", date.today, ".png" ) )
+ggsave( paste0( "PLOT_F0_SPRECH_", mg, "_MALE_", ifelse( colored, "col_", "bw_" ), date.today, ".png" ) )
         
-pop( )
+#pop( )

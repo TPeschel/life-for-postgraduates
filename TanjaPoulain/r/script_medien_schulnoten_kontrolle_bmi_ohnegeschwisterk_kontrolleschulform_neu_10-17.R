@@ -130,6 +130,7 @@ table(schulform$D00175_K_SCHULE)
 #nicht-merh-sch?ler raus:
 schulform <- subset( schulform, D00175_K_SCHULE > 1 & D00175_K_SCHULE < 8 )
 table(schulform$D00175_K_SCHULE)
+
 #gesamtsch?ler und f?rdersch?ler und hauptsch?ler mit realsch?lern verbinden
 schulform$D00175_K_SCHULE <- recode(schulform$D00175_K_SCHULE,
                                        `2` = 2, `3` = 2, `4` = 2, `5` = 2, `6` = 1, `7` = 2) 

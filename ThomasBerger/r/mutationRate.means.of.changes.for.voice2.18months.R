@@ -1,4 +1,4 @@
-#load( "../results/data_sprech.Rda" )
+load( "../results/data_sprech.Rda" )
 
 library( latex2exp )
 library( reshape2 )
@@ -10,10 +10,12 @@ months.all <-
 #    c( 3 , 6, 12, 18, 24 )
     c( 18 )
 
-for( months in months.all ) {
+
+    months <-
+        18
 
     d <-
-        data.sprech[ , c( "SIC", "sex", "age", "EDAT.x", "F0_SPRECH_1", "F0_SPRECH_2", "F0_SPRECH_3", "F0_SPRECH_4", "SPL_SPRECH_1", "SPL_SPRECH_2", "SPL_SPRECH_3", "SPL_SPRECH_4" ) ]
+        data.sprech[ , c( "SIC", "sex", "age", "EDAT.x", "F0_SPRECH_2" ) ]
         
     d$EDAT <- d$EDAT.x
     d$EDAT.x <- NULL
@@ -24,14 +26,7 @@ for( months in months.all ) {
         mutate( 
             d.t    = as.numeric( difftime( EDAT, lag( EDAT ), units = "d" ) ) * 12 / 365.25,
             age    = ( age + lag( age ) ) / 2,
-            d.f0.1 = ( F0_SPRECH_1 - lag( F0_SPRECH_1 ) ) / d.t,
-            d.f0.2 = ( F0_SPRECH_2 - lag( F0_SPRECH_2 ) ) / d.t,
-            d.f0.3 = ( F0_SPRECH_3 - lag( F0_SPRECH_3 ) ) / d.t,
-            d.f0.4 = ( F0_SPRECH_4 - lag( F0_SPRECH_4 ) ) / d.t,
-            d.spl.1 = ( SPL_SPRECH_1 - lag( SPL_SPRECH_1 ) ) / d.t,
-            d.spl.2 = ( SPL_SPRECH_2 - lag( SPL_SPRECH_2 ) ) / d.t,
-            d.spl.3 = ( SPL_SPRECH_3 - lag( SPL_SPRECH_3 ) ) / d.t,
-            d.spl.4 = ( SPL_SPRECH_4 - lag( SPL_SPRECH_4 ) ) / d.t )
+            d.f0.2 = ( F0_SPRECH_2 - lag( F0_SPRECH_2 ) ) / d.t )
     
     # d$F0_SPRECH_1 <- NULL
     # d$F0_SPRECH_2 <- NULL
@@ -44,7 +39,7 @@ for( months in months.all ) {
     # d$EDAT <- NULL
     
     d <- 
-        d[ , c( "SIC", "sex", "age", "d.t", "d.f0.1", "d.f0.2", "d.f0.3", "d.f0.4" ) ]
+        d[ , c( "SIC", "sex", "age", "d.t", "d.f0.2" ) ]
     #    d[ , c( "SIC", "sex", "age", "d.t", "d.f0.1", "d.f0.2", "d.f0.3", "d.f0.4", "d.spl.1",  "d.spl.2",  "d.spl.3",  "d.spl.4" ) ]
     
     d <- 
@@ -71,11 +66,7 @@ for( months in months.all ) {
             group_by( age.cat, sex ) %>%
             summarise(
                 n = n( ), 
-                speech.I = mean( d.f0.1 ),
-                speech.II = mean( d.f0.2 ),
-                speech.III = mean( d.f0.3 ),
-                speech.IV = mean( d.f0.4 )
-                ),
+                speech.II = mean( d.f0.2 ) ),
             c( "sex", "age.cat", "n" ) )
             
     # d.spl.means <-
@@ -102,18 +93,18 @@ for( months in months.all ) {
         geom_smooth( method = "loess",alpha = .1 ) +
         geom_point( aes( size = n ), alpha = .3 ) +
         geom_path( alpha = .3 ) +
-        geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#4080a0", nudge_y = -1 ) +
-        geom_text( aes( label = as.character( n ) ), col = "#80a0c0", nudge_y = +1 ) +
+        geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#4080a0", nudge_y = -.5 ) +
+        geom_text( aes( label = as.character( n ) ), col = "#80a0c0", nudge_y = +.5 ) +
         facet_grid( variable ~ sex ) +
-        scale_linetype_discrete( name = "voice / speech type", breaks = c( "speech.I", "speech.II", "speech.III", "speech.IV" ), labels = c( "I softest speaking voice", "II conversational voice", "III classroom voice", " IV shouting voice" ) ) +
+        scale_linetype_discrete( name = "voice / speech type", breaks = c( "speech.II" ), labels = c( "II conversational voice" ) ) +
         scale_size_continuous( name = "count of measurements" ) +
         geom_path( aes( age.cat, value, group = variable, linetype = variable ), alpha = .2 ) +
         #geom_errorbar( )
-        labs( title = "age related means of monthly increase of frequencies for speech type I-IV", x = "age [y]", y = TeX( "$\\frac{\\Delta f_{0}}{\\Delta t}\\;\\left[\\frac{Hz}{month}\\right]}$" ), caption = "numbers below circles are the df/dt-values itself\nthey are plotted for the age between the 2 dates of measurements" ) +
+        labs( title = "age related means of monthly increase of frequencies for speech type II (conversational voice)", x = "age [y]", y = TeX( "$\\frac{\\Delta f_{0}}{\\Delta t}\\;\\left[\\frac{Hz}{month}\\right]}$" ), caption = "numbers below circles are the df/dt-values itself\nthey are plotted for the age between the 2 dates of measurements" ) +
         scale_x_discrete( breaks = breaks.to.show ) +
         theme_light( ) +
-        theme( axis.title.y = element_text( angle = 0, vjust = .5, hjust = .5 ), panel.grid = element_blank( ) )
+        theme( axis.title.y = element_text( angle = 0, vjust = .5, hjust = .5 ) )#, panel.grid = element_blank( ) )
         
-            
-    ggsave( filename = paste0( "ageRelatedMeansOfChangesForAllVoiceTypesForEvery", months, "thMonthNoGrid.pdf" ), width = 15, height = 10 )
-}
+    ggsave( filename = paste0( "ageRelatedMeansOfChangesForVoiceTypesIIForEvery", months, "thMonthNoGrid.pdf" ), width = 15, height = 8 )
+    ggsave( filename = paste0( "ageRelatedMeansOfChangesForVoiceTypesIIForEvery", months, "thMonthNoGrid.png" ), width = 15, height = 8 )
+

@@ -6,7 +6,7 @@ library( lubridate )
 
 owd <- getwd( )
 
-setwd( "~/LIFE/github-tpeschel/life-for-postgraduates/WiebkeKeller/data/" )
+setwd( "~/LIFE/life-for-postgraduates/WiebkeKeller/data/" )
 
 tbl.join <-
     read_excel( "PV0332_Gesamt_Join.xlsx" )
