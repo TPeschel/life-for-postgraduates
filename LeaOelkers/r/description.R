@@ -142,3 +142,8 @@ ggplot( ) +
     geom_histogram( data = tbl.visits, aes( VISITS, fill = SEX ), stat = "count" ) +
     facet_grid( . ~ tbl.visits$SEX )
 
+tbl.fsh.curation <-
+    tbl.fsh[ !is.na( tbl.fsh$SIC ) & !is.na( tbl.fsh$SCIGROUP ) & !is.na( tbl.fsh$FSH_S_VALUE_FLAG ), c( "SIC", "SCIGROUP", "FSH_S_VALUE_FLAG", "FSH_S_NUM_VALUE" ) ]
+
+tbl.fsh.curation[ tbl.fsh.curation$FSH_S_VALUE_FLAG != 1, ]
+    

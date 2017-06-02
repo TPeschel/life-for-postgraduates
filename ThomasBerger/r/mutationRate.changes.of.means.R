@@ -1,4 +1,7 @@
-#load( "../results/data_sprech.Rda" )
+## delete all data
+rm( list = ls( ) )
+
+load( "../results/data_sprech.Rda" )
 
 library( latex2exp )
 library( reshape2 )
@@ -12,7 +15,12 @@ d <-
     na.omit( d )
 
 months <-
-    12
+    6
+
+table( as.integer( data.sprech$age ) )
+
+data.sprech <- 
+    data.sprech[ 6 <= data.sprech$age, ]
 
 breaks_ <-
     seq( 6, 18, months / 12 )
@@ -56,10 +64,14 @@ melt(
     c( "sex", "age.cat", "d.cnt" ) )
 
 ggplot( d.df, aes( as.numeric( as.character( age.cat ) ), value ) ) +
-    geom_point( aes( size = d.cnt ), alpha = .1 ) +
-    geom_smooth( method = "loess" ) +
+    geom_point( aes( size = 2 ), alpha = .25 ) +
+    geom_path( aes( size = 1 ), alpha = .25 ) +
+    geom_smooth( method = "loess", alpha = .2 ) +
     facet_grid( variable ~ sex ) +
-    ylim( -5, 5 ) +
+    ylim( -6, 6 ) +
+    scale_x_continuous( breaks = c( 6 : 17 ) ) +
+    geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#4080a0", nudge_y = -1 ) +
+    geom_text( aes( label = as.character( d.cnt ) ), col = "#80a0c0", nudge_y = +1 ) +
     geom_hline( yintercept = 0 ) +
     theme_bw( )
 
