@@ -1,0 +1,105 @@
+* using log directory ‘/home/tpeschel/LIFE/life-for-postgraduates/LifeHelper/life.helper.Rcheck’
+* using R version 3.4.0 (2017-04-21)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* checking for file ‘life.helper/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘life.helper’ version ‘0.1.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘life.helper’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... NOTE
+Malformed Description field: should contain one or more complete sentences.
+Non-standard license specification:
+  free
+Standardizable: FALSE
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking dependencies in R code ... WARNING
+'library' or 'require' calls not declared from:
+  ‘ggplot2’ ‘grid’
+'library' or 'require' calls in package code:
+  ‘ggplot2’ ‘grid’
+  Please use :: or requireNamespace() instead.
+  See section 'Suggested packages' in the 'Writing R Extensions' manual.
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+ggsubplot: no visible global function definition for ‘grid.newpage’
+ggsubplot: no visible global function definition for ‘pushViewport’
+ggsubplot: no visible global function definition for ‘viewport’
+ggsubplot: no visible global function definition for ‘grid.layout’
+Undefined global functions or variables:
+  grid.layout grid.newpage pushViewport viewport
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... WARNING
+Undocumented code objects:
+  ‘polyfy’
+All user-level objects in a package should have documentation entries.
+See chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+* checking for code/documentation mismatches ... WARNING
+Codoc mismatches from documentation object 'ggsubplot':
+ggsubplot
+  Code: function(..., plotlist = NULL, file, cols = 1, layout = NULL)
+  Docs: function(ggplot1, ggplot2, ggplot3, cols = 3)
+  Argument names in code not in docs:
+    ... plotlist file layout
+  Argument names in docs not in code:
+    ggplot1 ggplot2 ggplot3
+  Mismatches in argument names:
+    Position: 1 Code: ... Docs: ggplot1
+    Position: 2 Code: plotlist Docs: ggplot2
+    Position: 3 Code: file Docs: ggplot3
+  Mismatches in argument default values:
+    Name: 'cols' Code: 1 Docs: 3
+
+* checking Rd \usage sections ... WARNING
+Undocumented arguments in documentation object 'ggsubplot'
+  ‘ggplot1’ ‘ggplot2’ ‘ggplot3’ ‘cols’
+
+Functions with \usage entries need to have the appropriate \alias
+entries, and all their arguments documented.
+The \usage entries must correspond to syntactically valid R code.
+See chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking examples ... ERROR
+Running examples in ‘life.helper-Ex.R’ failed
+The error most likely occurred in:
+
+> ### Name: ggsubplot
+> ### Title: Multi-Plots
+> ### Aliases: ggsubplot
+> 
+> ### ** Examples
+> 
+> p1 <- ggplot() + geom_point( aes( c( 1:100), rnorm( 100 ) ) )
+Error in ggplot() : could not find function "ggplot"
+Execution halted
+* checking PDF version of manual ... OK
+* DONE
+Status: 1 ERROR, 4 WARNINGs, 2 NOTEs
