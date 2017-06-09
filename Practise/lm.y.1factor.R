@@ -9,7 +9,7 @@ my.df.sex <-
 		pitch = c( 
 			233, 204, 242, 230, 210,
 			130, 112, 142, 100, 80,
-			101, 202, 303, 150, 250 ),
+			101, 202, 303, 150, 250 ), 
 		sex   = c(
 			rep( "female", 5 ),
 			rep( "male", 5 ),
@@ -158,6 +158,3 @@ lm.y.1factor <-
 
 lm.y.1factor( my.df.sex$pitch, my.df.sex$sex )
 lm.y.1factor( my.df.mark$pitch, my.df.mark$note )
-
-
-

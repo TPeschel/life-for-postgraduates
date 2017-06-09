@@ -18,6 +18,11 @@ library( ggplot2 )
 library( dplyr )
 
 ##
+# lade Paket openxlsx zum Speichern von Tabellen im Excel xlsx-Format
+##
+library( openxlsx )
+
+##
 # bevorzugtes Schema fuer Grafiken
 ##
 my.theme <-
@@ -43,6 +48,23 @@ length( unique( tbl$SIC ) )
 ##
 tbl.fsh <-
     tbl[ !is.na( tbl$FSH_S_VALUE_FLAG ) & ( tbl$FSH_S_VALUE_FLAG == 1 ) & !is.na( tbl$FSH_S_NUM_VALUE ), ]
+
+##
+# wirf alle unnoetigen Spalten raus
+# bzw. behalte nur interessante Spalten
+##
+tbl.fsh <- tbl.fsh[ , c( "SIC", "SCIGROUP", "EDAT", "SEX", "BIRTHDAY", "AGE", "C_ANTHRO_H_KOERPER" ) ]
+
+##
+# speichere eingedampfte Tabelle als Excel-File ab
+##
+write.xlsx( tbl.fsh, "tabelle.FSH.xlsx" )
+
+##
+# speichere eingedampfte Tabelle als RData-File ab
+##
+save( tbl.fsh, file = "tabelle.FSH.Rd" )
+##
 
 ##
 # Altersbereich
@@ -72,12 +94,20 @@ tbl.sex <-
 # maennliche und weiliche Besucher mit FSH
 ##
 table( tbl.sex$sex ) 
+
+##
+# loesche temporaere Tabelle tbl.sex
+##
 rm( "tbl.sex" )
 
 ##
-# Besuche, Kinder
+# Besuche
 ##
 length( tbl.fsh$SIC )
+
+##
+# Kinder
+##
 length( unique( tbl.fsh$SIC ) )
 
 ##

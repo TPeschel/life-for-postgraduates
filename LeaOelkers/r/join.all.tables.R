@@ -74,8 +74,8 @@ d077 <-
 ##
 ## WIRD VERMUTLICH DURCH D00177 ERSETZT
 ##
-d078 <-
-    read_excel( "PV0298_D00078_NODUP.xlsx" )
+# d078 <-
+#     read_excel( "PV0298_D00078_NODUP.xlsx" )
 
 ##   
 # Derivattabelle: C_DISEASE_TX (D00127) Letzte Änderung: 09.04.2015
@@ -98,8 +98,8 @@ d127 <-
 # of National Wealth: Validation of an Adolescent Self-Report Measure. Social Indicators Research
 # 78, 473–487. doi:10.1007/s11205-005-1607-6
 ##
-d128 <-
-    read_excel( "PV0298_D00128_NODUP.xlsx" )
+# d128 <-
+#     read_excel( "PV0298_D00128_NODUP.xlsx" )
     
 ##
 # Derivattabelle: CHILD_MED_H (D00129) Letzte Änderung: 16.04.2015
@@ -112,6 +112,19 @@ d128 <-
 ##
 d129 <-
     read_excel( "PV0298_D00129_NODUP.xlsx" )
+
+##
+# Derivattabelle: C_WINKLER (D00177) Letzte Änderung: 07.02.2017
+# DQP-ID: Druckdatum: 08.06.2017
+# DQP_22_0160_20161121
+# Beschreibung: Winkler-Index, basierend auf D00204. Es wurde pro Jahr und pro Familie ein Score ermittelt. Alle
+# SICs eine Familie und einen Score zugewiesen.
+# Lampert, Thomas, et al. "Messung des sozioökonomischen Status in der Studie zur Gesundheit
+# Erwachsener in Deutschland (DEGS1)." Bundesgesundheitsblatt-Gesundheitsforschung-
+# Gesundheitsschutz 56.5-6 (2013): 631-636.
+##
+d177 <-
+    read_excel( "PV0298_D00177.xlsx" )
 
 ##
 # Zieltabelle:
@@ -336,17 +349,17 @@ names( tbl )
 ###
 ## d078
 ###
-names( d078 )
-
-tbl <-
-    merge(
-        tbl,
-        d078,
-        by.x = c( "SIC", "SCIGROUP" ),
-        by.y = c( "C_SOZDEM_SIC", "C_SOZDEM_SCI_GROUP" ),
-        all.x = T )
-
-names( tbl )
+# names( d078 )
+# 
+# tbl <-
+#     merge(
+#         tbl,
+#         d078,
+#         by.x = c( "SIC", "SCIGROUP" ),
+#         by.y = c( "C_SOZDEM_SIC", "C_SOZDEM_SCI_GROUP" ),
+#         all.x = T )
+# 
+# names( tbl )
 
 ###
 ## d127
@@ -366,17 +379,17 @@ names( tbl )
 ###
 ## d128
 ###
-names( d128 )
-
-tbl <-
-    merge(
-        tbl,
-        d128,
-        by.x = c( "SIC", "SCIGROUP" ),
-        by.y = c( "C_SOZ_WI_SIC", "C_SOZ_WI_GRUPPE" ),
-        all.x = T )
-
-names( tbl )
+# names( d128 )
+# 
+# tbl <-
+#     merge(
+#         tbl,
+#         d128,
+#         by.x = c( "SIC", "SCIGROUP" ),
+#         by.y = c( "C_SOZ_WI_SIC", "C_SOZ_WI_GRUPPE" ),
+#         all.x = T )
+# 
+# names( tbl )
 
 ###
 ## d129
@@ -391,6 +404,37 @@ tbl <-
         by.y = c( "CHILD_MED_H_SIC", "CHILD_MED_H_SCI_GROUP" ),
         all.x = T )
 
+names( tbl )
+
+###
+## d177
+###
+names( d177 )
+
+d177$YEAR <- lubridate::year( d177$EDAT )
+tbl$YEAR  <- lubridate::year( tbl$EDAT )
+
+tbl <-
+    merge(
+        tbl,
+        d177,
+        by.x = c( "SIC", "YEAR" ),
+        by.y = c( "PSEUDONYM", "YEAR" ),
+        all.x = T )
+##
+# loesche ueberfluessige Spalten
+##
+tbl$EDAT.y <- NULL
+tbl$YEAR   <- NULL
+
+##
+# benenne EDAT.x in EDAT um
+##
+names( tbl )[ names( tbl ) == "EDAT.x" ] <- "EDAT"
+
+##
+# zeige ergebnis
+##
 names( tbl )
 
 ###
@@ -510,6 +554,13 @@ tbl <-
 save( list = c( "tbl" ), file = "tabelle.Rd" )
 
 ##
+# speichere Tabelle als xlsx
+##
+openxlsx::write.xlsx( tbl, "tabelle.xlsx" )
+##
 # gib speicher wieder frei
 ##
+
+
+
 rm( list = ls( ) )
