@@ -158,3 +158,4 @@ lm.y.1factor <-
 
 lm.y.1factor( my.df.sex$pitch, my.df.sex$sex )
 lm.y.1factor( my.df.mark$pitch, my.df.mark$note )
+
