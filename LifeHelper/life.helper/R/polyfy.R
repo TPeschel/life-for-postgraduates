@@ -1,13 +1,14 @@
-#' Title
+#' polyfy
 #'
 #' @param x
 #' @param y
 #' @param g
 #'
-#' @return
+#' @return data frame with rows X, Y, G
 #' @export
 #'
 #' @examples
+#' polyfy( c( 1 : 100 ), rnorm( 100 ), sample( c( "A", "B" ), 100 ) )
 polyfy <-
     function( x, y, g ) {
         idx <-

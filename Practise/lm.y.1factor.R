@@ -9,10 +9,12 @@ my.df.sex <-
 		pitch = c( 
 			233, 204, 242, 230, 210,
 			130, 112, 142, 100, 80,
+			 80,  72, 112, 80,  60,
 			101, 202, 303, 150, 250 ), 
 		sex   = c(
 			rep( "female", 5 ),
 			rep( "male", 5 ),
+			rep( "animal", 5 ),
 			rep( "thing", 5 ) ) )
 
 mark <-
@@ -21,7 +23,8 @@ mark <-
 beta <-
 	runif( 6, -1, 1 )
 
-pitch <- 100 + beta[ mark[ 1 : 1000 ] ] * c( 1 : 1000 ) + rnorm( 1000, 0, 100 )
+pitch <-
+	100 + beta[ mark[ 1 : 1000 ] ] * c( 1 : 1000 ) + rnorm( 1000, 0, 100 )
 
 my.df.mark <-
 	data.frame(
