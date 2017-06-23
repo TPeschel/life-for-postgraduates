@@ -62,7 +62,7 @@ for( mg in params ) {
         
         print( i )
 
-        ## Gib jeer Familie Gewicht, entsprechend ihrer Groesse
+        ## Gib jeder Familie Gewicht, entsprechend ihrer Groesse
         weights <- 
             group_by( data_boys, FAM_ID ) %>% 
             summarise( 

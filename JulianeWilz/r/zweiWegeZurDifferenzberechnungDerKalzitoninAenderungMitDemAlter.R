@@ -71,14 +71,6 @@ ggplot( s ) +
 
 
 
-
-
-
-
-
-
-
-
 # d <-
 #     d[ !is.na( d$CHILD_MED_H_VITAMIN_D ) & !is.na( d$diff.visit ) & !is.na( d$diff.ct_val ), ]
 # 

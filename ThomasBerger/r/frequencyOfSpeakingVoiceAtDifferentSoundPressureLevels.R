@@ -1,4 +1,4 @@
-#load( "~/LIFE/github-tpeschel/R/ThomasBerger/original/Stimme/Stimme-Dateien/save/voice_clean.Rda" )
+#load( "~/LIFE/life-for-postgraduates/ThomasBerger/original/Stimme/Stimme-Dateien/save/voice_clean.Rda" )
 
 ## delete all data
 rm( list = ls( ) )
@@ -13,6 +13,7 @@ library( readxl )
 library( reshape2 )
 library( svglite )
 library( xtable )
+library( life.helper )
 
 ## connection to data base
 source( "~/connection/connection.r" )
@@ -66,7 +67,7 @@ breaks_ <-
     seq( 5.5, 18, months / 12 )
 
 labels_ <-
-    breaks_[ -1 ]
+    breaks_[ -1 ] - .5
 
 d$age.cat <-
     cut(
@@ -117,6 +118,11 @@ txt.pos <-
         y = mean( value.y ),
         x = min( ifelse( sex == "male", max( value.x ) + 15, min( value.x ) - 15 ) ) )
 
+notes <- 
+    data.frame(
+        frq  = f<-seq( 100, 350, by = 25 ),
+        note = sapply( f, function( f ) piano.key.notes.frequencies$note[ which.min( abs( piano.key.notes.frequencies$frq - f ) ) ] ) )
+
 ggplot( 
     f0.spl, 
     aes( x = value.x, y = value.y, col = age.cat ) ) +
@@ -130,6 +136,30 @@ ggplot(
         y = "sound pressure [dB]",
         subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
     theme_bw( ) +
-    geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ) ) 
+    geom_text( inherit.aes = F, data = notes, aes( label = note, x = frq, y = 86 ), check_overlap = T, col = "black" ) +
+    geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ) )
+
+ggplot( 
+    f0.spl, 
+    aes( x = value.x, y = value.y, col = age.cat ) ) +
+    geom_path( aes( group = age.cat ) ) +
+    geom_point( shape = 3, size = 3 ) +
+    facet_grid( . ~ sex ) +
+    scale_color_discrete( "age [y]" ) +
+    labs( 
+        title = "sound pressure vs fundamental frequency",
+        x = "fundamental frequency [Hz]", 
+        y = "sound pressure [dB]",
+        subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
+    theme_bw( ) +
+    geom_text( inherit.aes = F, data = notes, aes( label = note, x = frq, y = 86 ), check_overlap = T, col = "black" ) +
+    geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ) ) +
+    scale_x_log10( ) 
+    
 
 ggsave( filename = "ageRelatedFrequenciesOfSpeakingVoiceAtDifferentSoundPressureLevels.png", width = 15, height = 9 )
+
+
+View(voice_speak[ voice_speak$sic == "LI00725699", ])
+View(d[ d$SIC == "LI00725699", ])
+
