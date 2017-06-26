@@ -97,12 +97,28 @@ spl <-
     ungroup( ) %>%
     melt( c( "sex", "age.cat" ) )
 
+n <-
+    d %>%
+    group_by( sex, age.cat ) %>%
+    summarise( 
+        n = n( ) ) %>%
+    ungroup( ) %>%
+    melt( c( "sex", "age.cat" ) )
+
 f0.spl <- 
     merge( 
         f0,
         spl,
         by = c( "sex", "age.cat", "variable" ) )
 
+n <-
+    d %>%
+    group_by( sex, age.cat ) %>%
+    summarise( n = n( ) )
+
+f0.spl$n <-
+    n$n[ n$sex %in% f0.spl$sex & n$age.cat %in% f0.spl$age.cat ]
+    
 f0.spl <- 
     na.omit( f0.spl )
 
@@ -123,15 +139,17 @@ notes <-
         frq  = f<-seq( 100, 350, by = 25 ),
         note = sapply( f, function( f ) piano.key.notes.frequencies$note[ which.min( abs( piano.key.notes.frequencies$frq - f ) ) ] ) )
 
+f0.spl
+
 ggplot( 
     f0.spl, 
     aes( x = value.x, y = value.y, col = age.cat ) ) +
     geom_path( aes( group = age.cat ) ) +
-    geom_point( shape = 3, size = 3 ) +
+    geom_point( shape = 1, aes( size = n ) ) +
     facet_grid( . ~ sex ) +
     scale_color_discrete( "age [y]" ) +
     labs( 
-        title = "sound pressure vs fundamental frequency",
+        title = "sound pressure against semi tones / frequency [Hz]",
         x = "fundamental frequency [Hz]", 
         y = "sound pressure [dB]",
         subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
@@ -139,27 +157,26 @@ ggplot(
     geom_text( inherit.aes = F, data = notes, aes( label = note, x = frq, y = 86 ), check_overlap = T, col = "black" ) +
     geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ) )
 
-ggplot( 
-    f0.spl, 
-    aes( x = value.x, y = value.y, col = age.cat ) ) +
-    geom_path( aes( group = age.cat ) ) +
-    geom_point( shape = 3, size = 3 ) +
-    facet_grid( . ~ sex ) +
-    scale_color_discrete( "age [y]" ) +
-    labs( 
-        title = "sound pressure vs fundamental frequency",
-        x = "fundamental frequency [Hz]", 
-        y = "sound pressure [dB]",
-        subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
-    theme_bw( ) +
-    geom_text( inherit.aes = F, data = notes, aes( label = note, x = frq, y = 86 ), check_overlap = T, col = "black" ) +
-    geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ) ) +
-    scale_x_log10( ) 
-    
-
 ggsave( filename = "ageRelatedFrequenciesOfSpeakingVoiceAtDifferentSoundPressureLevels.png", width = 15, height = 9 )
+# 
+# ggplot( 
+#     f0.spl, 
+#     aes( x = value.x, y = value.y, col = age.cat ) ) +
+#     geom_path( aes( group = age.cat ) ) +
+#     #geom_point( shape = 3, size = 3 ) +
+#     geom_errorbar( inherit.aes = F, aes( value.x, ymin = value.y - sd( value.y ), ymax = value.y + sd( value.y ), col = age.cat ), width = .2 ) +
+#     facet_grid( . ~ sex ) +
+#     scale_color_discrete( "age [y]" ) +
+#     labs( 
+#         title = "sound pressure vs fundamental frequency",
+#         x = "fundamental frequency [Hz]", 
+#         y = "sound pressure [dB]",
+#         subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
+#     theme_bw( ) +
+#     geom_text( inherit.aes = F, data = notes, aes( label = note, x = frq, y = 86 ), check_overlap = T, col = "black" ) +
+#     geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ) ) 
+#     
+# 
+# ggsave( filename = "ageRelatedFrequenciesOfSpeakingVoiceAtDifferentSoundPressureLevels.png", width = 15, height = 9 )
 
-
-View(voice_speak[ voice_speak$sic == "LI00725699", ])
-View(d[ d$SIC == "LI00725699", ])
 
