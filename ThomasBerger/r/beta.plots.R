@@ -63,111 +63,49 @@ setwd( "~/LIFE/life-for-postgraduates/ThomasBerger/results/" )
 load( "~/LIFE/life-for-postgraduates/ThomasBerger/original/Stimme/Stimme-Dateien/save/voice_clean.Rda" )
 
 voice_speak$bmi.sds.cat <-
-    relevel( voice_speak$bmi.sds.cat, "thin" )
+    relevel( voice_speak$bmi.sds.cat, "normal" )
+
+voice_speak$tanner.cat <-
+    c( "I-prepubertal", paste0( "II-IV-", rep( "pubertal", 3 ) ), "V-adult" )[ match( voice_speak$tanner, c( 1 : 5 ) ) ]
 
 voice_speak.lmer <-
     na.omit(
-        voice_speak[ , c( "sic", "fam.id2", "datum", "geschlecht", "bmi", "bmi.sds.cat", "ses", "ses.cat", "tanner", "st_sprech_1", "spl_sprech_1", "st_sprech_2", "spl_sprech_2" ) ] )
-
-voice_speak.lmer$tanner <-
-    factor(
-        voice_speak.lmer$tanner,
-        levels = c( 1: 5 ) )
-
-model.0 <-
-    st_sprech_1 ~ spl_sprech_1 + ( 1 | sic ) + ( 1 | fam.id2 )
-
-model.1 <-
-    st_sprech_1 ~ spl_sprech_1 + tanner + ( 1 | sic ) + ( 1 | fam.id2 )
-
-model.2 <-
-    st_sprech_1 ~ spl_sprech_1 + tanner * ses.cat + ( 1 | sic ) + ( 1 | fam.id2 )
-
-model.3 <-
-    st_sprech_1 ~ spl_sprech_1 + tanner + bmi.sds.cat + ( 1 | sic ) + ( 1 | fam.id2 )
-
-model.4 <-
-    st_sprech_1 ~ spl_sprech_1 + tanner * ses.cat + bmi.sds.cat + ( 1 | sic ) + ( 1 | fam.id2 )
-
-model.5 <-
-    st_sprech_1 ~ spl_sprech_1 + tanner + ses.cat * bmi.sds.cat + ( 1 | sic ) + ( 1 | fam.id2 )
-
-model.6 <-
-    st_sprech_1 ~ spl_sprech_1 + tanner * ses.cat * bmi.sds.cat + ( 1 | sic ) + ( 1 | fam.id2 )
-
-model.7 <-
-    st_sprech_1 ~ spl_sprech_1 * tanner * ses.cat * bmi.sds.cat + ( 1 | sic ) + ( 1 | fam.id2 )
-
-ggsubplot( 
-    plot.lmer.coefficients.with.errorbars( 
-        voice_speak.lmer, 
-        model.1,
-        title = "coefficients of linear regression of speaking voice I",
-        xlab = "coefficients", 
-        ylab = "speaking voice I" ),
-    plot.lmer.coefficients.with.errorbars( 
-        voice_speak.lmer, 
-        model.2,
-        title = "coefficients of linear regression of speaking voice II",
-        xlab = "coefficients", 
-        ylab = "speaking voice II " ),
-    cols = 1 )
-
-model.base <-
-    st_sprech_1 ~ spl_sprech_1 + tanner + ( 1 | sic ) + ( 1 | fam.id2 )  
-
-model.bigger <-
-    st_sprech_1 ~ spl_sprech_1 + tanner + ses + ( 1 | sic ) + ( 1 | fam.id2 )  
-
-model.bigger.cat <-
-    st_sprech_1 ~ spl_sprech_1 + tanner + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 )  
-
-anova( 
-    lmer( data = voice_speak.lmer, formula = model.base, REML = F ),
-    lmer( data = voice_speak.lmer, formula = model.bigger, REML = F ) )
-
-anova( 
-    lmer( data = voice_speak.lmer, formula = model.base, REML = F ),
-    lmer( data = voice_speak.lmer, formula = model.bigger.cat, REML = F ) )
-
-anova( 
-    lmer( data = voice_speak.lmer, formula = model.bigger, REML = F ),
-    lmer( data = voice_speak.lmer, formula = model.bigger.cat, REML = F ) )
-
-ggsubplot( 
-    plot.lmer.coefficients.with.errorbars( 
-        voice_speak.lmer, 
-        model.base,
-        title = "coefficients of linear regression of speaking voice I",
-        xlab = "coefficients", 
-        ylab = "speaking voice I" ),
-    plot.lmer.coefficients.with.errorbars( 
-        voice_speak.lmer, 
-        model.bigger,
-        title = "coefficients of linear regression of speaking voice I",
-        xlab = "coefficients", 
-        ylab = "speaking voice I " ),
-    plot.lmer.coefficients.with.errorbars( 
-        voice_speak.lmer, 
-        model.bigger.cat,
-        title = "coefficients of linear regression of speaking voice I",
-        xlab = "coefficients", 
-        ylab = "speaking voice I " ),
-    cols = 1 )
+        voice_speak[ , c( "sic", "fam.id2", "datum", "geschlecht", "bmi", "bmi.sds.cat", "ses", "ses.cat", "tanner", "tanner.cat", "st_sprech_1", "spl_sprech_1", "st_sprech_2", "spl_sprech_2", "st_sprech_3", "spl_sprech_3", "st_sprech_4", "spl_sprech_4" ) ] )
 
 plot.lmer.coefficients.with.errorbars( 
     voice_speak.lmer, 
-        model.2,
+        st_sprech_1 ~ spl_sprech_1 + tanner + bmi.sds.cat + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 ),
         title = "coefficients of linear regression of speaking voice I",
         xlab = "coefficients", 
-        ylab = "speaking voice I" )
+        ylab = "semi tones" )
+ggsave( filename = "betaPlotsLineareRegressionSpeakingVoiceI.pdf", width = 15, height = 5 )
 
-l.null <-
-    lme( data = voice_speak.lmer, fixed = st_sprech_1 ~ spl_sprech_1, random = ~ 1 | sic + 1 | fam.id2 )
+plot.lmer.coefficients.with.errorbars( 
+    voice_speak.lmer, 
+        st_sprech_2 ~ spl_sprech_2 + tanner + bmi.sds.cat + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 ),
+        title = "coefficients of linear regression of speaking voice II",
+        xlab = "coefficients", 
+        ylab = "semi tones" )
 
-l.model <-
-    lmer( data = voice_speak.lmer, st_sprech_1 ~ spl_sprech_1 * tanner * ses.cat * bmi.sds.cat + ( 1 | sic ) + ( 1 | fam.id2 ), REML = F )
+ggsave( filename = "betaPlotsLineareRegressionSpeakingVoiceII.pdf", width = 15, height = 5 )
 
-library(car)
 
-anova( l.null, l.model )
+plot.lmer.coefficients.with.errorbars( 
+    voice_speak.lmer, 
+        st_sprech_3 ~ spl_sprech_3 + tanner + bmi.sds.cat + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 ),
+        title = "coefficients of linear regression of speaking voice III",
+        xlab = "coefficients", 
+        ylab = "semi tones" )
+
+ggsave( filename = "betaPlotsLineareRegressionSpeakingVoiceIII.pdf", width = 15, height = 5 )
+
+
+plot.lmer.coefficients.with.errorbars( 
+    voice_speak.lmer, 
+        st_sprech_4 ~ spl_sprech_4 + tanner + bmi.sds.cat + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 ),
+        title = "coefficients of linear regression of speaking voice IV",
+        xlab = "coefficients", 
+        ylab = "semi tones" )
+
+ggsave( filename = "betaPlotsLineareRegressionSpeakingVoiceIV.pdf", width = 15, height = 5 )
+

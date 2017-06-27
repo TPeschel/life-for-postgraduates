@@ -14,6 +14,15 @@ library( reshape2 )
 library( svglite )
 library( xtable )
 library( life.helper )
+library( latex2exp )
+
+## function for quick renaming columns
+# re.name <-
+#     function( dat.frm, orig.name, new.name ) {
+#         names( dat.frm )[ names( dat.frm ) %in% orig.name ] <-
+#             new.name
+#         names( dat.frm )
+#     }
 
 ## connection to data base
 source( "~/connection/connection.r" )
@@ -22,34 +31,45 @@ source( "~/connection/connection.r" )
 setwd( "~/LIFE/life-for-postgraduates/ThomasBerger/results/" )
 
 ## metadata of all "Aufklärungsgespräche" (A2) 
-d88 <- get.data( ldb, "D00088" )
+d88 <-
+    get.data( ldb, "D00088" )
 
 ## personal data
-persdat <- get.persdat( ldb )
+persdat <-
+    get.persdat( ldb )
 
 ## sing and speech voices with aliases
-t865 <- get.data.with.aliases( ldb, "T00865" )
+t865 <-
+    get.data.with.aliases( ldb, "T00865" )
 
 ## glue persdat to t865
-t865 <- add.persdat.age( persdat = persdat, t865 )
+t865 <-
+    add.persdat.age( persdat = persdat, t865 )
 
 ## we are interested only in kid's age between 5.5 and 18
-t865 <- t865[ 6 < t865$age & t865$age < 18, ]
+t865 <-
+    t865[ 6 < t865$age & t865$age < 18, ]
 
 ## families
 ## SozDem
-d177 <- get.data( ldb, "D00177", remove.D.name = T )
-d177 <- unique( d177[, c( "SIC", "FAM_ID" ) ] )
+d177 <-
+    get.data( ldb, "D00177", remove.D.name = T )
+
+d177 <-
+    unique( d177[, c( "SIC", "FAM_ID" ) ] )
 
 ## sing and speech voices KLASSAK
-t328 <- get.data.with.aliases( ldb, "T00328" )
+t328 <-
+    get.data.with.aliases( ldb, "T00328" )
 
 ## merge t865 and d177
-d <- merge( t865, d177, by = c( "SIC" ), all.x = T )
+d <-
+    merge( t865, d177, by = c( "SIC" ), all.x = T )
 
 nrow( d )
 
-d <- merge( d, t328, by = c( "SIC", "SGROUP" ), all.x = F )
+d <-
+    merge( d, t328, by = c( "SIC", "SGROUP" ), all.x = F )
 
 nrow( d )
 
@@ -64,7 +84,7 @@ months <-
     12
 
 breaks_ <-
-    seq( 5.5, 18, months / 12 )
+    seq( 5.5, 19, months / 12 )
 
 labels_ <-
     breaks_[ -1 ] - .5
@@ -75,7 +95,7 @@ d$age.cat <-
         breaks_,
         labels_ )
 
-f0 <-
+f0.mean <-
     d %>%
     group_by( sex, age.cat ) %>%
     summarise( 
@@ -86,7 +106,24 @@ f0 <-
     ungroup( ) %>%
     melt( c( "sex", "age.cat" ) )
 
-spl <-
+names( f0.mean )[ names( f0.mean ) == "value" ] <-
+    "f0.mean"
+
+f0.sd <-
+    d %>%
+    group_by( sex, age.cat ) %>%
+    summarise( 
+        I    = sd( Stimme.F0_SPRECH_1 ),
+        II   = sd( Stimme.F0_SPRECH_2 ),
+        III  = sd( Stimme.F0_SPRECH_3 ),
+        IV   = sd( Stimme.F0_SPRECH_4 ) ) %>%
+    ungroup( ) %>%
+    melt( c( "sex", "age.cat" ) )
+
+names( f0.sd )[ names( f0.sd ) == "value" ] <-
+    "f0.sd"
+
+spl.mean <-
     d %>%
     group_by( sex, age.cat ) %>%
     summarise( 
@@ -97,86 +134,206 @@ spl <-
     ungroup( ) %>%
     melt( c( "sex", "age.cat" ) )
 
+names( spl.mean )[ names( spl.mean ) == "value" ] <-
+    "spl.mean"
+
+spl.sd <-
+    d %>%
+    group_by( sex, age.cat ) %>%
+    summarise( 
+        I   = sd( Stimme.SPL_SPRECH_1 ),
+        II  = sd( Stimme.SPL_SPRECH_2 ),
+        III = sd( Stimme.SPL_SPRECH_3 ),
+        IV  = sd( Stimme.SPL_SPRECH_4 ) ) %>%
+    ungroup( ) %>%
+    melt( c( "sex", "age.cat" ) )
+
+names( spl.sd )[ names( spl.sd ) == "value" ] <-
+    "spl.sd"
+
 n <-
     d %>%
     group_by( sex, age.cat ) %>%
     summarise( 
-        n = n( ) ) %>%
+        I   = sum( !is.na( Stimme.SPL_SPRECH_1 ) ),
+        II  = sum( !is.na( Stimme.SPL_SPRECH_2 ) ),
+        III = sum( !is.na( Stimme.SPL_SPRECH_3 ) ),
+        IV  = sum( !is.na( Stimme.SPL_SPRECH_4 ) ) ) %>%
     ungroup( ) %>%
     melt( c( "sex", "age.cat" ) )
 
+names( n )[ names( n ) == "value" ] <-
+    "n"
+
 f0.spl <- 
     merge( 
-        f0,
-        spl,
+        f0.mean,
+        spl.mean,
+        by = c( "sex", "age.cat", "variable" ) )
+# 
+# names( f0.spl ) <-
+#     re.name( f0.spl, c( "value.x", "value.y" ), c( "f0.mean", "spl.mean" ) )
+
+f0.spl <- 
+    merge( 
+        f0.spl,
+        f0.sd,
         by = c( "sex", "age.cat", "variable" ) )
 
-n <-
-    d %>%
-    group_by( sex, age.cat ) %>%
-    summarise( n = n( ) )
+# names( f0.spl ) <-
+#     re.name( f0.spl, c( "value.x", "value.y" ), c( "f0.mean", "spl.mean" ) )
 
-f0.spl$n <-
-    n$n[ n$sex %in% f0.spl$sex & n$age.cat %in% f0.spl$age.cat ]
+f0.spl <- 
+    merge( 
+        f0.spl,
+        spl.sd,
+        by = c( "sex", "age.cat", "variable" ) )
+
+# n <-
+#     d %>%
+#     group_by( sex, age.cat ) %>%
+#     summarise( n = n( ) )
+
+# f0.spl$n <-
+#     n$n[ n$sex %in% f0.spl$sex & n$age.cat %in% f0.spl$age.cat ]
+
+f0.spl <-
+    merge(
+        f0.spl,
+        n,
+        by = c( "sex", "age.cat", "variable" ) )
     
 f0.spl <- 
     na.omit( f0.spl )
 
+# pal <- c(
+#     "#102030", "#39de82", "#9010f0", "#00ff21", "#320077", "#8e7f20",
+#     "#f07030", "#094e82", "#ff0f10", "#a04f21", "#326037", "#ae7f20",
+#     "#f00090", "#800e82", "#90f000", "#d0ff61", "#520037", "#8ebf20" )
+#    rgb( runif( 32, 0, 1 ), runif( 32, 0, 1 ), runif( 32, 0, 1 )  )
+
 pal <-
-    rep(
-        rgb( seq( 0, .8, length.out = 3 ), seq( 0, .7, length.out = 3 ), seq( 0, .6, length.out = 3 ) ), 4 )
-    #rgb( runif( 32, 0, 1 ), runif( 32, 0, 1 ), runif( 32, 0, 1 )  )
+    rgb( 
+        seq( 0, .9, length.out = 18 ) + runif( 18, 0, .1 ), 
+        seq( 0, .8, length.out = 18 ) + runif( 18, 0, .2 ), 
+        seq( 0, .8, length.out = 18 ) + runif( 18, 0, .2 ) )
 
 txt.pos <-
     f0.spl %>%
     group_by( variable, sex ) %>%
     summarise(
-        y = mean( value.y ),
-        x = min( ifelse( sex == "male", max( value.x ) + 15, min( value.x ) - 15 ) ) )
+        y = mean( spl.mean ) + 2,
+        x = min( ifelse( sex == "male", max( f0.mean ) + 50, min( f0.mean ) - 25 ) ) )
 
-notes <- 
+notes.1 <- 
     data.frame(
-        frq  = f<-seq( 100, 350, by = 25 ),
+        frq  = f <- 10 ** seq( log10( 100 ), log10( 375 ), by = .05 ),
         note = sapply( f, function( f ) piano.key.notes.frequencies$note[ which.min( abs( piano.key.notes.frequencies$frq - f ) ) ] ) )
 
-f0.spl
+notes.2 <- 
+    data.frame(
+        frq  = f <- c( 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375 ),
+        note = sapply( f, function( f ) piano.key.notes.frequencies$note[ which.min( abs( piano.key.notes.frequencies$frq - f ) ) ] ) )
+
+ggsubplot(
+    ggplot( 
+        f0.spl, 
+        aes( x = f0.mean, y = spl.mean, col = age.cat ) ) +
+        geom_path( aes( group = age.cat ) ) +
+        geom_point( shape = 1, aes( size = n ) ) +
+        facet_grid( . ~ sex ) +
+        scale_color_discrete( "age [y]" ) +
+        labs( 
+            title = TeX( "sound pressure against semi tones resp. $-ld(f0)$" ),
+            x = "fundamental frequency [Hz]", 
+            y = "sound pressure [dB]",
+            subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
+        theme_bw( ) +
+        geom_text( inherit.aes = F, data = notes.1, aes( label = note, x = frq, y = 86 ), check_overlap = T, col = "black", size = 3 ) +
+        geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ), size = 8 ),
+    ggplot(
+        f0.spl,
+        aes( x = f0.mean, y = spl.mean, col = age.cat ) ) +
+        geom_path( aes( group = age.cat ) ) +
+        geom_point( shape = 3, size = 3 ) +
+        #geom_errorbar( inherit.aes = F, aes( value.x, ymin = value.y - sd( value.y ), ymax = value.y + sd( value.y ), col = age.cat ), width = .2 ) +
+        facet_grid( . ~ sex ) +
+        scale_color_discrete( "age [y]" ) +
+        labs(
+            title = "sound pressure vs fundamental frequency",
+            x = "semi tones",
+            y = "sound pressure [dB]",
+            subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
+        theme_bw( ) +
+        geom_text( inherit.aes = F, data = notes.1, aes( label = note, x = frq, y = 86 ), check_overlap = T, col = "black", size = 3 ) +
+        geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ) ) +
+        scale_x_log10( breaks = notes.1$frq, labels = notes.1$note ),
+    cols = 1 )
 
 ggplot( 
     f0.spl, 
-    aes( x = value.x, y = value.y, col = age.cat ) ) +
+    aes( x = f0.mean, y = spl.mean, col = age.cat ) ) +
     geom_path( aes( group = age.cat ) ) +
     geom_point( shape = 1, aes( size = n ) ) +
     facet_grid( . ~ sex ) +
-    scale_color_discrete( "age [y]" ) +
+    scale_color_manual( "age [y]", values = pal ) +
     labs( 
-        title = "sound pressure against semi tones / frequency [Hz]",
+        title = TeX( "sound pressure against semi tones resp. $-ld(f0)$" ),
         x = "fundamental frequency [Hz]", 
         y = "sound pressure [dB]",
         subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
     theme_bw( ) +
-    geom_text( inherit.aes = F, data = notes, aes( label = note, x = frq, y = 86 ), check_overlap = T, col = "black" ) +
+    geom_text( inherit.aes = F, data = notes.2, aes( label = note, x = frq, y = 86 ), check_overlap = T, col = "#606060", size = 2.5 ) +
     geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ) )
 
-ggsave( filename = "ageRelatedFrequenciesOfSpeakingVoiceAtDifferentSoundPressureLevels.png", width = 15, height = 9 )
-# 
-# ggplot( 
-#     f0.spl, 
-#     aes( x = value.x, y = value.y, col = age.cat ) ) +
-#     geom_path( aes( group = age.cat ) ) +
-#     #geom_point( shape = 3, size = 3 ) +
-#     geom_errorbar( inherit.aes = F, aes( value.x, ymin = value.y - sd( value.y ), ymax = value.y + sd( value.y ), col = age.cat ), width = .2 ) +
-#     facet_grid( . ~ sex ) +
-#     scale_color_discrete( "age [y]" ) +
-#     labs( 
-#         title = "sound pressure vs fundamental frequency",
-#         x = "fundamental frequency [Hz]", 
-#         y = "sound pressure [dB]",
-#         subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
-#     theme_bw( ) +
-#     geom_text( inherit.aes = F, data = notes, aes( label = note, x = frq, y = 86 ), check_overlap = T, col = "black" ) +
-#     geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ) ) 
-#     
-# 
-# ggsave( filename = "ageRelatedFrequenciesOfSpeakingVoiceAtDifferentSoundPressureLevels.png", width = 15, height = 9 )
+ggplot(
+    f0.spl,
+    aes( x = f0.mean, y = spl.mean, col = age.cat ) ) +
+    geom_path( aes( group = age.cat ) ) +
+    geom_point( aes( alpha = n ) ) +
+    geom_point( data = d, inherit.aes = F, aes( Stimme.F0_SPRECH_1, Stimme.SPL_SPRECH_1, col = age.cat ), alpha = .05 ) +
+    geom_point( data = d, inherit.aes = F, aes( Stimme.F0_SPRECH_2, Stimme.SPL_SPRECH_2, col = age.cat ), alpha = .05 ) +
+    geom_point( data = d, inherit.aes = F, aes( Stimme.F0_SPRECH_3, Stimme.SPL_SPRECH_3, col = age.cat ), alpha = .05 ) +
+    geom_point( data = d, inherit.aes = F, aes( Stimme.F0_SPRECH_4, Stimme.SPL_SPRECH_4, col = age.cat ), alpha = .05 ) +
+    geom_errorbar( aes( ymin = spl.mean - spl.sd, ymax = spl.mean + spl.sd, group = age.cat, col = age.cat ), size = .2, alpha = .5, width = 8 ) +
+    geom_errorbarh( inherit.aes = T, aes( xmin = f0.mean - f0.sd, xmax = f0.mean + f0.sd, group = age.cat, col = age.cat ), size = .2, alpha = .5, height = 2 ) +
+    facet_grid( ~ sex, scales = "free" ) +
+    scale_color_manual( values = pal, "age [y]" ) +
+    labs(
+        title = "sound pressure vs fundamental frequency",
+        x = "fundamental freuency [Hz]",
+        y = "sound pressure [dB]",
+        subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
+    theme_bw( ) +
+    geom_text( inherit.aes = F, data = notes.2, aes( label = note, x = frq, y = 94 ), check_overlap = T, col = "#606060", size = 2.5 ) +
+    geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ), alpha = 1, size = 6, col = "black" ) +
+    scale_x_continuous( breaks = notes.2$frq, labels = notes.2$frq ) +
+    ylim( 44, 96 )
 
+ggsave( filename = "ageRelatedFrequenciesOfSpeakingVoiceAtDifferentSoundPressureLevelsPoints.pdf", width = 15, height = 9 )
+
+ggplot(
+    f0.spl,
+    aes( x = f0.mean, y = spl.mean, col = age.cat ) ) +
+    geom_path( aes( group = age.cat ) ) +
+    geom_point( aes( alpha = n ) ) +
+    # geom_point( data = d, inherit.aes = F, aes( Stimme.F0_SPRECH_1, Stimme.SPL_SPRECH_1, col = age.cat ), alpha = .1 ) +
+    # geom_point( data = d, inherit.aes = F, aes( Stimme.F0_SPRECH_2, Stimme.SPL_SPRECH_2, col = age.cat ), alpha = .1 ) +
+    # geom_point( data = d, inherit.aes = F, aes( Stimme.F0_SPRECH_3, Stimme.SPL_SPRECH_3, col = age.cat ), alpha = .1 ) +
+    # geom_point( data = d, inherit.aes = F, aes( Stimme.F0_SPRECH_4, Stimme.SPL_SPRECH_4, col = age.cat ), alpha = .1 ) +
+    geom_errorbar( aes( ymin = spl.mean - spl.sd, ymax = spl.mean + spl.sd, group = age.cat, col = age.cat ), size = .2, alpha = .5, width = .02 ) +
+    geom_errorbarh( inherit.aes = T, aes( xmin = f0.mean - f0.sd, xmax = f0.mean + f0.sd, group = age.cat, col = age.cat ), size = .2, alpha = .5, height = 2 ) +
+    facet_grid( ~ sex, scales = "free" ) +
+    scale_color_manual( values = pal, "age [y]" ) +
+    labs(
+        title = "sound pressure vs semi tones",
+        x = "semi tones",
+        y = "sound pressure [dB]",
+        subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
+    theme_bw( ) +
+    geom_text( inherit.aes = F, data = notes.1, aes( label = paste0( round( frq ), "Hz" ), x = frq, y = 94 ), check_overlap = T, col = "#606060", size = 2.5 ) +
+    geom_text( inherit.aes = F, data = txt.pos, aes( label = variable, x = x, y = y ), alpha = 1, size = 6, col = "black" ) +
+    scale_x_log10( breaks = notes.1$frq, labels = notes.1$note )
+
+ggsave( filename = "ageRelatedFrequenciesOfSpeakingVoiceAtDifferentSoundPressureLevelsLog2.pdf", width = 15, height = 9 )
 
