@@ -1,12 +1,22 @@
 ## delete all data
 rm( list = ls( ) )
 
-load( "../results/data_sprech.Rda" )
+load( "../../results/data_sprech.Rda" )
 
 library( latex2exp )
 library( reshape2 )
 library( dplyr )
 library( ggplot2 )
+library( life.helper )
+
+WDTH <-
+    8
+HGHT <-
+    4
+ENDING <-
+    "pdf"
+COL <-
+    T
 
 d <-
     data.sprech[ , c( "SIC", "sex", "age", "EDAT.x", "F0_SPRECH_1", "F0_SPRECH_2", "F0_SPRECH_3", "F0_SPRECH_4", "SPL_SPRECH_1", "SPL_SPRECH_2", "SPL_SPRECH_3", "SPL_SPRECH_4" ) ]
@@ -15,15 +25,15 @@ d <-
     na.omit( d )
 
 months <-
-    6
+    18
 
 table( as.integer( data.sprech$age ) )
 
 data.sprech <- 
-    data.sprech[ 6 <= data.sprech$age, ]
+    data.sprech[ 6 <= data.sprech$age & data.sprech$age <= 18, ]
 
 breaks_ <-
-    seq( 6, 18, months / 12 )
+    seq( 6, 19, months / 12 )
 
 labels_ <-
     as.factor( as.numeric( as.character( breaks_[ -1 ] ) ) - months / 24 )
@@ -75,4 +85,24 @@ ggplot( d.df, aes( as.numeric( as.character( age.cat ) ), value ) ) +
     geom_hline( yintercept = 0 ) +
     theme_bw( )
 
-ggsave( filename = "changesOfMeans12Months.pdf", width = 30, height = 19 )
+d.df.2 <-
+    d.df[ d.df$variable == "d.m.f0.2", ]
+
+d.df.2 <-
+    d.df.2[ !is.na( d.df.2$value ) | !is.na( d.df.2$d.cnt ), ]
+
+ggplot( 
+    d.df.2, 
+    aes( as.numeric( as.character( age.cat ) ), value ) ) +
+    geom_point( aes( size = 2 ), alpha = .25 ) +
+    geom_path( aes( size = 1 ), alpha = .25 ) +
+    geom_smooth( method = "loess", alpha = .2 ) +
+    facet_grid( . ~ sex ) +
+    ylim( -6, 6 ) +
+    scale_x_continuous( breaks = c( 6 : 17 ) ) +
+    geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#4080a0", nudge_y = -1 ) +
+    geom_text( aes( label = as.character( d.cnt ) ), col = "#80a0c0", nudge_y = +1 ) +
+    geom_hline( yintercept = 0 ) +
+    theme_bw( )
+
+ggsave( filename = paste( "changesOfMeans12Months.", ENDING ), width = WDTH, height = HGHT )

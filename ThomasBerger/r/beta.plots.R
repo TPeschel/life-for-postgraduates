@@ -3,8 +3,22 @@ rm( list = ls( ) )
 
 library( life.helper )
 
+WDTH <-
+    8
+HGHT <-
+    4
+ENDING <-
+    "pdf"
+COL <-
+    T
+
 plot.lmer.coefficients.with.errorbars <-
-    function( dataframe, formula, title = "coefficients of linear regression of speaking voice II", xlab = "dependent variables", ylab = "independent variables" ) {
+    function( 
+        dataframe, 
+        formula, 
+        title = "coefficients of linear regression of speaking voice II",
+        xlab = "dependent variables", 
+        ylab = "independent variables" ) {
         # dataframe <- voice_speak.lmer
         # formula = st_sprech_1 ~ (1|sic) + (1|fam.id2 )
         library( ggplot2 )
@@ -13,9 +27,14 @@ plot.lmer.coefficients.with.errorbars <-
         lmer.male.sum <-
             summary( 
                 lmer.male <-
-                    lmer( data = dataframe[ dataframe$geschlecht == "m", ], formula = formula ) )
+                    lmer( 
+                        data = dataframe[ dataframe$geschlecht == "m", ], 
+                        formula = formula ) )
         lmer.male.sum.confint <- 
-            as.data.frame( confint( lmer.male, method = "Wald" ) )
+            as.data.frame( 
+                confint( 
+                    lmer.male, 
+                    method = "Wald" ) )
         lmer.male <-
             data.frame( 
                 x    = rownames( lmer.male.sum$coefficients ),
@@ -28,9 +47,14 @@ plot.lmer.coefficients.with.errorbars <-
         lmer.female.sum <-
             summary( 
                 lmer.female <-
-                    lmer( data = dataframe[ dataframe$geschlecht == "f", ], formula = formula ) )
+                    lmer( 
+                        data = dataframe[ dataframe$geschlecht == "f", ], 
+                        formula = formula ) )
         lmer.female.sum.confint <- 
-            as.data.frame( confint( lmer.female, method = "Wald" ) )
+            as.data.frame( 
+                confint( 
+                    lmer.female, 
+                    method = "Wald" ) )
         lmer.female <- 
             data.frame( 
                 x    = rownames( lmer.female.sum$coefficients ),
@@ -41,26 +65,91 @@ plot.lmer.coefficients.with.errorbars <-
         lmer.female$sex <- "female"
         # both together
         lmer.fm <- 
-            rbind.data.frame( lmer.female, lmer.male )
+            rbind.data.frame( 
+                lmer.female, 
+                lmer.male )
         lmer.fm <-
             lmer.fm[ lmer.fm$x != "(Intercept)", ]
         print( lmer.fm )
-        ggplot( data = lmer.fm ) +
-            geom_point( aes( x, y, col = substr( x, 1, 6 ) ), size = 2 ) +
-            geom_errorbar( aes( x, ymin = ymin, ymax = ymax, col = substr( x, 1, 6 ) ), width = .3, alpha = .75 ) + 
-            coord_flip( ) +
-            facet_grid( . ~ sex ) +
-            scale_color_discrete( guide = F ) +
-            scale_y_continuous( breaks = seq( -8, 6, by = 2 ) ) +
-            theme_bw( ) +
-            geom_hline( yintercept = 0, linetype = 2 ) +
-            labs( title = title, x = xlab, y = ylab ) +
-            geom_text( aes( x, y, label = paste0( round( y, 2 ), " (", p, ")" ) ), size = 3, nudge_x = .3 ) }
+        if( COL ) {
+            ggplot( data = lmer.fm ) +
+                geom_point(
+                    aes( 
+                        x, 
+                        y, 
+                        col = substr( x, 1, 6 ) ), 
+                    size = 2 ) +
+                geom_errorbar( 
+                    aes( 
+                        x, 
+                        ymin = ymin, 
+                        ymax = ymax, 
+                        col = substr( x, 1, 6 ) 
+                        ), 
+                    width = .3, 
+                    alpha = .75 ) + 
+                coord_flip( ) +
+                facet_grid( . ~ sex ) +
+                scale_color_discrete( guide = F ) +
+                scale_y_continuous( breaks = seq( -8, 6, by = 2 ) ) +
+                theme_bw( ) +
+                geom_hline( 
+                    yintercept = 0, 
+                    linetype = 2 ) +
+                labs( 
+                    title = title, 
+                    x = xlab, 
+                    y = ylab ) +
+                geom_text( 
+                    aes( 
+                        x, 
+                        y, 
+                        label = paste0( round( y, 2 ), " (", p, ")" ) ), 
+                    size = 3, 
+                    nudge_x = .3 ) } else {
+            ggplot( data = lmer.fm ) +
+                geom_point(
+                    aes( 
+                        x, 
+                        y ), 
+                    size = 2 ) +
+                geom_errorbar( 
+                    aes( 
+                        x, 
+                        ymin = ymin, 
+                        ymax = ymax ), 
+                    width = .3, 
+                    alpha = .75 ) + 
+                coord_flip( ) +
+                facet_grid( . ~ sex ) +
+                scale_color_discrete( guide = F ) +
+                scale_y_continuous( breaks = seq( -8, 6, by = 2 ) ) +
+                theme_bw( ) +
+                geom_hline( 
+                    yintercept = 0, 
+                    linetype = 2 ) +
+                labs( 
+                    title = title, 
+                    x = xlab, 
+                    y = ylab ) +
+                geom_text( 
+                    aes( 
+                        x, 
+                        y, 
+                        label = paste0( round( y, 2 ), " (", p, ")" ) ), 
+                    size = 3, 
+                    nudge_x = .3 ) } }
 
-## change working dir to data/results
-setwd( "~/LIFE/life-for-postgraduates/ThomasBerger/results/" )
+## change working dir to data/gfx/betaPlots
+setwd( "~/LIFE/life-for-postgraduates/ThomasBerger/gfx/betaPlots" )
 
 load( "~/LIFE/life-for-postgraduates/ThomasBerger/original/Stimme/Stimme-Dateien/save/voice_clean.Rda" )
+
+profiles <-
+    c( 1 : 4 )
+
+endings <-
+    c( "I", "II", "III", "IV" )
 
 voice_speak$bmi.sds.cat <-
     relevel( voice_speak$bmi.sds.cat, "normal" )
@@ -70,42 +159,22 @@ voice_speak$tanner.cat <-
 
 voice_speak.lmer <-
     na.omit(
-        voice_speak[ , c( "sic", "fam.id2", "datum", "geschlecht", "bmi", "bmi.sds.cat", "ses", "ses.cat", "tanner", "tanner.cat", "st_sprech_1", "spl_sprech_1", "st_sprech_2", "spl_sprech_2", "st_sprech_3", "spl_sprech_3", "st_sprech_4", "spl_sprech_4" ) ] )
+        voice_speak[ , c( "sic", "fam.id2", "datum", "geschlecht", "bmi", "bmi.sds.cat", "ses", "ses.cat", "tanner", "tanner.cat", paste0( "st_sprech_", profiles ), paste0( "spl_sprech_", profiles ) ) ] )
 
-plot.lmer.coefficients.with.errorbars( 
-    voice_speak.lmer, 
-        st_sprech_1 ~ spl_sprech_1 + tanner + bmi.sds.cat + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 ),
-        title = "coefficients of linear regression of speaking voice I",
-        xlab = "coefficients", 
-        ylab = "semi tones" )
-ggsave( filename = "betaPlotsLineareRegressionSpeakingVoiceI.pdf", width = 15, height = 5 )
-
-plot.lmer.coefficients.with.errorbars( 
-    voice_speak.lmer, 
-        st_sprech_2 ~ spl_sprech_2 + tanner + bmi.sds.cat + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 ),
-        title = "coefficients of linear regression of speaking voice II",
-        xlab = "coefficients", 
-        ylab = "semi tones" )
-
-ggsave( filename = "betaPlotsLineareRegressionSpeakingVoiceII.pdf", width = 15, height = 5 )
-
-
-plot.lmer.coefficients.with.errorbars( 
-    voice_speak.lmer, 
-        st_sprech_3 ~ spl_sprech_3 + tanner + bmi.sds.cat + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 ),
-        title = "coefficients of linear regression of speaking voice III",
-        xlab = "coefficients", 
-        ylab = "semi tones" )
-
-ggsave( filename = "betaPlotsLineareRegressionSpeakingVoiceIII.pdf", width = 15, height = 5 )
-
-
-plot.lmer.coefficients.with.errorbars( 
-    voice_speak.lmer, 
-        st_sprech_4 ~ spl_sprech_4 + tanner + bmi.sds.cat + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 ),
-        title = "coefficients of linear regression of speaking voice IV",
-        xlab = "coefficients", 
-        ylab = "semi tones" )
-
-ggsave( filename = "betaPlotsLineareRegressionSpeakingVoiceIV.pdf", width = 15, height = 5 )
-
+for( i in profiles ) {
+    
+    model <-
+        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + bmi.sds.cat + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 )" )
+    
+    plot.lmer.coefficients.with.errorbars( 
+        voice_speak.lmer, 
+            model,
+            title = paste0( "coefficients of linear regression of speaking voice ", endings[ i ] ),
+            xlab  = "coefficients", 
+            ylab  = "semi tones" )
+    
+    ggsave( 
+        filename = paste0( "betaPlotsLineareRegressionSpeakingVoice", ifelse( COL, "_Col_", "_BW_" ), endings[ i ], ".", ENDING ), 
+        width = WDTH, 
+        height = HGHT )
+}
