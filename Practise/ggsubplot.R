@@ -27,3 +27,5 @@ ggsubplot(
 	ggplot( ) + geom_histogram( aes( x = cut( x = x, breaks = b, labels = l ), y ), stat = "identity", position = "identity" ) + ggtitle( "same kind of histo with position = identity " ) + theme_solarized_2( ),
     cols = 2
 )
+
+
