@@ -8,7 +8,7 @@ WDTH <-
 HGHT <-
     4
 ENDING <-
-    "pdf"
+    "png"
 COL <-
     T
 
@@ -20,7 +20,7 @@ plot.lmer.coefficients.with.errorbars <-
         xlab = "dependent variables", 
         ylab = "independent variables" ) {
         # dataframe <- voice_speak.lmer
-        # formula = st_sprech_1 ~ (1|sic) + (1|fam.id2 )
+        # formula = model#st_sprech_1 ~ (1|sic) + (1|fam.id2 )
         library( ggplot2 )
         library( lme4 )
         ## males
@@ -158,13 +158,86 @@ voice_speak$tanner.cat <-
     c( "I-prepubertal", paste0( "II-IV-", rep( "pubertal", 3 ) ), "V-adult" )[ match( voice_speak$tanner, c( 1 : 5 ) ) ]
 
 voice_speak.lmer <-
-    na.omit(
-        voice_speak[ , c( "sic", "fam.id2", "datum", "geschlecht", "bmi", "bmi.sds.cat", "ses", "ses.cat", "tanner", "tanner.cat", paste0( "st_sprech_", profiles ), paste0( "spl_sprech_", profiles ) ) ] )
+    voice_speak[ , c( "sic", "gruppe", "fam.id2", "datum", "geschlecht", "bmi", "bmi.sds.cat", "tanner", "tanner.cat", "u_sing_stimmbelastg", "u_sing_stimmbelastg_v", "u_sing_stimmtraining", "u_sing_stimmtraining_v", paste0( "u_sing_instrument_", c( 1 : 3 ) ), paste0( "u_sing_instr_v_", c( 1 : 3 ) ), paste0( "st_sprech_", profiles ), paste0( "spl_sprech_", profiles ) ) ]
+
+voice_speak.lmer$u_sing_stimmbelastg <-
+    as.factor( voice_speak.lmer$u_sing_stimmbelastg )
+
+voice_speak.lmer$u_sing_stimmbelastg_v <- 
+    as.factor( voice_speak.lmer$u_sing_stimmbelastg_v )
+
+voice_speak.lmer$u_sing_stimmtraining <- 
+    as.factor( voice_speak.lmer$u_sing_stimmtraining )
+
+voice_speak.lmer$u_sing_stimmtraining_v <-
+    as.factor( voice_speak.lmer$u_sing_stimmtraining_v )
+
+voice_speak.lmer$wind_instrument <-
+    c( "no", "yes" )[ match( voice_speak.lmer$u_sing_instrument_2, c( 0, 1 ) ) ]
+
+voice_speak.lmer$wind_instrument_past <-
+    c( "no", "yes" )[ match( voice_speak.lmer$u_sing_instr_v_2, c( 0, 1 ) ) ]
+
+addmargins( table( voice_speak.lmer$u_sing_stimmbelastg ) )
+addmargins( table( voice_speak.lmer$u_sing_stimmbelastg_v ) )
+addmargins( table( voice_speak.lmer$u_sing_stimmtraining ) )
+addmargins( table( voice_speak.lmer$u_sing_stimmtraining_v ) )
+addmargins( table( voice_speak.lmer$wind_instrument ) )
+addmargins( table( voice_speak.lmer$wind_instrument_past ) )
+
+voice_speak.lmer$strain <-
+    factor( 
+        c( "sometimes", "sometimes", "routinely", "routinely" )[ match( voice_speak.lmer$u_sing_stimmbelastg, c( 1 : 4 ) ) ] )
+
+voice_speak.lmer$strain <-
+    relevel( voice_speak.lmer$strain, "sometimes" )
+
+voice_speak.lmer$strain_past <-
+    factor( 
+        c( "sometimes", "sometimes", "routinely", "routinely" )[ match( voice_speak.lmer$u_sing_stimmbelastg_v, c( 1 : 4 ) ) ] )
+
+voice_speak.lmer$strain_past <-
+    relevel( voice_speak.lmer$strain_past, "sometimes" )
+        
+voice_speak.lmer$training <-
+    factor(
+        c( "unmaintained", "maintained", "maintained" )[ match( voice_speak.lmer$u_sing_stimmtraining, c( 1 : 3 ) ) ] )
+        
+voice_speak.lmer$training <-
+    relevel( voice_speak.lmer$training, "unmaintained" )
+
+voice_speak.lmer$training_past <-
+    factor(
+        c( "unmaintained", "maintained", "maintained" )[ match( voice_speak.lmer$u_sing_stimmtraining_v, c( 1 : 3 ) ) ] )
+        
+voice_speak.lmer$training_past <-
+    relevel( voice_speak.lmer$training_past, "unmaintained" )
+
+addmargins( table( voice_speak.lmer$u_sing_stimmbelastg ) )
+addmargins( table( voice_speak.lmer$u_sing_stimmbelastg_v ) )
+addmargins( table( voice_speak.lmer$u_sing_stimmtraining ) )
+addmargins( table( voice_speak.lmer$u_sing_stimmtraining_v ) )
+
+addmargins( table( voice_speak.lmer$bmi.sds.cat ) )
+addmargins( table( voice_speak.lmer$wind_instrument ) )
+addmargins( table( voice_speak.lmer$wind_instrument_past ) )
+
+voice_speak.lmer <-
+    na.omit( voice_speak.lmer )
+
+addmargins( table( voice_speak.lmer$u_sing_stimmbelastg ) )
+addmargins( table( voice_speak.lmer$u_sing_stimmbelastg_v ) )
+addmargins( table( voice_speak.lmer$u_sing_stimmtraining ) )
+addmargins( table( voice_speak.lmer$u_sing_stimmtraining_v ) )
+
+addmargins( table( voice_speak.lmer$bmi.sds.cat ) )
+addmargins( table( voice_speak.lmer$wind_instrument ) )
+addmargins( table( voice_speak.lmer$wind_instrument_past ) )
 
 for( i in profiles ) {
     
     model <-
-        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + bmi.sds.cat + ses.cat + ( 1 | sic ) + ( 1 | fam.id2 )" )
+        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + bmi.sds.cat + strain_past + training_past + wind_instrument_past + ( 1 | sic ) + ( 1 | fam.id2 )" )
     
     plot.lmer.coefficients.with.errorbars( 
         voice_speak.lmer, 
@@ -178,3 +251,4 @@ for( i in profiles ) {
         width = WDTH, 
         height = HGHT )
 }
+View( voice_speak.lmer[ ,c( "sic", "gruppe", "datum", "wind_instrument", "u_sing_instr_v_1", "u_sing_instr_v_2", "u_sing_instr_v_3", "u_sing_instr_v_1", "u_sing_instr_v_2", "u_sing_instr_v_3" ) ] )
