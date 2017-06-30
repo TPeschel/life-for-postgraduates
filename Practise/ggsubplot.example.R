@@ -10,11 +10,16 @@ colors.sex <-
 	c( "#0000FF", "#FF0000" )
 
 colors.sizes <-
-	c( "#404040", "#707070", "#C0C0C0" )
+	c( "#000000", "#008000", "#00FF00" )
 
 colors.sex.sizes <-
-	c( "#802020", "#401010", "#FF4040",
-	   "#202080", "#101040", "#4040FF" )
+	c( "#FF0000", "#0000FF", 
+	   "#FF8000", "#0080FF",
+	   "#FFFF00", "#00FFFF" )
+
+colors.sizes.sex <-
+	c( "#FF8000","#FF0000",  "#FFFF00",
+	   "#0080FF","#0000FF",  "#00FFFF" )
 mu <-
 	0
 
@@ -23,24 +28,26 @@ sig <-
 
 d0 <-
 	data.frame(
-		x = x <- .05 * c( -100 : 100 ),
-		density = y <- exp( - ( x - mu ) * ( x - mu ) / ( 2 * sig * sig ) ) / ( sig * sqrt( 2 * pi ) ),
-		density.times.x = xy <- x * y,
-		probability = cumsum( y ) / sum( y ),
-		expectation.value = cumsum( xy ) / sum( y ) )
+		event = x <- .05 * c( -100 : 100 ),
+		density.at.event = y <- exp( - ( x - mu ) * ( x - mu ) / ( 2 * sig * sig ) ) / ( sig * sqrt( 2 * pi ) ),
+		density.at.event.times.event = xy <- x * y,
+		probability.for.beeing.before.event = cumsum( y ) / sum( y ),
+		expectation.for.event = cumsum( xy ) / sum( y ) )
+n <-
+	3000
 
 d1 <-
 	data.frame(
-		x = rnorm( 1000, 1.78, .1 ),
-		y = rbinom( 1000, 1000, prob = c( .68 * .68, .68, 1 ) / ( .68 + .68 * .68 + 1 ) ),
-		sex = as.factor( sample( c( "male", "female" ), 100, T, c( .4, .6 ) ) ),
+		x = rnorm( n, 1.78, .1 ),
+		y = rbinom( n, 200, prob = c( .63 * .63, .63, 1 ) / ( .63 + .63 * .63 + 1 ) ),
+		sex = as.factor( sample( c( "male", "female" ), n, T, c( .4, .6 ) ) ),
 		sizes = as.factor( 
 			sample( 
 				c(
 					"small",
 					"normal",
 					"tall" ), 
-				100, 
+				n, 
 				T, 
 				prob = c( .3, .5, .2 ) ) ) )
 
@@ -54,9 +61,9 @@ ggsubplot(
 	ggplot( 
 		melt( 
 			d0, 
-			c( "x" ) ) ) +
-	geom_path( aes( x, value, col = variable ), alpha = .25, size = 3 ) +
-	geom_path( aes( x, value, col = variable ), alpha = 1, size = .2 ) +
+			c( "event" ) ) ) +
+	geom_path( aes( event, value, col = variable ), alpha = .25, size = 3 ) +
+	geom_path( aes( event, value, col = variable ), alpha = 1, size = .2 ) +
 	scale_x_continuous( breaks = c( -5 : 5 ) ) +
 	scale_y_continuous( breaks = seq( -.4, 1.1, by = .2 ) ) +
 	theme_bw( ),
@@ -78,39 +85,39 @@ ggsubplot(
 
 ggsubplot(
 	ggplot( d1 ) +
-		geom_point( aes( x, y, col = sex ), alpha = .25 ) +
-		geom_rug( aes( x, y, col = sex ), alpha = .25 ) +
+		geom_point( aes( x, y, col = sex ), alpha = .125 ) +
+		geom_rug( aes( x, y, col = sex ), alpha = .125 ) +
 		scale_color_manual( values = colors.sex ) +
 		theme_bw( ),
 	ggplot( d1 ) +
-		geom_point( aes( x, y, col = sizes ), alpha = .25 ) +
-		geom_rug( aes( x, y, col = sizes ), alpha = .25 ) +
+		geom_point( aes( x, y, col = sizes ), alpha = .125 ) +
+		geom_rug( aes( x, y, col = sizes ), alpha = .125 ) +
 		scale_color_manual( values = colors.sizes ) +
 		theme_bw( ),
 	ggplot( d1 ) +
-		geom_point( aes( x, y, col = paste0( sizes, " ", sex ) ), alpha = 1 ) +
-		geom_rug( aes( x, y, col = paste0( sizes, " ", sex ) ), alpha = .5 ) +
-		scale_color_manual( "kind of human", values = colors.sex.sizes ) +
+		geom_point( aes( x, y, col = paste0( sex, " ", sizes ) ), alpha = .2 ) +
+		geom_rug( aes( x, y, col = paste0( sex, " ", sizes ) ), alpha = .1 ) +
+		scale_color_manual( "kind of human", values = colors.sizes.sex ) +
 		theme_bw( ),
 	ggplot( d1 ) +
-		geom_point( aes( x, y, col = paste0( sex, "-", sizes ) ), alpha = .25 ) +
-		scale_color_manual( values = colors.sex.sizes, guide = F ) +
+		geom_point( aes( x, y, col = paste0( sex, "-", sizes ) ), alpha = .125 ) +
+		scale_color_manual( values = colors.sizes.sex, guide = F ) +
 		facet_grid( sizes ~ sex ) +
 		theme_pander( ),
 	ggplot( d1 ) +
-		geom_point( aes( x, y, col = paste0( sex, "-", sizes ) ), alpha = .25 ) +
-		scale_color_manual( values = colors.sex.sizes, guide = F ) +
+		geom_point( aes( x, y, col = paste0( sex, "-", sizes ) ), alpha = .125 ) +
+		scale_color_manual( values = colors.sizes.sex, guide = F ) +
 		facet_grid( sex ~ sizes ) +
 		theme_pander( ),
 	ggplot( d1 ) +
-		geom_point( aes( x, y, col = paste0( sex, "-", sizes ) ), alpha = .25 ) +
-		scale_color_manual( values = colors.sex.sizes, guide = F ) +
+		geom_point( aes( x, y, col = paste0( sex, "-", sizes ) ), alpha = .125 ) +
+		scale_color_manual( values = colors.sizes.sex, guide = F ) +
 		facet_grid( sizes ~ sex ) +
 		coord_flip( ) +
 		theme_pander( ),
 	ggplot( d1 ) +
-		geom_point( aes( x, y, col = paste0( sex, "-", sizes ) ), alpha = .25 ) +
-		scale_color_manual( values = colors.sex.sizes, guide = F ) +
+		geom_point( aes( x, y, col = paste0( sex, "-", sizes ) ), alpha = .125 ) +
+		scale_color_manual( values = colors.sizes.sex, guide = F ) +
 		facet_grid( sex ~ sizes ) +
 		coord_flip( ) +
 		theme_pander( ),
@@ -135,13 +142,22 @@ ggsubplot(
 	ggplot( d1 ) +
 		geom_point( aes( x, y, col = paste0( sizes, " ", sex ) ), alpha = .1 ) +
 		geom_rug( aes( x, y, col = paste0( sizes, " ", sex ) ), alpha = .1) +
-		scale_color_manual( "kind of human", values = colors.sex.sizes ) +
+		scale_color_manual( "kind of human", values = colors.sizes.sex ) +
 		theme_light( ) +
 		coord_flip( ),
 	ggplot( d1 ) +
-		geom_boxplot( aes( x, y ), alpha = .1 ) +
-		geom_rug( aes( x, y ), alpha = .1) +
-		#scale_color_manual( "kind of human", values = colors.sex.sizes ) +
+		geom_boxplot( inherit.aes = T, aes( x, y, col = paste0( sizes, " ", sex ), fill = paste0( sizes, " ", sex ) ), alpha = .75 ) +
+		geom_rug( aes( x, y, col = paste0( sizes, " ", sex ), fill = paste0( sizes, " ", sex ) ), alpha = .1 ) +
+		scale_color_manual( "kind of human", values = colors.sex.sizes ) +
+		scale_fill_manual( "kind of human", values = colors.sex.sizes ) +
+		theme_light( ) +
+		facet_grid( sex ~ sizes ),
+	ggplot( d1 ) +
+		geom_boxplot( inherit.aes = T, aes( y, x, col = paste0( sizes, " ", sex ), fill = paste0( sizes, " ", sex ) ), alpha = .75 ) +
+		geom_rug( aes( y, x, col = paste0( sizes, " ", sex ), fill = paste0( sizes, " ", sex ) ), alpha = .1 ) +
+		coord_flip( ) +
+		scale_color_manual( "kind of human", values = colors.sex.sizes ) +
+		scale_fill_manual( "kind of human", values = colors.sex.sizes ) +
 		theme_light( ) +
 		facet_grid( sex ~ sizes ),
 	layout =
@@ -151,98 +167,7 @@ ggsubplot(
 					4,  1,  2,  5,
 					6,  3,  3,  7,
 					6,  3,  3,  7,
-					8,  3,  3, 11,
-					9, 12, 13, 10
+					8, 12, 12, 11,
+					9, 14, 13, 10
 				),
 				nrow = 4 ) ) )
-
-p4 <-
-	ggplot( d1 ) +
-	geom_point( aes( x, y, col = sex ), alpha = .25 ) +
-	geom_rug( aes( x, y, col = sex ) ) +
-	scale_color_manual( values = colors.sex ) +
-	theme_bw( )
-
-p5 <-
-	ggplot( d1 ) +
-	geom_point( aes( x, y, col = paste0( sex, "-", sizes ) ), alpha = .25 ) +
-	scale_color_manual( values = colors.sex.sizes, guide = F ) +
-	facet_grid( sizes ~ sex ) +
-	theme_pander( )
-
-# p6 <-
-# 	ggplot( d1 ) +
-# 	geom_point( aes( x, y, col = paste0( sizes, "-", sex ) ), alpha = .25 ) +
-# 	scale_color_manual( values = colors.sex.sizes, guide = F ) +
-# 	coord_flip( ) +
-# 	facet_grid( sizes ~ sex ) +
-# 	theme_pander( )
-# 
-p6 <-
-	ggplot( d1 ) +
-	geom_point( aes( x, y, col = paste0( sizes, " ", sex ) ), alpha = .25 ) +
-	geom_rug( aes( x, y, col = paste0( sizes, " ", sex ) ) ) +
-	scale_color_manual( "kind of human", values = colors.sex.sizes ) +
-	theme_bw( )
-# 
-# p8 <-
-# 	ggplot( d1 ) +
-# 	geom_point( aes( x, y, col = paste0( sex, "-", sizes ) ), alpha = .5 ) +
-# 	geom_rug( aes( x, y, col = paste0( sex, "-", sizes ) ) ) +
-# 	scale_color_manual( "sex-size", values = colors.sex.sizes ) +
-# 	theme_bw( )
-
-p7 <-
-	ggplot( d1 ) +
-	geom_histogram( aes( sex, fill = sex ), stat = "count" ) +
-	theme_solarized( ) +
-	scale_fill_manual( "sex", values = colors.sex, guide = F ) +
-	facet_grid( . ~ sizes )
-
-p8 <-
-	ggplot( d1 ) +
-	geom_histogram( aes( sizes, fill = sizes ), stat = "count" ) +
-	theme_solarized( ) +
-	scale_fill_manual( "sizes", values = colors.sizes, guide = F ) +
-	facet_grid( . ~ sex )
-
-p9 <-
-	ggplot( d1 ) +
-	geom_histogram( aes( sex, fill = sex ), stat = "count" ) +
-	theme_solarized( ) +
-	scale_fill_manual( "sex", values = colors.sex, guide = F )
-
-p10 <-
-	ggplot( d1 ) +
-	geom_histogram( aes( sizes, fill = sizes ), stat = "count" ) +
-	theme_solarized( ) +
-	scale_fill_manual( "sizes", values = colors.sizes, guide = F )
-
-layout <-
-	t( 
-		matrix( 
-			c( 3, 1, 2, 4,
-			   5, 6, 7, 14,
-			   13, 10, 11, 12,
-			   9, 8, 15, 16 ), 
-			ncol = 4, 
-			nrow = 4 ) )
-
-ggsubplot( 
-	p1, 
-	p2, 
-	p3, 
-	p4,
-	p5,
-	p6,
-	p7,
-	p8,
-	p9,
-	p10,
-	p5 + coord_flip( ),
-	p5 + coord_flip( ),
-	p5 + facet_grid( sizes ~ sex ),
-	p5 + facet_grid( sex ~ sizes ),
-	p5 + facet_grid( sizes ~ sex ) + coord_flip( ),
-	p5 + facet_grid( sex ~ sizes ) + coord_flip( ),
-	layout = layout )
