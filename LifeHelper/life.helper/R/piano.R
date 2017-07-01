@@ -1,4 +1,4 @@
- key.of.frequency
+#' key.of.frequency
 #'
 #' @param frq
 #'
@@ -7,7 +7,9 @@
 #'
 #' @examples
 #' key.of.frequency( 110 )
-key.of.frequency <- function( frq = 110 ) log2( frq / 440 ) * 12 + 49
+key.of.frequency <-
+    function( frq = 110 ) {
+        log2( frq / 440 ) * 12 + 49 }
 
 #' frequency.of.key
 #'
@@ -18,7 +20,9 @@ key.of.frequency <- function( frq = 110 ) log2( frq / 440 ) * 12 + 49
 #'
 #' @examples
 #' frequency.of.key( 25 )
-frequency.of.key <- function( key = 25 ) 440 * 2 ** ( ( key - 49 ) / 12 )
+frequency.of.key <-
+    function( key = 25 ) {
+        440 * 2 ** ( ( key - 49 ) / 12 ) }
 
 #' note.of.key
 #'
