@@ -1,21 +1,68 @@
-key.of.frequency <-
-    function( frq ) log2( frq / 440 ) * 12 + 49
+ key.of.frequency
+#'
+#' @param frq
+#'
+#' @return key of frq
+#' @export
+#'
+#' @examples
+#' key.of.frequency( 110 )
+key.of.frequency <- function( frq = 110 ) log2( frq / 440 ) * 12 + 49
 
-frequency.of.key <-
-    function( id ) 440 * 2 ** ( ( id - 49 ) / 12 )
+#' frequency.of.key
+#'
+#' @param key
+#'
+#' @return frequency of the key
+#' @export
+#'
+#' @examples
+#' frequency.of.key( 25 )
+frequency.of.key <- function( key = 25 ) 440 * 2 ** ( ( key - 49 ) / 12 )
 
-notes.of.nth.octave <-
-    function( n ) {
-        octave.keys.engl <-
-            c( "A0", "A#0", "B0", "C1", "C#1", "D1", "D#1", "E1", "F1", "F#1", "G1", "G#1" )
-        num <-
-            as.numeric( substr( octave.keys.engl, nchar( octave.keys.engl ), nchar( octave.keys.engl ) ) )
-        note  <-
-            substr( octave.keys.engl, 1, nchar( octave.keys.engl ) - 1 )
-        paste0( note, num + n ) }
+#' note.of.key
+#'
+#' @param key
+#'
+#' @return note of key
+#' @export
+#'
+#' @examples
+#' note.of.key( 25 )
+note.of.key <-
+    function( key = c( 4, 6, 8, 9, 11, 13, 15 ) ) {
+        paste0(
+            c(
+                "A", "A#",
+                "B",
+                "C", "C#",
+                "D", "D#",
+                "E",
+                "F", "F#",
+                "G", "G#" )[ 1 + ( ( key - 1 ) %% 12 ) ],
+            ( key - 1 ) %/% 12 ) }
 
-piano.key.notes.frequencies <-
-    data.frame(
-        key  = c( 1 : 88 ),
-        note = sapply( sapply( c( 0 : 7 ),  notes.of.nth.octave ), c )[ 1 : 88 ],
-        frq  = round( sapply( c( 1 : 88 ), frequency.of.key ), 1 ) )
+#' note.of.frequency
+#'
+#' @param frequency
+#'
+#' @return note of frequency
+#' @export
+#'
+#' @examples
+#' note.of.frequency( 110 )
+note.of.frequency <-
+    function( frequency = 110 ) {
+        note.of.key( key.of.frequency( frequency ) ) }
+
+##
+# example:
+# all keys with their colors, notes, frequencies of a common piano
+##
+(
+    piano <-
+        data.frame(
+            key  = k<-c( 1 : 88 ),
+            col  = c( "ebony", "ivory" )[ match( grepl( "#", note.of.key( k ) ), c( T, F ) ) ],
+            note = note.of.key( k ),
+            frq  = round( frequency.of.key( k ), 2 ) ) )
