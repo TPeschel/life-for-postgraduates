@@ -2,7 +2,6 @@
 #'
 #' @param ...
 #' @param plotlist
-#' @param file
 #' @param cols
 #' @param layout
 #'
@@ -14,7 +13,6 @@ ggsubplot <- # aka multiplot known from the internet
     function(
         ...,
         plotlist = NULL,
-        file,
         cols = 1,
         layout = NULL ) {
         library( grid )

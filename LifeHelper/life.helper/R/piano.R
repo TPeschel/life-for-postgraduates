@@ -66,7 +66,13 @@ note.of.frequency <-
 (
     piano <-
         data.frame(
-            key  = k<-c( 1 : 88 ),
-            col  = c( "ebony", "ivory" )[ match( grepl( "#", note.of.key( k ) ), c( T, F ) ) ],
-            note = note.of.key( k ),
-            frq  = round( frequency.of.key( k ), 2 ) ) )
+            key   = c( 1 : 88 ),
+            color = c( "ebony", "ivory" )[ match( grepl( "#", note.of.key( c( 1 : 88 ) ) ), c( T, F ) ) ],
+            note  = factor(
+                x      = c( 1 : 88 ),
+                levels = c( 1 : 88 ),
+                labels = note.of.key( c( 1 : 88 ) ) ),
+            frequency  = round(
+                frequency.of.key(
+                    c( 1 : 88 ) ),
+                2 ) ) )

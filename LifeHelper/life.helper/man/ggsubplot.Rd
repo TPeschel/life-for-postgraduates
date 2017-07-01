@@ -2,7 +2,7 @@
 \alias{ggsubplot}
 \title{GGSubPlot}
 \usage{
-ggsubplot( ggplot1, ggplot2, ggplot3, cols = 3 )
+ggsubplot( ggplot1, ggplot2, ggplot3, ggplot4, cols = 2, layout = NULL )
 }
 \description{
 gives the opportunity to plot several ggplots at one page
@@ -46,6 +46,10 @@ ggsubplot(
             g = c( rep( "A", 70 ), rep( "B", 61 ), rep( "C", 70 ) ) ) ) +
         geom_polygon( aes( X, Y, fill = G ) ) +
         theme_foundation( ),
-    layout = t( matrix( c( 1, 1, 4, 4,
-                           3, 2, 2, 2,
-                           5, 5, 6, 6 ), nrow = 4 ) ) )
+    layout = t(
+        matrix(
+            c(
+                1, 1, 4, 4,
+                3, 2, 2, 2,
+                5, 5, 6, 6 ),
+                nrow = 4 ) ) )
