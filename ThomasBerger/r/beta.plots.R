@@ -145,6 +145,28 @@ setwd( "~/LIFE/life-for-postgraduates/ThomasBerger/gfx/betaPlots" )
 
 load( "~/LIFE/life-for-postgraduates/ThomasBerger/original/Stimme/Stimme-Dateien/save/voice_clean.Rda" )
 
+library( lifecuration )
+
+ldb <-
+    connect.db( "user" )
+
+d177 <-
+    get.data.with.aliases( ldb, "D00177" )
+
+dbDisconnect( ldb )
+
+voice_speak <-
+    merge( 
+        voice_speak,
+        d177,
+        by.x = c( "sic" ),
+        by.y = c( "SIC" ),
+        all.x = T,
+        all.y = F )
+
+voice_speak <-
+    voice_speak[ !is.na( voice_speak$datum ) & !is.na( voice_speak$EDAT ) & year( voice_speak$datum ) == year( voice_speak$EDAT ), ]
+
 profiles <-
     c( 1 : 4 )
 
@@ -158,7 +180,7 @@ voice_speak$tanner.cat <-
     c( "I-prepubertal", paste0( "II-IV-", rep( "pubertal", 3 ) ), "V-adult" )[ match( voice_speak$tanner, c( 1 : 5 ) ) ]
 
 voice_speak.lmer <-
-    voice_speak[ , c( "sic", "gruppe", "fam.id2", "datum", "geschlecht", "bmi", "bmi.sds.cat", "tanner", "tanner.cat", "u_sing_stimmbelastg", "u_sing_stimmbelastg_v", "u_sing_stimmtraining", "u_sing_stimmtraining_v", paste0( "u_sing_instrument_", c( 1 : 3 ) ), paste0( "u_sing_instr_v_", c( 1 : 3 ) ), paste0( "st_sprech_", profiles ), paste0( "spl_sprech_", profiles ) ) ]
+    voice_speak[ , c( "sic", "gruppe", "fam.id2", "datum", "geschlecht", "bmi", "bmi.sds.cat", "tanner", "tanner.cat", "u_sing_stimmbelastg", "u_sing_stimmbelastg_v", "u_sing_stimmtraining", "u_sing_stimmtraining_v", "u_sing_singen_mot", "u_sing_zaehl_mot", paste0( "u_sing_instrument_", c( 1 : 3 ) ), paste0( "u_sing_instr_v_", c( 1 : 3 ) ), paste0( "st_sprech_", profiles ), paste0( "spl_sprech_", profiles ), names( d177 )[ !names( d177 ) %in% c( "SIC", "SGROUP" ) ] ) ]
 
 voice_speak.lmer$u_sing_stimmbelastg <-
     as.factor( voice_speak.lmer$u_sing_stimmbelastg )
@@ -222,8 +244,7 @@ addmargins( table( voice_speak.lmer$bmi.sds.cat ) )
 addmargins( table( voice_speak.lmer$wind_instrument ) )
 addmargins( table( voice_speak.lmer$wind_instrument_past ) )
 
-voice_speak.lmer <-
-    na.omit( voice_speak.lmer )
+sum( is.na( voice_speak.lmer$C_WINKLER.SCORE_FAM ) )
 
 addmargins( table( voice_speak.lmer$u_sing_stimmbelastg ) )
 addmargins( table( voice_speak.lmer$u_sing_stimmbelastg_v ) )
@@ -234,21 +255,36 @@ addmargins( table( voice_speak.lmer$bmi.sds.cat ) )
 addmargins( table( voice_speak.lmer$wind_instrument ) )
 addmargins( table( voice_speak.lmer$wind_instrument_past ) )
 
+voice_speak.lmer <-
+    na.omit( voice_speak.lmer )
+
+names( voice_speak.lmer )[ grep( "mot", names( voice_speak.lmer ) ) ]
+
+voice_speak.lmer$SES <-
+    cut( 
+        voice_speak.lmer$C_WINKLER.SCORE_FAM,
+        c( 3., 8.4, 15.4, 21. ),
+        c( "LOW", "MIDDLE", "HIGH" ) )
+
 for( i in profiles ) {
     
     model <-
-        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + bmi.sds.cat + strain_past + training_past + wind_instrument_past + ( 1 | sic ) + ( 1 | fam.id2 )" )
+        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + bmi.sds.cat + strain_past + training_past + wind_instrument_past + I( u_sing_singen_mot * u_sing_zaehl_mot ) + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
     
-    plot.lmer.coefficients.with.errorbars( 
+    print( plot.lmer.coefficients.with.errorbars( 
         voice_speak.lmer, 
             model,
             title = paste0( "coefficients of linear regression of speaking voice ", endings[ i ] ),
             xlab  = "coefficients", 
-            ylab  = "semi tones" )
+            ylab  = "semi tones" ) )
     
-    ggsave( 
-        filename = paste0( "betaPlotsLineareRegressionSpeakingVoice", ifelse( COL, "_Col_", "_BW_" ), endings[ i ], ".", ENDING ), 
-        width = WDTH, 
-        height = HGHT )
+    # ggsave( 
+    #     filename = paste0( "betaPlotsLineareRegressionSpeakingVoice", ifelse( COL, "_Col_", "_BW_" ), endings[ i ], ".", ENDING ), 
+    #     width = WDTH, 
+    #     height = HGHT )
 }
 View( voice_speak.lmer[ ,c( "sic", "gruppe", "datum", "wind_instrument", "u_sing_instr_v_1", "u_sing_instr_v_2", "u_sing_instr_v_3", "u_sing_instr_v_1", "u_sing_instr_v_2", "u_sing_instr_v_3" ) ] )
+
+
+table( voice_speak.lmer$u_sing_zaehl_mot, voice_speak.lmer$u_sing_singen_mot )
+cor( voice_speak.lmer$u_sing_zaehl_mot, voice_speak.lmer$u_sing_singen_mot )
