@@ -1,7 +1,7 @@
 rm( list = ls( ) )
 
 library( ggthemes )
-library( life.helper )
+library( hlpr4life )
 library( ggplot2 )
 library( grid )
 library ( reshape2 )
@@ -141,20 +141,20 @@ ggsubplot(
 		facet_grid( . ~ sizes ),
 	ggplot( d1 ) +
 		geom_point( aes( x, y, col = paste0( sizes, " ", sex ) ), alpha = .1 ) +
-		geom_rug( aes( x, y, col = paste0( sizes, " ", sex ) ), alpha = .1) +
+		geom_rug( aes( x, y, col = paste0( sizes, " ", sex ) ), alpha = .1 ) +
 		scale_color_manual( "kind of human", values = colors.sizes.sex ) +
 		theme_light( ) +
 		coord_flip( ),
 	ggplot( d1 ) +
 		geom_boxplot( inherit.aes = T, aes( x, y, col = paste0( sizes, " ", sex ), fill = paste0( sizes, " ", sex ) ), alpha = .75 ) +
-		geom_rug( aes( x, y, col = paste0( sizes, " ", sex ), fill = paste0( sizes, " ", sex ) ), alpha = .1 ) +
+		geom_rug( aes( x, y, col = paste0( sizes, " ", sex ) ), alpha = .1 ) +
 		scale_color_manual( "kind of human", values = colors.sex.sizes ) +
 		scale_fill_manual( "kind of human", values = colors.sex.sizes ) +
 		theme_light( ) +
 		facet_grid( sex ~ sizes ),
 	ggplot( d1 ) +
 		geom_boxplot( inherit.aes = T, aes( y, x, col = paste0( sizes, " ", sex ), fill = paste0( sizes, " ", sex ) ), alpha = .75 ) +
-		geom_rug( aes( y, x, col = paste0( sizes, " ", sex ), fill = paste0( sizes, " ", sex ) ), alpha = .1 ) +
+		geom_rug( aes( y, x, col = paste0( sizes, " ", sex ) ), alpha = .1 ) +
 		coord_flip( ) +
 		scale_color_manual( "kind of human", values = colors.sex.sizes ) +
 		scale_fill_manual( "kind of human", values = colors.sex.sizes ) +
