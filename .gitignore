@@ -48,4 +48,5 @@ vignettes/*.pdf
 
 .Rproj.user
 
-*/LifeHelper/*
+/LifeHelper/*
+/sent/*
