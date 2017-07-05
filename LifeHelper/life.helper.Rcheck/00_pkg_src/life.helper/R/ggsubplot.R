@@ -1,12 +1,23 @@
+#' ggsubplot
+#'
+#' @param ...
+#' @param plotlist
+#' @param cols
+#' @param layout
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ggsubplot <- # aka multiplot known from the internet
     function(
         ...,
         plotlist = NULL,
-        file,
         cols = 1,
         layout = NULL ) {
         library( grid )
         library( ggplot2 )
+        library( ggthemes )
 
         # Make a list from the ... arguments and plotlist
         plots <-

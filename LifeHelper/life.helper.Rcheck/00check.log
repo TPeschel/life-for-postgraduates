@@ -1,5 +1,5 @@
 * using log directory ‘/home/tpeschel/LIFE/life-for-postgraduates/LifeHelper/life.helper.Rcheck’
-* using R version 3.4.0 (2017-04-21)
+* using R version 3.4.1 (2017-06-30)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * using session charset: UTF-8
 * checking for file ‘life.helper/DESCRIPTION’ ... OK
@@ -36,12 +36,19 @@ Standardizable: FALSE
 * checking loading without being on the library search path ... OK
 * checking dependencies in R code ... WARNING
 'library' or 'require' calls not declared from:
-  ‘ggplot2’ ‘grid’
+  ‘ggplot2’ ‘ggthemes’ ‘grid’
 'library' or 'require' calls in package code:
-  ‘ggplot2’ ‘grid’
+  ‘ggplot2’ ‘ggthemes’ ‘grid’
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
-* checking S3 generic/method consistency ... OK
+* checking S3 generic/method consistency ... WARNING
+frequency:
+  function(x, ...)
+frequency.of.key:
+  function(key)
+
+See section ‘Generic functions and methods’ in the ‘Writing R
+Extensions’ manual.
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
 * checking R code for possible problems ... NOTE
@@ -51,34 +58,38 @@ ggsubplot: no visible global function definition for ‘viewport’
 ggsubplot: no visible global function definition for ‘grid.layout’
 Undefined global functions or variables:
   grid.layout grid.newpage pushViewport viewport
-* checking Rd files ... OK
+* checking Rd files ... WARNING
+prepare_Rd: ggsubplot.Rd:56: unexpected END_OF_INPUT '                nrow = 4 ) ) )
+'
 * checking Rd metadata ... OK
 * checking Rd cross-references ... OK
 * checking for missing documentation entries ... WARNING
 Undocumented code objects:
-  ‘polyfy’
+  ‘frequency.of.key’ ‘key.of.frequency’ ‘note.of.frequency’
+  ‘note.of.key’ ‘piano’ ‘polyfy’
 All user-level objects in a package should have documentation entries.
 See chapter ‘Writing R documentation files’ in the ‘Writing R
 Extensions’ manual.
 * checking for code/documentation mismatches ... WARNING
 Codoc mismatches from documentation object 'ggsubplot':
 ggsubplot
-  Code: function(..., plotlist = NULL, file, cols = 1, layout = NULL)
-  Docs: function(ggplot1, ggplot2, ggplot3, cols = 3)
+  Code: function(..., plotlist = NULL, cols = 1, layout = NULL)
+  Docs: function(ggplot1, ggplot2, ggplot3, ggplot4, cols = 2, layout =
+                 NULL)
   Argument names in code not in docs:
-    ... plotlist file layout
+    ... plotlist
   Argument names in docs not in code:
-    ggplot1 ggplot2 ggplot3
-  Mismatches in argument names:
+    ggplot1 ggplot2 ggplot3 ggplot4
+  Mismatches in argument names (first 3):
     Position: 1 Code: ... Docs: ggplot1
     Position: 2 Code: plotlist Docs: ggplot2
-    Position: 3 Code: file Docs: ggplot3
+    Position: 3 Code: cols Docs: ggplot3
   Mismatches in argument default values:
-    Name: 'cols' Code: 1 Docs: 3
+    Name: 'cols' Code: 1 Docs: 2
 
 * checking Rd \usage sections ... WARNING
 Undocumented arguments in documentation object 'ggsubplot'
-  ‘ggplot1’ ‘ggplot2’ ‘ggplot3’ ‘cols’
+  ‘ggplot1’ ‘ggplot2’ ‘ggplot3’ ‘ggplot4’ ‘cols’ ‘layout’
 
 Functions with \usage entries need to have the appropriate \alias
 entries, and all their arguments documented.
@@ -86,20 +97,21 @@ The \usage entries must correspond to syntactically valid R code.
 See chapter ‘Writing R documentation files’ in the ‘Writing R
 Extensions’ manual.
 * checking Rd contents ... OK
-* checking for unstated dependencies in examples ... OK
+* checking for unstated dependencies in examples ... WARNING
+'library' or 'require' call not declared from: ‘ggthemes’
 * checking examples ... ERROR
 Running examples in ‘life.helper-Ex.R’ failed
 The error most likely occurred in:
 
 > ### Name: ggsubplot
-> ### Title: Multi-Plots
+> ### Title: GGSubPlot
 > ### Aliases: ggsubplot
 > 
 > ### ** Examples
 > 
-> p1 <- ggplot() + geom_point( aes( c( 1:100), rnorm( 100 ) ) )
-Error in ggplot() : could not find function "ggplot"
+> library(ggthemes)
+Error in library(ggthemes) : there is no package called ‘ggthemes’
 Execution halted
 * checking PDF version of manual ... OK
 * DONE
-Status: 1 ERROR, 4 WARNINGs, 2 NOTEs
+Status: 1 ERROR, 7 WARNINGs, 2 NOTEs

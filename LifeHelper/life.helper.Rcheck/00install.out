@@ -2,6 +2,8 @@
 ** R
 ** preparing package for lazy loading
 ** help
+Warnung: /home/tpeschel/LIFE/life-for-postgraduates/LifeHelper/life.helper.Rcheck/00_pkg_src/life.helper/man/ggsubplot.Rd:56: unexpected END_OF_INPUT '                nrow = 4 ) ) )
+'
 *** installing help indices
 ** building package indices
 ** testing if installed package can be loaded
