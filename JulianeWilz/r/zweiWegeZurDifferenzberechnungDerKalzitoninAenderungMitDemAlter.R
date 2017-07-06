@@ -10,8 +10,13 @@ d <-
 d$AGE_Calcitionin <-
     as.numeric( d$AGE_Calcitionin )
 
-ggplot( d, aes( AGE_Calcitionin, CHILD_MED_H_VITAMIN_D, col = TEILNEHMER_GESCHLECHT ) ) + 
-    geom_point( )
+d$CHILD_MED_H_VITAMIN_D[ is.na( d$CHILD_MED_H_VITAMIN_D ) ] <- -1
+
+ggplot( d, aes( AGE_Calcitionin, as.factor( CHILD_MED_H_VITAMIN_D ), col = TEILNEHMER_GESCHLECHT ) ) + 
+    geom_point( ) +
+    scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
+    scale_y_discrete( breaks = c( -1 : +1 ), labels = c( "NA", "no", "yes" ) ) + 
+    theme_bw( )
 
 d$AGE <-
     cut(
@@ -31,7 +36,9 @@ s$dff.calcitonin[ s$AGE == "(0,1]" ] <- NA
 
 ggplot( s ) + 
     geom_point( aes( AGE, dff.calcitonin, col  = TEILNEHMER_GESCHLECHT ) ) +
-    geom_path( aes( AGE, dff.calcitonin, group = TEILNEHMER_GESCHLECHT, col  = TEILNEHMER_GESCHLECHT ) )
+    geom_path( aes( AGE, dff.calcitonin, group = TEILNEHMER_GESCHLECHT, col  = TEILNEHMER_GESCHLECHT ) ) +
+    scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
+    theme_bw( )
 
 
 
@@ -67,8 +74,9 @@ s <-
 
 ggplot( s ) +
     geom_path( aes( AGE, m, col = TEILNEHMER_GESCHLECHT, group = TEILNEHMER_GESCHLECHT ) ) +
-    geom_point( aes( AGE, m, col = TEILNEHMER_GESCHLECHT ) )
-
+    geom_point( aes( AGE, m, col = TEILNEHMER_GESCHLECHT ) ) +
+    scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
+    theme_bw( )
 
 
 # d <-

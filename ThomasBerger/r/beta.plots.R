@@ -1,7 +1,7 @@
 ## delete all data
 rm( list = ls( ) )
 
-library( life.helper )
+library( hlpr4life )
 
 WDTH <-
     8
@@ -255,8 +255,8 @@ addmargins( table( voice_speak.lmer$bmi.sds.cat ) )
 addmargins( table( voice_speak.lmer$wind_instrument ) )
 addmargins( table( voice_speak.lmer$wind_instrument_past ) )
 
-voice_speak.lmer <-
-    na.omit( voice_speak.lmer )
+# voice_speak.lmer <-
+#     na.omit( voice_speak.lmer )
 
 names( voice_speak.lmer )[ grep( "mot", names( voice_speak.lmer ) ) ]
 
@@ -266,13 +266,20 @@ voice_speak.lmer$SES <-
         c( 3., 8.4, 15.4, 21. ),
         c( "LOW", "MIDDLE", "HIGH" ) )
 
+i<-1
+model <-
+        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + bmi.sds.cat + strain_past + training_past + wind_instrument_past + I( u_sing_singen_mot * u_sing_zaehl_mot ) + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
+
+lmer( model, data = voice_speak.lmer )
+
 for( i in profiles ) {
     
     model <-
         paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + bmi.sds.cat + strain_past + training_past + wind_instrument_past + I( u_sing_singen_mot * u_sing_zaehl_mot ) + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
     
-    print( plot.lmer.coefficients.with.errorbars( 
-        voice_speak.lmer, 
+    print( 
+        plot.lmer.coefficients.with.errorbars( 
+            voice_speak.lmer, 
             model,
             title = paste0( "coefficients of linear regression of speaking voice ", endings[ i ] ),
             xlab  = "coefficients", 
@@ -283,8 +290,52 @@ for( i in profiles ) {
     #     width = WDTH, 
     #     height = HGHT )
 }
+
+plts <-
+    list(NA,NA,NA,NA)
+
+for( i in profiles ) {
+    
+    model <-
+        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + strain_past + training_past + wind_instrument_past + u_sing_singen_mot + u_sing_zaehl_mot + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
+    
+    plts[[ i ]] <-
+        plot.lmer.coefficients.with.errorbars( 
+            voice_speak.lmer, 
+            model,
+            title = paste0( "coefficients of linear regression of speaking voice ", endings[ i ] ),
+            xlab  = "coefficients", 
+            ylab  = "semi tones" )
+
+    # ggsave( 
+    #     filename = paste0( "betaPlotsLineareRegressionSpeakingVoice", ifelse( COL, "_Col_", "_BW_" ), endings[ i ], ".", ENDING ), 
+    #     width = WDTH, 
+    #     height = HGHT )
+}
+
+ggsubplot( 
+    plts[[ 1 ]],
+    plts[[ 2 ]],
+    plts[[ 3 ]],
+    plts[[ 4 ]],
+    cols = 2 )
+
 View( voice_speak.lmer[ ,c( "sic", "gruppe", "datum", "wind_instrument", "u_sing_instr_v_1", "u_sing_instr_v_2", "u_sing_instr_v_3", "u_sing_instr_v_1", "u_sing_instr_v_2", "u_sing_instr_v_3" ) ] )
 
 
-table( voice_speak.lmer$u_sing_zaehl_mot, voice_speak.lmer$u_sing_singen_mot )
-cor( voice_speak.lmer$u_sing_zaehl_mot, voice_speak.lmer$u_sing_singen_mot )
+table( voice_speak.lmer[ , c( "training" ) ] )
+table( voice_speak.lmer[ , c( "training_past" ) ] )
+
+v <-
+    data.frame( 
+        table( 
+            voice_speak.lmer[ , c( "u_sing_zaehl_mot", "u_sing_singen_mot" ) ] ) )
+
+ggplot( v ) +
+    geom_histogram( aes( u_sing_zaehl_mot, Freq, fill = u_sing_singen_mot ), stat = "identity", position = "dodge" ) +
+    facet_grid( ~ u_sing_singen_mot )
+    
+ggplot( v ) +
+    geom_point( aes( u_sing_zaehl_mot, u_sing_singen_mot, Freq, size = Freq, col = Freq ) ) +
+    theme_bw( )
+
