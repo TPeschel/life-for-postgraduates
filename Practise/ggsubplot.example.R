@@ -1,10 +1,8 @@
 rm( list = ls( ) )
 
-library( ggthemes )
 library( hlpr4life )
-library( ggplot2 )
-library( grid )
-library ( reshape2 )
+
+load.pkgs( c( "ggthemes", "ggplot2", "grid", "reshape2" ) )
 
 colors.sex <-
 	c( "#0000FF", "#FF0000" )

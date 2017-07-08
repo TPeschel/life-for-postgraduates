@@ -1,8 +1,8 @@
 rm( list = ls( ) )
 
-library( ggplot2 )
-library( ggthemes )
-library( life.helper )
+library( hlpr4life )
+
+load.pkgs( c( "ggplot2", "ggthemes" ) )
 
 my.df.sex <-
 	data.frame(
