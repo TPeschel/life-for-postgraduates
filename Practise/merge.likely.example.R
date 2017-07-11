@@ -8,42 +8,22 @@ Sys.time( )
 Sys.timezone( )
 Sys.setenv( TZ = "BMT" )
 
-calendar <-
-	function( start = "2010-01-01 00:00:00", end = "2017-06-19 00:00:00" ) as.POSIXct( seq( as_datetime( start ), as_datetime( end ), by = 24 * 3600 ), tz = "BMT" )
-
 clndr <-
+	calendar( "1973-08-08", "2017-06-19" )
+
+edats <-
 	calendar( "2010-01-01", "2017-06-19" )
-
-week.days <-
-	clndr[ wday( clndr ) %in% c( 1 : 5 ) ]
-
-make.sics <-
-	function( n ) {
-		sc <-
-			sapply(
-				as.character( c( 1 : n ) ),
-				function( s ) {
-					paste0(
-						paste(
-							rep(
-								"0",
-								times = floor( log10( n ) + 1 ) - nchar( s ) ),
-							collapse = "" ),
-						s ) } )
-		names( sc ) <-
-			NULL
-		sc }
 
 d1 <-
 	data.frame(
-		sic  = sample( make.sics( 30 ), 300, T ),
-		edat = as.Date( sample( clndr, 300 ) ),
+		sic  = paste0( "LI00", sample( make.sics( n.first = 9991, n.last = 10020 ), 300, T ) ),
+		edat = as.Date( sample( edats$date, 300, T ) ),
 		H    = round( rnorm( 300, 180, 10 ) ))
 
 d2 <-
 	data.frame(
-		sic = sample( make.sics( 30 ), 300, T ),
-		edat = as.Date( sample( clndr, 300 ) ),
+		sic = paste0( "LI00", sample( make.sics( n.first = 9991, n.last = 10020 ), 300, T ) ),
+		edat = as.Date( sample( edats$date, 300, T ) ),
 		height = round( rnorm( 300, 180, 10 ) ) )
 
 ml(

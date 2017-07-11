@@ -38,7 +38,7 @@ tbl$SEX <-
     factor( 
         tbl$TEILNEHMER_GESCHLECHT,
         levels = c( 1, 2 ),
-        labels = c( "maennchen", "weibchen") )
+        labels = c( "male", "female" ) )
         
 tbl$TEILNEHMER_GESCHLECHT <- 
     NULL
@@ -49,6 +49,9 @@ tbl$wnklr <-
         breaks = c( 0, 8, 14, 21 ),
         labels = c( "LOW", "MID", "HIGH" ) )
 
+rm( list = c( "tbl.wnklr", "tbl.join" ) )
+
+save( list = "tbl", file =  "join.Rd" )
+
 setwd( owd )
 
-rm( list = c( "tbl.wnklr", "tbl.join" ) )

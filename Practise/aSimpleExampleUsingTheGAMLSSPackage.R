@@ -21,7 +21,10 @@ ggplot( d ) + theme_bw( ) +
 
 ggplot( d ) +
 	theme_bw( ) +
+	scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
+	scale_fill_manual( values = c( "deeppink", "deepskyblue" ) ) +
 	geom_point( aes( lboopen, lborev1 ), col = "blue", alpha = .1 ) +
 	geom_line( aes( d$lboopen, fitted( m0 ), group = 1, col = as.factor( abs( round( residuals( m0 ) ) ) ) ), size = 2 )+
 	scale_color_brewer( type = "seq", palette = 3 )
+
 
