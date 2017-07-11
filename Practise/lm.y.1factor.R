@@ -2,7 +2,7 @@ rm( list = ls( ) )
 
 library( ggplot2 )
 library( ggthemes )
-library( life.helper )
+library( hlpr4life )
 
 my.df.sex <-
 	data.frame(

@@ -4,6 +4,8 @@ library( dplyr )
 library( readxl )
 library( lubridate )
 
+
+
 owd <- getwd( )
 
 setwd( "~/LIFE/life-for-postgraduates/WiebkeKeller/data/" )
@@ -52,3 +54,5 @@ tbl$wnklr <-
 setwd( owd )
 
 rm( list = c( "tbl.wnklr", "tbl.join" ) )
+
+save( "")

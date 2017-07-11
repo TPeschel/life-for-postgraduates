@@ -1,16 +1,20 @@
-setwd("../../data/")
+#setwd( "../../data/" )
+
+setwd( "~/LIFE/life-for-postgraduates/WiebkeKeller/results/" )
 
 library( dplyr )
 library( ggplot2 )
 library( readxl )
 library( lubridate )
 
+Sys.setenv( TZ = "BMT" )
+
 my.theme <-
   theme_bw( )
 
-tbl.all <- read_excel("PV0332_Gesamt_Join.xlsx")
+tbl.all <- read_excel("../data/PV0332_Gesamt_Join.xlsx")
 
-tbl.disease <- read_excel("old/PV0332_D00127_NODUP.xlsx")
+tbl.disease <- read_excel("../data/old/PV0332_D00127_NODUP.xlsx")
 
 tbl.all$JAHR <-
   year( tbl.all$E_SDQ_EDAT )
@@ -25,6 +29,7 @@ tbl <- merge (
 tbl$sex <- factor(tbl$TEILNEHMER_GESCHLECHT, levels = c(1,2),
                     labels = c("male","female"))
 
+save( list = "tbl", file = "joinWithPsych.Rd" )
 ##Wie viele Besuche haben ADHS?
 
 tbl.adhs <- tbl[!is.na(tbl$C_DISEASE_TX_ADHS),]
@@ -52,7 +57,6 @@ tbl.small <- as.data.frame( table( tbl.depres$C_DISEASE_TX_DEPRES, tbl.depres$se
 ggplot( tbl.small, aes( Var2, log10( Freq ), fill = Var1 ) ) +
     geom_histogram( stat = "identity", position = "dodge" )
 
-
 ggplot( 
     tbl.depres, 
     aes( as.factor( C_DISEASE_TX_DEPRES ), fill = sex ) ) + 
@@ -61,6 +65,7 @@ ggplot(
     my.theme +
     scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
     labs( title = "Besuche Depression" )
+
 ##Kann man das vielleicht noch anders einstellen, damit man die Erkrankten
 #auch im Plot erkennt?
 #Ja so:
@@ -150,4 +155,5 @@ ggplot(
   my.theme +
   scale_fill_brewer( type = "qual", palette = 6, direction = -1 ) +
   labs( title = "Kinder Psychische Erkrankungen" )
+
 

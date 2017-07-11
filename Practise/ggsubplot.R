@@ -5,7 +5,7 @@ y <- 10 * x + rnorm( n, -100, 10 )
 
 library( ggplot2 )
 library( ggthemes )
-library( life.helper )
+library( hlpr4life )
 
 b <- seq( floor( min( x ) ), ceiling( max( x ) ), by = .5 )
 l <- b[ -1 ] - .25

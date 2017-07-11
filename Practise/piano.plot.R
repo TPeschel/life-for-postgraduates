@@ -1,10 +1,9 @@
 rm( list = ls( ) )
 
-if( !require( hlpr4life ) ) install.packages( "hlpr4life" )
-if( !require( ggplot2 ) ) install.packages( "ggplot2" )
-if( !require( ggthemes ) ) install.packages( "ggthemes" )
-if( !require( dplyr ) ) install.packages( "dplyr" )
-	
+library( "hlpr4life" )
+
+load.pkgs( c( "dplyr", "ggplot2", "ggthemes" ) )
+
 the.piano <-
 	piano( 4, 88 )
 
