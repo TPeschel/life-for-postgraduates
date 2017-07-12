@@ -84,7 +84,7 @@ iters <-
 	1
 
 bins <-
-	23
+	13
 
 sample.prob <-
 	1
