@@ -26,17 +26,16 @@ from <-
 to <-
 	as_datetime( "2017-12-31" )
 
-res <-
+brks <-
 	as.numeric( round( difftime( to, from ) / ( 365.25 / 12 ) ) )
 
 n <-
-	10000
+	20000
 
 d <-
 	data.frame(
 		date = seq( from = from, to = to, length.out = n ),
-		y = rnorm( n ) + 
-			( 2 * cos( .001 * c( 1 : n ) ) ) ** 2 * cos( .0001 * c( 1 : n ) ) ) + ( .0005 * c( 1 : n - n / 2 ) ) ** 2
+		y = ( 1 + 2 * cos( .001 * c( 1 : n ) ) ** 2 ) * rnorm( n ) * cos( .0001 * c( 1 : n ) ) + ( .0005 * c( 1 : n - n / 2 ) ) ** 2 )
 
 ( plot1 <-
 	ggplot( d ) +
@@ -52,14 +51,14 @@ summary( d$date )
 # 		d$date,
 # 		breaks = 200 )
 
-quntls <-
-	function( df, col.date = "date", breaks = nrow( df ) / 100, probs = c( 0, .001, .01, .025, .05, .1, .25, .5, .75, .9, .95, .975, .99, .999, 1 ) ) {
+d$date.month <-
+	cut(
+		d[ , names( d ) == "date" ],
+		breaks = brks )
 
-		df$date.month <-
-			cut(
-				df[ , names( df ) == col.date ],
-				breaks = breaks )
-		
+quntls <-
+	function( df, col.date = "col.date", probs = c( 0, .001, .01, .025, .05, .1, .25, .5, .75, .9, .95, .975, .99, .999, 1 ) ) {
+
 		txt <-
 			paste0(
 				'ss <- df %>% group_by( date.month ) %>% summarise(',
@@ -76,30 +75,26 @@ quntls <-
 
 ( plot2 <-
 	ggplot( ) +
-		geom_line( data = melt( quntls( d, "date", res ), "date.month" ), aes( date.month, value, group = variable, col = variable ), alpha = 1 ) +
+		geom_line( data = melt( quntls( d, "date.month" ), "date.month" ), aes( date.month, value, group = variable, col = variable ), alpha = 1 ) +
 		geom_point( data = d, aes( as.factor( date ), y ), col = "gray", alpha = .1 ) +
 		theme_classic( ) )
 
-brks <-
-	res
+iters <-
+	50
+
+sub.iters <- 
+	c( 11 : 11 )
+
+p <-
+	.75
 
 perc <-
 	quntls(
-		df = d[ sample( c( T, F ), nrow( d ), T, prob = c( .7, .3 ) ), ],
-		col.date = "date", 
-		breaks = brks )
+		df = d[ sample( c( T, F ), nrow( d ), T, prob = c( p, ( 1 - p ) ) ), ],
+		col.date = "col.date" )
 
 perc[ , -1 ] <-
 	0
-
-iters <-
-	1
-
-sub.iters <- 
-	c( 3 : 3 )
-
-p <-
-	1
 
 for( it in c( 1 : iters ) ) {
 
@@ -109,15 +104,16 @@ for( it in c( 1 : iters ) ) {
 		d[ sample( c( T, F ), nrow( d ), T, prob = c( p, ( 1 - p ) ) ), ]
 	
 	g <-
-		quntls( smpl, "date", brks )
+		quntls( smpl, "date.month" )
 
 	for( b in sub.iters ) {
 		
-		sm <-
-			exp( -( c( -b : b ) ** 2 ) / ( 2 * b * b / 9 ) )
-		
 		sm <- 
-			sm / sum( sm )
+			#rep( 1, 2 * b + 1 ) / ( 2 * b + 1 ) #c( -b : b )
+			exp( -( c( -b : b ) ** 2 ) / ( 2 * b * b / 9 ) )
+
+		# sm <- 
+		# 	sm / sum( sm )
 	
 		for( i in 1 : nrow( g ) ) {
 		
@@ -134,6 +130,16 @@ for( it in c( 1 : iters ) ) {
 		
 		cat( "\n" ) } }
 
+d %<>% 
+	group_by( date.month ) %>%
+	mutate( 
+		mn = min( y ),
+		mx = max( y ), 
+		mu = mean( y ), 
+		sigma = sd( y ), 
+		low = mu - sigma, 
+		high = mu + sigma )
+
 perc.melt <- 
 	melt( perc, "date.month" ) 
 
@@ -142,13 +148,16 @@ perc.melt$value <-
 
 ( plot3 <-
 	ggplot( ) +
+		geom_point( data = d, aes( as.factor( date ), y ), col = "black",  alpha = .3 ) +
+		geom_point( data = d, aes( date.month, mn ), col = "green" ) + 
+		geom_point( data = d, aes( date.month, mx ), col = "red" ) + 
+		scale_color_discrete( guide = F ) +
 		geom_line( data = perc.melt, aes( date.month, value, group = variable, col = variable ), alpha = 1 ) +
-		geom_point( data = d, aes( as.factor( date ), y ), col = "gray", alpha = .1 ) +
 		theme_classic( ) )
 
-ggsubplot( 
-	plot2,
-	plot3,
-	layout = t( matrix( c( 1, 1, 2, 2 ), ncol = 2 ) ) )
+# ggsubplot( 
+# 	plot2,
+# 	plot3,
+# 	layout = t( matrix( c( 1, 1, 2, 2 ), ncol = 2 ) ) )
 
-ggsave( plot = plot3, filename = "plotperI10P5B12.png" )
+ggsave( plot = plot3, filename = paste0( "plotI", iters, "S", sub.iters, "P", p, ".png" ) )
