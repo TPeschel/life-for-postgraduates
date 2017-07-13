@@ -216,13 +216,13 @@ for( bins in 0 : 51 ) {
 		annotate( geom = "text", x = length( levels( perc.melt$age.bins ) ) / 2.4, y = 5, label = paste0( "bins: ", ( 2 * bins + 1 ) ), size = 10 ) +
  		theme( axis.text.x = element_text( angle = 90, size = 7 ) ) )
 
-	Sbins.str <-
+	bins.str <-
 		as.character( bins )
 	
 	bins.str <-
 		paste0( paste0( rep( x = "0", length.out = 4 - nchar( bins.str ) ), collapse = "" ), bins.str )
 	
-	ggsave( filename = paste0( "neu", nrow( d ), "B", bins.str, ".png" ), width = 16, height = 8 ) }
+	ggsave( filename = paste0( "plot", nrow( d ), "B", bins.str, ".png" ), width = 16, height = 8 ) }
 # 
 # 
 # 
