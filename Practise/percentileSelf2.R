@@ -63,7 +63,7 @@ arrange( d, date )
 summary( d$date )
 
 quntls <-
-	function( df, date.bins = "date.bins", probs = c( 0, .001, .01, .025, .05, .1, .25, .5, .75, .9, .95, .975, .99, .999, 1 ) ) {
+	function( df, date.bins = "date.bins", probs = .01 * c( 0 : 100 ) ) {
 		
 		txt <-
 			paste0(
@@ -93,7 +93,6 @@ quntls <-
 iters <-
 	1
 
-<<<<<<< HEAD
 bins <-
 	13
 
@@ -104,12 +103,11 @@ perc <-
 	quntls(
 		df = d[ sample( c( T, F ), nrow( d ), T, prob = c( sample.prob, ( 1 - sample.prob ) ) ), ],
 		date.bins = "date.bins" )
-=======
-x.scale <- 
-	sample( d$date.bins, 10 )
+
+# x.scale <- 
+# 	sample( d$date.bins, 10 )
 	
 for( bins in c( 1 : 23 ) ) {
->>>>>>> ec4ade63fec3dd6027d7f5331e909558d9f73157
 
 	# bins <-
 	# 	5
