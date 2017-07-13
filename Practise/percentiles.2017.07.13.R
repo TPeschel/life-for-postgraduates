@@ -216,8 +216,7 @@ for( bins in 0 : 51 ) {
 		annotate( geom = "text", x = length( levels( perc.melt$age.bins ) ) / 2.4, y = 5, label = paste0( "bins: ", ( 2 * bins + 1 ) ), size = 10 ) +
  		theme( axis.text.x = element_text( angle = 90, size = 7 ) ) )
 
-	bins <-12
-	bins.str <-
+	Sbins.str <-
 		as.character( bins )
 	
 	bins.str <-
