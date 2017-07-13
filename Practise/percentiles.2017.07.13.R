@@ -6,7 +6,7 @@ rm( list = ls( ) )
 
 library( hlpr4life )
 
-setwd( "~/LIFE/life-for-postgraduates/Practise/2/" )
+setwd( "~/LIFE/life-for-postgraduates/Practise/3/" )
 
 Sys.time( )
 Sys.timezone( )
@@ -121,7 +121,7 @@ d <-
 		ggplot( d ) +
 		geom_point( aes( alter, motivation ), alpha = .1 ) +
 		theme_bw( ) )
-
+ggsave( filename = paste0( "plot", nrow( d ), "orig.png" ), width = 16, height = 8 )
 # create.data.frame.for.percentile.curve.calculation.via.data.frame( 
 # 	data.frame = d, 
 # 	value.name = "alter",

@@ -50,11 +50,44 @@ tbl.psy.knd.female <- tbl.psy.knd[ tbl.psy.knd$SEX == "female", ]
 
 summary( glm.male )
 
+exp( coef( glm.male ) )
+
+rcorr( tbl.psy.knd.male$score.psy, tbl.psy.knd.male$score.allerg )
+
+
 ( glm.female <-
     glm( data = tbl.psy.knd.female, score.psy ~ score.allerg, family = binomial( "logit" ) ) )
 
 summary( glm.female )
 
-rcorr( tbl.psy.knd.male$score.psy, tbl.psy.knd.male$score.allerg )
+exp( coef( glm.female ) )
 
 rcorr( tbl.psy.knd.female$score.psy, tbl.psy.knd.female$score.allerg )
+
+ggplot( tbl.psy.allerg ) +
+    geom_jitter( aes( C_DISEASE_TX_PSY, C_DISEASE_TX_ALLERG, col = SEX ) )
+
+# polychoric correlation
+# x is a contingency table of counts
+
+load.pkgs("polycor")
+
+polychor( tbl.psy.allerg ) 
+
+# heterogeneous correlations in one matrix 
+# pearson (numeric-numeric), 
+# polyserial (numeric-ordinal), 
+# and polychoric (ordinal-ordinal)
+# x is a data frame with ordered factors 
+# and numeric variables
+library(polycor)
+hetcor(x) 
+
+
+# partial correlations
+load.pkgs( "ggm" )
+
+data( tbl.psy.allerg )
+
+pcor(c("a", "b", "x", "y", "z"), var(tbl.psy.allerg))
+# partial corr between a and b controlling for x, y, z
