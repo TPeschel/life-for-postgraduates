@@ -1,5 +1,8 @@
 rm( list = ls( ) )
 
+
+
+
 library( dplyr )
 library( readxl )
 library( lubridate )
@@ -56,10 +59,3 @@ rm( list = c( "tbl.wnklr", "tbl.join" ) )
 save( list = "tbl", file =  "join.Rd" )
 
 setwd( owd )
-
-<<<<<<< HEAD
-=======
-rm( list = c( "tbl.wnklr", "tbl.join" ) )
-
-save( "")
->>>>>>> 187e995494562e997f18a8b5662bd092fa09d831

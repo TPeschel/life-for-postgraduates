@@ -6,7 +6,7 @@ rm( list = ls( ) )
 
 library( hlpr4life )
 
-setwd( "~/LIFE/life-for-postgraduates/Practise/4/" )
+setwd( "~/LIFE/life-for-postgraduates/Practise/6/" )
 
 Sys.time( )
 Sys.timezone( )
@@ -22,60 +22,11 @@ load.pkgs(
 		"reshape2",
 		"lubridate" ) )
 
-# create.data.frame.for.percentile.curve.calculation.via.columns <-
-# 	function( value, age, percentiles = c( 0 : 100 ) ) {
-# 
-# 		rows <-
-# 			length( value )
-# 
-# 		rows.age <-
-# 			length( age )
-# 
-# 		if( rows != rows.age ) {
-# 
-# 			print( "rows.value and row.age have to have the same length" )
-# 			return( )
-# 		}
-# 
-# 		data.frame(
-# 			value  = value,
-# 			age    = age,
-# 			eval(
-# 				parse(
-# 					text =
-# 						c(
-# 							"data.frame(",
-# 							c(
-# 								paste0(
-# 									"p",
-# 									percentiles[ 1 : ( length( percentiles ) - 1 ) ],
-# 									"=rep(0,rows)," ),
-# 								paste0(
-# 									"p",
-# 									percentiles[ length( percentiles) ],
-# 									"=rep(0,rows))" ) ) ) ) ),
-# 			mu     = rep( 0, rows ),
-# 			sd     = rep( 0, rows ),
-# 			sigma  = rep( 0, rows ),
-# 			low    = rep( 0, rows ),
-# 			high   = rep( 0, rows ),
-# 			lambda = rep( 0, rows ),
-# 			nu     = rep( 0, rows ) ) }
-# 
-# create.data.frame.for.percentile.curve.calculation.via.data.frame <-
-# 	function( data.frame, value.name, age.name, percentiles = c( 0 : 100 ) ) {
-# 
-# 		return(
-# 			create.data.frame.for.percentile.curve.calculation.via.columns(
-# 				data.frame[ , names( data.frame ) == value.name ],
-# 				data.frame[ , names( data.frame ) == age.name ],
-# 				percentiles ) ) }
-
 n <-
 	100000
 
 all.ages <-
-	seq( from = 3.56, to = 19.92, length.out = n ) + rnorm( n, 0, .5 )
+	abs( seq( from = 3, to = 20, length.out = n ) + rnorm( n, 0, .5 ) )
 
 d <-
 	data.frame(
@@ -83,7 +34,7 @@ d <-
 		motivation = rnorm( n ) * ( 1 + 1 * all.ages ) )
 
 d$motivation <-
-	d$motivation + 10. * ( d$motivation / d$alter ) + .1 * ( d$alter - 12 ) ** 3
+	d$motivation + 10. * ( d$motivation / d$alter ) + .1 * ( d$alter - 12 ) ** 3 + .001 * d$motivation ** 3
 
 d$age.bins <-
 	cut(
@@ -91,8 +42,16 @@ d$age.bins <-
 		breaks = seq( floor( min( d$alter ) ), ceiling( max( d$alter ) ), by = 1 / 12 ),
 		labels = round( seq( floor( min( d$alter ) ), ceiling( max( d$alter ) ) - 1 / 12, by = 1 / 12 ), 2 ) )
 
+d.total <- 
+	d
+
+save( d.total, file = paste0( "distribution.motivation.vs.alter", n, ".Rd" ) )
+
+d <-
+	d.total
+
 dense <-
-	.01 * ( 1 + cos( 5 * 3.142 * c( 1 : n ) / n ) )
+	.2 * ( 1 + cos( 5 * 3.142 * c( 1 : n ) / n ) )
 
 summary( dense )
 
@@ -111,21 +70,11 @@ d <-
 
 ( plot1 <-
 		ggplot( d ) +
-		geom_point( aes( alter, motivation ), alpha = .1 ) +
+		geom_point( aes( alter, motivation ), alpha = min( max( 1000 / n, 0 ), 1 ) ) +
 		geom_text( aes( alter, label = n ), y = -100, check_overlap = T, angle = 90, size = 2 ) +
 		theme_bw( ) )
 
 ggsave( filename = paste0( "plot", nrow( d ), "orig.png" ), width = 16, height = 8 )
-# create.data.frame.for.percentile.curve.calculation.via.data.frame( 
-# 	data.frame = d, 
-# 	value.name = "alter",
-# 	age.name = "age.bins", 
-# 	percentiles = 10 * c( 0 : 10 ) )
-# 
-# create.data.frame.for.percentile.curve.calculation.via.columns( 
-# 	d$motivation, 
-# 	d$age.bins,
-# 	percentiles = 10 * c( 0 : 10 ) )
 
 compute.percentiles <-
 	function( data.frame.with.age.bins_value, bins = 11, percentiles = c( 0, 0.1, 1, 2.5, 5, 10 * c( 1 : 9 ), 95, 97.5, 99, 99.9, 100 ) ) {
@@ -147,35 +96,36 @@ compute.percentiles <-
 							high   = mu + sigma,
 							mn     = min( value ),
 							mx     = max( value ) )" ) ) )
-
+		
 		sm <-
 			exp( -( c( -bins : bins ) ** 2 ) / ( 2 * bins * bins / 10 ) )
 		
 		sm <-
 			sm / sum( sm )
-
+		
 		perc.boxed <-
 			perc
 		
-		perc.boxed[ , 2 : ( 1 + length( percentiles ) ) ] <-
+		perc.boxed[ , 2 : ncol( perc ) ] <-
 			0
 		
 		for( i in 1 : nrow( perc ) ) {
-
+			
 			cat( paste0( as.character( perc$age.bins[ i ] ), "  " ) )
-
+			
 			for( j in c( -bins : bins ) ) {
-
+				
 				id <-
 					min( max( i + j, 1 ), nrow( perc ) )
-
-				for( k in 2 : ( 1 + length( percentiles ) ) ) {
-
+				
+#				for( k in 2 : ( 1 + length( percentiles ) ) ) {
+				for( k in 2 : ncol( perc ) ) {
+						
 					perc.boxed[ i, k ] <-
 						perc.boxed[ i, k ] + sm[ j + 1 + bins ] * perc[ id, k ] } } }
 		
 		cat( "\n" )
-
+		
 		perc.boxed }
 
 d <- 
@@ -207,7 +157,7 @@ for( bins in seq( 51, 1, by = -1 ) ) {
 			annotate( geom = "text", x = length( levels( perc.melt$age.bins ) ) / 2.4, y = 120, label = paste0( "bins: ", ( 2 * bins + 1 ) ), size = 10 ) +
 			geom_text( data = d, aes( age.bins, label = n ), y = -100, check_overlap = T, angle = 90, size = 2 ) +
 			theme( axis.text.x = element_text( angle = 90, size = 7 ) ) )
-
+	
 	bins.str <-
 		as.character( bins )
 	
