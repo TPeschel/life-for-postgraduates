@@ -1,31 +1,49 @@
+##
+# loesche speicher
+##
 rm( list = ls( ) )
 
-<<<<<<< HEAD
-Sys.setenv( TZ = "BMT")
-
-if( !"devtools" %in% installed.packages( ) ) {
-    install.packages( "devtools" )
-}
-=======
+##
+# installiere devtools, falls noch nicht passiert
+##
 if( !"devtools" %in% installed.packages( ) ) {
     install.packages( "devtools" ) }
->>>>>>> daa1ab05c758e77c20694327fec76f89ab9c1a1f
 
+##
+# installiere Paket HelperForLife
+##
 devtools::install_github( "TPeschel/hlpr4life" )
 
+##
+# lader hlpr4life
+##
 library( "hlpr4life" )
 
-<<<<<<< HEAD
-load.pkgs( c( "readxl" ) )
+##
+# lade paket readxl
+##
+# load.pkgs installiert Pakete, die noch nicht installiert sind, bevor versucht wird, diese zu laden
+load.pkgs( c( "readxl", "ggplot2" ) )
 
 setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/tp/" )
 
+##
+# lade t6
+##
 load( "T6.Rd" )
 
+##
+# lade Winkler
+##
 d177 <-
     read_excel( "PV0208_D00177.xlsx" )
 
-t6 <-
+##
+# verbinde winkler mit t6 uber sic und edat
+# da edat beim winkler nur halbjaehrig angegeben ist
+# verbinde uber datumsdifferenz von maximal einem halben jahr (182 Tage)
+## 
+t6. <-
     merge.likely(
         t6,
         d177,
@@ -34,28 +52,31 @@ t6 <-
         by.lk.x = "Entnahmedatum.x",
         by.lk.y = "EDAT",
         min = c( -183 ),
-        max = c( +182 ),
-        all.x = T,
-        all.y = F )
+        max = c( +182 ) )
 
+##
+# lade medikamente
+##
 d129 <-
     read_excel( "PV0208_D00129_Medikamente.xlsx" )
 
-t6 <-
+##
+# verbinde ueber sic und edat
+# hier mit einer toleranz von einem monat (31 Tage)
+##
+t6.. <-
     merge.likely( 
-        d1 = t6, 
+        d1 = t6., 
         d2 = d129, 
         by.x = c( "TEILNEHMER_SIC" ), 
         by.y = c( "CHILD_MED_H_SIC" ),
         by.lk.x = c( "Entnahmedatum.x" ),
         by.lk.y = c( "CHILD_MED_H_EDAT" ),
         min = c( -32 ),
-        max = c( +31 ),
-        all.x = T,
-        all.y = F )
+        max = c( +31 ) )
 
-t6 <-
-    t6[ , c(
+t6... <-
+    t6..[ , c(
         "Materialnummer",
         "TEILNEHMER_SIC",
         "Entnahmedatum.x",
@@ -76,37 +97,12 @@ t6 <-
         "CHILD_MED_H_SEX_STEROIDE",
         "D00177_SCORE_FAM" ) ]
 
+t6 <-
+    t6...
 
 save( "t6", file = "AnthroWinklerMedik.Rd" )
-=======
-load.pkgs(
-    c(
-        "dplyr",
-        "readxl",
-        "WriteXLS" ) )
 
-setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/tp/" )
+ggplot( t6 ) + theme_classic( ) +
+    geom_histogram( aes( as.factor( round( C_ANTHRO_AGE ) ) ), stat = "count" ) +
+    facet_grid( . ~ C_AUFKL_GENDER )
 
-load( "T6.Rd")
-
-names( t6 )
-
-tbl.pv208 <-
-    read_excel( "PV208_DataJoin20160929.xlsx" )
-
-
-
-dis <- 
-    read_excel( "PV0208_D00127_Krankheiten.xlsx" )
-
-med <- 
-    read_excel( "PV0208_D00129_Medikamente.xlsx" )
-
-dis <- 
-    read_excel( "PV0208_D00177.xlsx" )
-
-merge(
-    t6,
-    
-)
->>>>>>> daa1ab05c758e77c20694327fec76f89ab9c1a1f
