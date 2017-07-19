@@ -23,7 +23,7 @@ library( "hlpr4life" )
 # lade paket readxl
 ##
 # load.pkgs installiert Pakete, die noch nicht installiert sind, bevor versucht wird, diese zu laden
-load.pkgs( c( "readxl", "ggplot2" ) )
+
 
 setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/tp/" )
 
