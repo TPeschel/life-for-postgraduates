@@ -236,7 +236,6 @@ p1 <-
         labs( title = "AGE", x = "AGE [y]" ) +
         theme( axis.text.x = element_text( angle = 90 ) )
 
-
 p2 <-
     ggplot( main.table[ 0 < main.table$CORTISOL, ]  ) +
         theme_classic( ) +
