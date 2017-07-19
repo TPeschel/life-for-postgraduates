@@ -3,18 +3,20 @@
 ## delete all data
 rm( list = ls( ) )
 
-library( directlabels )
-library( dplyr )
-library( gamlss )
-library( ggplot2 )
-library( lifecuration )
-library( lubridate )
-library( readxl )
-library( reshape2 )
-library( svglite )
-library( xtable )
-library( life.helper )
-library( latex2exp )
+library( hlpr4life )
+
+load.pkgs( 
+    c( "directlabels",
+        "dplyr",
+        "gamlss",
+        "ggplot2",
+        "lifecuration",
+        "lubridate",
+        "readxl", 
+        "reshape2",
+        "svglite",
+        "xtable",
+        "latex2exp" ) )
 
 WDTH <-
     8
@@ -269,12 +271,12 @@ txt.pos <-
 notes.1 <- 
     data.frame(
         frq  = f <- 10 ** seq( log10( 100 ), log10( 375 ), by = .05 ),
-        note = sapply( f, function( f ) piano.key.notes.frequencies$note[ which.min( abs( piano.key.notes.frequencies$frq - f ) ) ] ) )
+        note = sapply( f, function( f ) note.of.freq( f ) ) )
 
 notes.2 <- 
     data.frame(
         frq  = f <- c( 100, 150, 200, 250, 300, 350, 400 ),
-        note = sapply( f, function( f ) piano.key.notes.frequencies$note[ which.min( abs( piano.key.notes.frequencies$frq - f ) ) ] ) )
+        note = sapply( f, function( f ) note.of.freq( f ) ) )
 
 ggplot(
     f0.spl,

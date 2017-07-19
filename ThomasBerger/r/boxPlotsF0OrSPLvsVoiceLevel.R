@@ -1,8 +1,9 @@
 ## delete all data
 rm( list = ls( ) )
 
-library( life.helper )
-library( reshape2 )
+library( hlpr4life )
+
+load.pkgs( c( "reshape2", "ggthemes" ) )
 
 WDTH <-
     6
@@ -67,7 +68,7 @@ ggsubplot(
         ggplot( d.spl ) +
             geom_boxplot( aes( variable, value ) ) +
             facet_grid( geschlecht ~ age.cat ) +
-            labs( title = "sound pegel", x = "voice level", y = "sound pegel [dB]" ) +
+            labs( title = "sound pressure level", x = "voice level", y = "sound pressure level [dB]" ) +
             theme_base( ),
             layout = matrix( c( 1, 2 ), ncol = 2 ) )
 
@@ -85,7 +86,7 @@ ggsave(
 ggplot( d.spl ) +
     geom_boxplot( aes( variable, value ) ) +
     facet_grid( geschlecht ~ age.cat ) +
-    labs( title = "sound pegel", x = "voice level", y = "sound pegel [dB]" ) +
+    labs( title = "sound pressure level", x = "voice level", y = "sound pressure level [dB]" ) +
     theme_base( )
 
 ggsave(
@@ -116,7 +117,7 @@ d.f0.spl <-
 ggplot( d.f0.spl ) +
     geom_boxplot( aes( profile, value, fill = variable ) ) +
     facet_grid( geschlecht ~ age.cat ) +
-    labs( title = "sound pegel and fundamental frequencies", x = "voice level", y = "sound pegel [dB]\nfundamental frequency [Hz]" ) +
+    labs( title = "sound pressure level and fundamental frequencies", x = "voice level", y = "sound pressure level [dB]\nfundamental frequency [Hz]" ) +
     theme_base( )
 
 WDTH <-
