@@ -15,8 +15,8 @@ library(lme4)
 library(effects)
 library(multcomp)
 
-load( file = "~/LIFE/github-tpeschel/life-for-postgraduates/ThomasBerger/results/refs.Rda" )
-load( file = "~/LIFE/github-tpeschel/life-for-postgraduates/ThomasBerger/results/data.sprech.Rda" )
+load( file = "~/LIFE/life-for-postgraduates/ThomasBerger/results/refs.Rda" )
+load( file = "~/LIFE/life-for-postgraduates/ThomasBerger/results/data.sprech.Rda" )
 #load( file = "~/LIFE/github-tpeschel/R/ThomasBerger/results/refs.Rda" )
 #load( file = "~/LIFE/github-tpeschel/R/ThomasBerger/results/data.sprech.Rda" )
 

@@ -297,7 +297,7 @@ plts <-
 for( i in profiles ) {
     
     model <-
-        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + strain_past + training_past + wind_instrument_past + u_sing_singen_mot + u_sing_zaehl_mot + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
+        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + strain + training + wind_instrument + u_sing_singen_mot : u_sing_zaehl_mot + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
     
     plts[[ i ]] <-
         plot.lmer.coefficients.with.errorbars( 
