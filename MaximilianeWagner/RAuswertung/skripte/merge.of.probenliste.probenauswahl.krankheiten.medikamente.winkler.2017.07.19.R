@@ -12,7 +12,7 @@ load.pkgs(
         "lubridate" ) )
 
 # hier Deinen Pfad eintragen
-setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/RAuswertung-Maxi/" )
+setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/RAuswertung/" )
 
 probenliste <-
     read_excel( "daten/original/20170608_Probenliste_AGa.xlsx" )
@@ -269,3 +269,12 @@ p4 <-
 # !!! ZOOM !!!
 ##
 ggsubplot( p1, p2, p3, p4, cols = 2 )
+
+ggsubplot( 
+    p1, p2, p3, p4, 
+    layout = t(
+        matrix(
+            c( 
+                1, 2, 3,
+                4, 4, 4 ),
+            ncol= 2 ) ) )
