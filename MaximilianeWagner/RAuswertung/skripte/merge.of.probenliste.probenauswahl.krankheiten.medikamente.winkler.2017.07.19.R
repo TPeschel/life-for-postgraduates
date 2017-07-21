@@ -264,7 +264,7 @@ plt <-
             scale_fill_manual( values = c( "deeppink", "deepskyblue" ), guide = F ) +
             geom_boxplot( aes( AGE.CAT, CORTISOL, fill = SEX ) ) +
             facet_grid( SEX ~ . ) +
-            labs( title = "LOG CORTISOL BOXPLOT", x = "age [y]", y = "log10 cortisol" ) +
+            labs( title = "LOG CORTISOL BOXPLOT", x = "AGE [y]", y = "log10 cortisol" ) +
             theme( axis.text.x = element_text( angle = 90 ) ) +
             scale_y_log10( )
     
@@ -317,5 +317,6 @@ plt( mt )
 #plt( na.omit( main.table ) )
 
 # wieviele Datem in den Spalten?
+sapply( main.table, function( col ) { sum( is.na( col ) ) } )
 sapply( main.table, function( col ) { sum( !is.na( col ) ) } )
 
