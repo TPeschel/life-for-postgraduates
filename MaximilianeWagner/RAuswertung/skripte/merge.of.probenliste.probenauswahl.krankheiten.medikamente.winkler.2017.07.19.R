@@ -11,6 +11,8 @@ load.pkgs(
         "ggthemes",
         "lubridate" ) )
 
+Sys.setenv( TZ = "BMT" )
+
 # hier Deinen Pfad eintragen
 setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/RAuswertung/" )
 
@@ -36,6 +38,8 @@ pl.pa <-
         by = "Materialnummer",
         all.x = F )
 
+sum( is.na( pl.pa$C_AUFKL_AGE ) )
+
 pl.pa.kr <-
     merge(
         pl.pa,
@@ -44,6 +48,8 @@ pl.pa.kr <-
         by.y = c( "C_DISEASE_TX_SIC", "C_DISEASE_TX_SCI_GROUP" ),
         all.x = T )
 
+sum( is.na( pl.pa.kr$C_AUFKL_AGE ) )
+
 pl.pa.kr.me <-
     merge(
         pl.pa.kr,
@@ -51,6 +57,8 @@ pl.pa.kr.me <-
         by.x = c( "TEILNEHMER_SIC", "C_AUFKL_SCI_GROUP" ),
         by.y = c( "CHILD_MED_H_SIC", "CHILD_MED_H_SCI_GROUP" ),
         all.x = T )
+
+sum( is.na( pl.pa.kr.me$C_AUFKL_AGE ) )
 
 pl.pa.kr.me$YEAR.EDAT <-
     year( pl.pa.kr.me$ENTNAHME_EDAT )
@@ -63,6 +71,8 @@ pl.pa.kr.me.wi <-
         by.y = c( "PSEUDONYM", "D00177_JAHR" ),
         all.x = T )
 
+sum( is.na( pl.pa.kr.me.wi$C_AUFKL_AGE ) )
+
 pl.pa.kr.me.wi$Cortisol
 
 ##
@@ -71,10 +81,10 @@ pl.pa.kr.me.wi$Cortisol
 #  < LLOQ:             -1
 ##
 pl.pa.kr.me.wi$Cortisol[ pl.pa.kr.me.wi$Cortisol == "noch nicht gemessen" ] <- 
-    -2
+    NA
 
 pl.pa.kr.me.wi$Cortisol[ pl.pa.kr.me.wi$Cortisol == "<LLOQ" ] <- 
-    -1
+    NA
 
 pl.pa.kr.me.wi$Cortisol <-
     as.numeric( pl.pa.kr.me.wi$Cortisol )
@@ -97,6 +107,8 @@ pl.pa.kr.me.wi$HaarwaschFrequenzGruppen <-
             2,
             4, 5 ) ) ]
 
+sum( is.na( pl.pa.kr.me.wi$C_AUFKL_AGE ) )
+
 relevante.spalten <-
     c( 
         "Materialnummer",
@@ -107,7 +119,7 @@ relevante.spalten <-
         "C_BP_SDS_BP_DIA_3",
         "C_BP_SDS_BP_SYS_3", 
         "C_PUB_STAT_PUB_STATUS",
-        "C_ANTHRO_AGE",
+        "C_AUFKL_AGE",
         "C_AUFKL_GENDER",
         "C_ANTHRO_KH_BMI_ORIG",
         "C_ANTHRO_KH_BMI_ADJ",
@@ -150,12 +162,16 @@ pl.pa.kr.me.wi <-
         relevante.spalten,
         neue.spaltennamen )
 
+sum( is.na( pl.pa.kr.me.wi$AGE ) )
+
 # probenliste.probenauswahl.krankheiten.medikamente.winkler <-
 #     pl.pa.kr.me.wi
 
 # Arbeitstabelle
 main.table <-
     pl.pa.kr.me.wi
+
+sum( is.na( main.table$AGE ) )
 
 # wieviele NAs in den Spalten?
 sapply( main.table, function( col ) { sum( is.na( col ) ) } )
@@ -176,7 +192,7 @@ sapply( main.table, function( col ) { sum( !is.na( col ) ) } )
 
 # entferne alle NAs und lege minimale vollstaendige Tabelle an
 main.table.minimal <-
-    na.omit( main.table )
+    main.table[ !is.na( main.table$CORTISOL ), ]
 
 # keine NAs mehr? Logan!
 sapply( main.table.minimal, function( col ) {  sum( is.na( col ) ) } )
@@ -204,77 +220,89 @@ main.table$SEX <-
     c( "male", "female" )[ match( main.table$SEX, c( 1, 2 ) ) ] 
 
 main.table <- 
-    main.table[ main.table$CORTISOL < 35, ]
+    main.table[ is.na( main.table$CORTISOL ) | ( !is.na( main.table$CORTISOL ) & main.table$CORTISOL  < 35 ), ]
 
-save(
-    list = "main.table",
-    file = "daten/main.table.Rd" )
-
-write.xlsx(
-    x =  main.table,
-    file = "daten/main.table.xlsx",
-    sheetName = "pl.pa.kr.me.wi" )
+# save(
+#     list = "main.table",
+#     file = "daten/main.table.Rd" )
+# 
+# write.xlsx(
+#     x =  main.table,
+#     file = "daten/main.table.xlsx",
+#     sheetName = "pl.pa.kr.me.wi" )
 
 main.table$AGE.CAT <-
     cut(
         main.table$AGE,
         breaks = c( 0 : 20 ) )
 
-p1 <-
-    ggplot( 
-        main.table, 
-        aes( 
-            cut( 
-                AGE, 
-                breaks = c( 0 : 20 ) ), 
-            fill = SEX ) ) +
+plt <-
+    function( tbl ) {
+
+    p1 <-
+        ggplot( 
+            tbl, 
+            aes( 
+                cut( 
+                    AGE, 
+                    breaks = c( 0 : 20 ) ), 
+                fill = SEX ) ) +
+            theme_classic( ) +
+            scale_fill_manual( values = c( "deeppink", "deepskyblue" ) ) +
+            geom_histogram( stat = "count" ) +
+            geom_hline( yintercept = 30, linetype = 2 ) +
+            facet_grid( SEX ~ . ) +
+            labs( title = "AGE", x = "AGE [y]" ) +
+            theme( axis.text.x = element_text( angle = 90 ) )
+    
+    p2 <-
+        ggplot( tbl[ 0 < tbl$CORTISOL, ]  ) +
+            theme_classic( ) +
+            scale_fill_manual( values = c( "deeppink", "deepskyblue" ) ) +
+            geom_boxplot( aes( AGE.CAT, CORTISOL, fill = SEX ) ) +
+            facet_grid( SEX ~ . ) +
+            labs( title = "CORTISOL BOXPLOT", x = "age [y]", y = "log10 cortisol" ) +
+            theme( axis.text.x = element_text( angle = 90 ) ) +
+            scale_y_log10( )
+    
+    p3 <-
+        ggplot( tbl[ !is.na( tbl$CORTISOL ) & 0 < tbl$CORTISOL, ] %>% group_by( AGE.CAT, SEX ) %>% summarise( N.CORTISOL = n( ) ) ) +
         theme_classic( ) +
         scale_fill_manual( values = c( "deeppink", "deepskyblue" ) ) +
-        geom_histogram( stat = "count" ) +
+        geom_histogram( aes( AGE.CAT, N.CORTISOL, fill = SEX ), stat = "identity" ) +
         geom_hline( yintercept = 30, linetype = 2 ) +
         facet_grid( SEX ~ . ) +
-        labs( title = "AGE", x = "AGE [y]" ) +
+        labs( title = "NUM OF CORTISOL DATA PER AGE", x = "AGE [y]" ) +
         theme( axis.text.x = element_text( angle = 90 ) )
-
-p2 <-
-    ggplot( main.table[ 0 < main.table$CORTISOL, ]  ) +
-        theme_classic( ) +
+    
+    p4 <-
+        ggplot( tbl[ !is.na( tbl$AGE.CAT ), ] ) +
+        theme_bw( ) +
         scale_fill_manual( values = c( "deeppink", "deepskyblue" ) ) +
-        geom_boxplot( aes( AGE.CAT, CORTISOL, fill = SEX ) ) +
-        facet_grid( SEX ~ . ) +
-        labs( title = "CORTISOL BOXPLOT", x = "AGE [y]" ) +
-        theme( axis.text.x = element_text( angle = 90 ) ) +
-        scale_y_log10( )
+        geom_histogram( aes( AGE.CAT, fill = SEX ), stat = "count" ) +
+        facet_grid( SEX ~ TANNER ) +
+        labs( title = "TANNER", x = "PUB STAT" ) +
+        theme( axis.text.x = element_text( angle = 90 ) )
+    
+    ##
+    # !!! ZOOM !!!
+    ##
+    # ggsubplot( p1, p2, p3, p4, cols = 2 )
+    
+    ggsubplot( 
+        p1, p2, p3, p4,
+        layout = t(
+            matrix(
+                c( 
+                    1, 2, 3,
+                    4, 4, 4 ),
+                ncol= 2 ) ) ) }
 
-p3 <-
-    ggplot( main.table[ !is.na( main.table$CORTISOL ) & 0 < main.table$CORTISOL, ] %>% group_by( AGE.CAT, SEX ) %>% summarise( N.CORTISOL = n( ) ) ) +
-    theme_classic( ) +
-    scale_fill_manual( values = c( "deeppink", "deepskyblue" ) ) +
-    geom_histogram( aes( AGE.CAT, N.CORTISOL, fill = SEX ), stat = "identity" ) +
-    geom_hline( yintercept = 30, linetype = 2 ) +
-    facet_grid( SEX ~ . ) +
-    labs( title = "NUM OF CORTISOL DATA PER AGE", x = "AGE [y]" ) +
-    theme( axis.text.x = element_text( angle = 90 ) )
 
-p4 <-
-    ggplot( main.table[ !is.na( main.table$AGE.CAT ), ] ) +
-    theme_bw( ) +
-    scale_fill_manual( values = c( "deeppink", "deepskyblue" ) ) +
-    geom_histogram( aes( AGE.CAT, fill = SEX ), stat = "count" ) +
-    facet_grid( SEX ~ TANNER ) +
-    labs( title = "TANNER", x = "PUB STAT" ) +
-    theme( axis.text.x = element_text( angle = 90 ) )
+plt( main.table )
+plt( main.table[ !is.na( main.table$CORTISOL ) & !is.na( main.table$AGE ), ] )
+plt( na.omit( main.table ) )
 
-##
-# !!! ZOOM !!!
-##
-ggsubplot( p1, p2, p3, p4, cols = 2 )
+# wieviele Datem in den Spalten?
+sapply( main.table, function( col ) { sum( !is.na( col ) ) } )
 
-ggsubplot( 
-    p1, p2, p3, p4, 
-    layout = t(
-        matrix(
-            c( 
-                1, 2, 3,
-                4, 4, 4 ),
-            ncol= 2 ) ) )
