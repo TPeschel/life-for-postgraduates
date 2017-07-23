@@ -192,7 +192,6 @@ sapply( main.table, function( col ) { sum( is.na( col ) ) } )
 # wieviele Datem in den Spalten?
 sapply( main.table, function( col ) { sum( !is.na( col ) ) } )
 
-
 # entferne alle NAs und lege minimale vollstaendige Tabelle an
 main.table.minimal <-
     main.table[ !is.na( main.table$CORTISOL ), ]
@@ -303,7 +302,6 @@ plt <-
                     1, 2, 3,
                     4, 4, 4 ),
                 ncol= 2 ) ) ) }
-
 
 mt <-
     main.table[ !is.na( main.table$CORTISOL ) & !is.na( main.table$AGE ) & !is.na( main.table$TANNER ), ]
