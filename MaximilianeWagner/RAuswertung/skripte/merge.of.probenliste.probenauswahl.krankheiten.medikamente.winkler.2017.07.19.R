@@ -71,7 +71,7 @@ pl.pa.kr.me.wi <-
         by.y = c( "PSEUDONYM", "D00177_JAHR" ),
         all.x = T )
 
-sum( is.na( pl.pa.kr.me.wi$C_AUFKL_AGE ) )
+sum( is.na( pl.pa.kr.me.wi$D00177_SCORE_FAM ) )
 
 pl.pa.kr.me.wi$Cortisol
 
@@ -174,7 +174,7 @@ sum( is.na( pl.pa.kr.me.wi$AGE ) )
 main.table <-
     pl.pa.kr.me.wi
 
-sum( is.na( main.table$AGE ) )
+sum( is.na( main.table$FAM.SCORE ) )
 
 # wieviele NAs in den Spalten?
 sapply( main.table, function( col ) { sum( is.na( col ) ) } )
@@ -224,14 +224,14 @@ main.table$SEX <-
 main.table <- 
     main.table[ is.na( main.table$CORTISOL ) | ( !is.na( main.table$CORTISOL ) & main.table$CORTISOL  < 35 ), ]
 
-# save(
-#     list = "main.table",
-#     file = "daten/main.table.Rd" )
-# 
-# write.xlsx(
-#     x =  main.table,
-#     file = "daten/main.table.xlsx",
-#     sheetName = "pl.pa.kr.me.wi" )
+save(
+    list = "main.table",
+    file = "daten/main.table.Rd" )
+
+write.xlsx(
+    x =  main.table,
+    file = "daten/main.table.xlsx",
+    sheetName = "pl.pa.kr.me.wi" )
 
 main.table$AGE.CAT <-
     cut(
@@ -317,4 +317,8 @@ plt( mt )
 # wieviele Datem in den Spalten?
 sapply( main.table, function( col ) { sum( is.na( col ) ) } )
 sapply( main.table, function( col ) { sum( !is.na( col ) ) } )
+sapply( main.table, function( col ) { if( is.numeric( col ) ) mean( col, na.rm = T ) } )
+
+mean( main.table$BMI_ADJ, na.rm = T )
+sd( main.table$BMI_ADJ, na.rm = T )
 

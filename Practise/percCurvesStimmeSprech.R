@@ -22,7 +22,6 @@ load.pkgs(
 
 load( "../ThomasBerger/r/data_sprech.Rda" )
 
-
 d <-
 	data.sprech[ , c( "age", "sex",  "F0_SPRECH_2" ) ]
 
@@ -150,9 +149,12 @@ for( bins in c( 1 : 23 ) ) {
 			
 			for( j in c( -bins : bins ) ) {
 				
-				id <- 
-					min( max( i + j, 1 ), nrow( g ) )
+				id <- j + i
 				
+				if( id < 1 ) id <- 1 - id
+				
+				if( nrow( g ) < id ) id <- 2 * nrow( g ) - id
+
 				for( k in 2 : ncol( perc ) ) {
 					
 					perc[ i, k ] <- 
@@ -196,6 +198,6 @@ for( bins in c( 1 : 23 ) ) {
 	# 	plot3,
 	# 	layout = t( matrix( c( 1, 1, 2, 2 ), ncol = 2 ) ) )
 	
-	ggsave( plot = plot3, filename = paste0( "ssplotStimmeSprech2N", n, "I", iters, "P", sample.prob, "B", bins, ".png" ), width = 12, height = 8 )
+	ggsave( plot = plot3, filename = paste0( "ssplotStimmeSprech2NFreeEnds", n, "I", iters, "P", sample.prob, "B", bins, ".png" ), width = 12, height = 8 )
 }
 		
