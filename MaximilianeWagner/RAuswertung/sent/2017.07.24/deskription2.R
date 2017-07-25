@@ -12,10 +12,10 @@ load.pkgs(
     "lubridate" ) )
 
 # hier Deinen Pfad eintragen
-setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/RAuswertung/" )
+setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/RAuswertung/daten" )
 #setwd( "C:/Users/Anwender/Documents/Dissertation/RAuswertung/" )
 
-load( "daten/main.table.Rd" )
+load( "main.table" )
 
 #zuerst betrachte ich die gesamte datenlage 
 #wie ist das durchschnittliche alter aller kinder
@@ -103,3 +103,93 @@ sum( !is.na( main.table.complete$bmigroup[ main.table.complete$bmigroup == "obes
 sum( !is.na( main.table$bmigroup[ main.table.complete$bmigroup == "normalweight" ] ) )
 sum( !is.na( main.table$bmigroup[ main.table.complete$bmigroup == "overweight" ]  ) )
 sum( !is.na( main.table$bmigroup[ main.table.complete$bmigroup == "obese"] ) )
+
+main.table$AGE.CAT <-
+	cut(
+		main.table$AGE,
+		breaks = c( 0 : 20 ) )
+
+plt <-
+	function( tbl ) {
+		
+		p1 <-
+			ggplot( 
+				tbl, 
+				aes( 
+					cut( 
+						AGE, 
+						breaks = c( 0 : 20 ) ), 
+					fill = SEX ) ) +
+			theme_classic( ) +
+			scale_fill_manual( values = c( "deeppink", "deepskyblue" ), guide = F ) +
+			geom_histogram( stat = "count" ) +
+			geom_hline( yintercept = 30, linetype = 2 ) +
+			facet_grid( SEX ~ . ) +
+			labs( title = "AGE", x = "AGE [y]" ) +
+			theme( axis.text.x = element_text( angle = 90 ) )
+		
+		p2 <-
+			ggplot( tbl[ 0 < tbl$CORTISOL, ]  ) +
+			theme_classic( ) +
+			scale_fill_manual( values = c( "deeppink", "deepskyblue" ), guide = F ) +
+			geom_boxplot( aes( AGE.CAT, CORTISOL, fill = SEX ) ) +
+			facet_grid( SEX ~ . ) +
+			labs( title = "LOG CORTISOL BOXPLOT", x = "AGE [y]", y = "log10 cortisol" ) +
+			theme( axis.text.x = element_text( angle = 90 ) ) +
+			scale_y_log10( )
+		
+		p3 <-
+			ggplot( tbl %>% group_by( AGE.CAT, SEX, PUBSTAT ) %>% summarise( n = n( ) ) ) +
+			theme_classic( ) +
+			scale_fill_manual( 
+				"PUBERTY STATES\n PER SEX",
+				labels = c( paste0( "female ", c( 1 : 5 ) ), paste0( "male ", c( 1 : 5 ) ) ),
+				values = rev( c( "#0000ff", "#4040ff", "#8080ff", "#c0c0ff", "#f0f0ff", "#ff0000", "#ff4040", "#ff8080", "#ffc0c0", "#fff0f0" ) ) ) +
+			geom_histogram( aes( AGE.CAT, n, fill = paste0( SEX, PUBSTAT ) ), stat = "identity", col = "black" ) +
+			geom_hline( yintercept = 30, linetype = 2 ) +
+			facet_grid( SEX ~ . ) +
+			labs( title = "PUBERTY STATES PER AGE", x = "AGE [y]" ) +
+			theme( axis.text.x = element_text( angle = 90 ) )
+		
+		p4 <-
+			ggplot( tbl[ !is.na( tbl$AGE.CAT ), ] ) +
+			theme_bw( ) +
+			scale_fill_manual( values = c( "deeppink", "deepskyblue" ) ) +
+			geom_histogram( aes( AGE.CAT, fill = SEX ), stat = "count" ) +
+			facet_grid( SEX ~ PUBSTAT ) +
+			labs( title = "PUBSTAT", x = "PUB STAT" ) +
+			theme( axis.text.x = element_text( angle = 90 ) )
+		
+		##
+		# !!! ZOOM !!!
+		##
+		# ggsubplot( p1, p2, p3, p4, cols = 2 )
+		
+		ggsubplot( 
+			p1, p2, p3, p4,
+			layout = t(
+				matrix(
+					c( 
+						1, 2, 3,
+						4, 4, 4 ),
+					ncol= 2 ) ) ) }
+
+mt <-
+	main.table[ !is.na( main.table$CORTISOL ) & !is.na( main.table$AGE ) & !is.na( main.table$PUBSTAT ), ]
+
+nrow( mt )
+
+sapply( mt, function( col ) { sum( !is.na( col ) ) } )
+
+plt( mt )
+
+#plt( na.omit( main.table ) )
+
+# wieviele Datem in den Spalten?
+sapply( main.table, function( col ) { sum( is.na( col ) ) } )
+sapply( main.table, function( col ) { sum( !is.na( col ) ) } )
+sapply( main.table, function( col ) { if( is.numeric( col ) ) mean( col, na.rm = T ) } )
+
+mean( main.table$BMI_ADJ, na.rm = T )
+sd( main.table$BMI_ADJ, na.rm = T )
+

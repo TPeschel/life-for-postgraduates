@@ -1,13 +1,8 @@
 rm( list = ls( ) )
 
-
-
-
 library( dplyr )
 library( readxl )
 library( lubridate )
-
-
 
 owd <- getwd( )
 
@@ -56,10 +51,4 @@ tbl$wnklr <-
 
 rm( list = c( "tbl.wnklr", "tbl.join" ) )
 
-<<<<<<< HEAD
-save( list = "tbl", file =  "join.Rd" )
-
-setwd( owd )
-=======
 save( list = "tbl", file =  "joinWithWinkler.Rd" )
->>>>>>> daa1ab05c758e77c20694327fec76f89ab9c1a1f
