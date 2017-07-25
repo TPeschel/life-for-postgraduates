@@ -1,5 +1,0 @@
-Hinweis
-=======
-Für den in Citavi integrierten Formeleditor kommt MimeTeX zum Einsatz. MimeTeX wurde von John Forkosh entwickelt. Sie finden alle aktuellen Informationen zu MimeTeX auf folgender Website: http://www.forkosh.com/mimetex.html
-
-Gemäß den GPL-Lizenzbestimmungen finden Sie den Originalquellcode von MimeTeX sowie die GPL-Lizenzbestimmungen in diesem Ordner.
