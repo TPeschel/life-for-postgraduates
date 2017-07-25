@@ -1,0 +1,503 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Transformer>
+  <DisplayName>GBV Gemeinsamer Bibliotheksverbund</DisplayName>
+  <Id>b7978129-4fcd-4112-a462-26bfed698a9f</Id>
+  <BuiltIn>True</BuiltIn>
+  <Version>22</Version>
+  <CitaviVersion>2.9</CitaviVersion>
+  <Author>Copyright © 2015 Swiss Academic Software. All rights reserved.</Author>
+  <Culture>de-DE</Culture>
+  <ConcentrationAreas>General</ConcentrationAreas>
+  <Provider>Library</Provider>
+  <Status>Enabled</Status>
+  <Access>Free</Access>
+  <OnlineImportSettings>
+    <ServerAddress>sru.gbv.de</ServerAddress>
+    <Port>210</Port>
+    <DatabaseName>gvk</DatabaseName>
+    <ElementSet>F</ElementSet>
+    <DatabaseType>Z3950</DatabaseType>
+    <Username />
+    <Password />
+    <Group />
+    <Timeout>30000</Timeout>
+    <HelpContext type="fragment">
+      <MiddleTruncation>*</MiddleTruncation>
+      <LeftTruncation />
+      <RightTruncation>*</RightTruncation>
+      <MultipleTruncation>#|*</MultipleTruncation>
+      <ReplacesMultipleSymbol>*</ReplacesMultipleSymbol>
+      <ReplacesOneOrMultipleSymbol />
+      <ReplacesOneOrNoSymbol>#</ReplacesOneOrNoSymbol>
+    </HelpContext>
+    <QuerySettings>
+      <AcceptIsbnHyphenEx>true</AcceptIsbnHyphenEx>
+      <Encoding>65001</Encoding>
+      <SearchAttributes andValue="AND" orValue="OR" notValue="NOT" supportGroups="True">
+        <SearchAttribute name="AnyField" value="1016" />
+        <SearchAttribute name="Author" value="1004" />
+        <SearchAttribute name="Title" value="4" />
+        <SearchAttribute name="Isbn" value="7" />
+        <SearchAttribute name="Issn" value="8" />
+        <SearchAttribute name="CorporateName" value="2" />
+        <SearchAttribute name="ConferenceName" value="3" />
+        <SearchAttribute name="TitleSeries" value="5" />
+        <SearchAttribute name="DeweyClassification" value="13" />
+        <SearchAttribute name="LocalClassification" value="20" />
+        <SearchAttribute name="SubjectHeading" value="21" />
+        <SearchAttribute name="DateOfPublication" value="31" />
+        <SearchAttribute name="CodeInstitution" value="56" />
+        <SearchAttribute name="PlacePublication" value="59" />
+        <SearchAttribute name="BodyOfText" value="1010" />
+        <SearchAttribute name="Publisher" value="1018" />
+        <SearchAttribute name="Custom1" value="8574">
+          <DisplayName culture="en">URN</DisplayName>
+        </SearchAttribute>
+      </SearchAttributes>
+      <Substitutions>
+        <Substitution pattern="&quot;" replaceBy="" />
+        <Substitution pattern="ß" replaceBy="ss" />
+      </Substitutions>
+    </QuerySettings>
+  </OnlineImportSettings>
+  <RecordLayout>
+    <Format>Usmarc</Format>
+    <Encoding>65001</Encoding>
+    <RecordTagLayout>^\d\d\d</RecordTagLayout>
+    <RecordDelimiter />
+    <TagDelimiter />
+    <SubfieldDelimiter>\$</SubfieldDelimiter>
+  </RecordLayout>
+  <Mapping>
+    <ReferenceTypeMapping defaultReferenceType="Book">
+      <Field tag="245" tagAddition="c" fieldType="ReferenceType" requiredPattern="hrsg|herausgeb|editor|ed\.|eds\.|edited by|compilation by" referenceType="BookEdited" />
+      <Field tag="245" tagAddition="h" fieldType="ReferenceType" requiredPattern="Tonaufnahme" referenceType="AudioOrVideoDocument" />
+      <Field tag="245" tagAddition="h" fieldType="ReferenceType" requiredPattern="Musikdruck" referenceType="Unknown" />
+      <Field tag="773" tagAddition="z" fieldType="ReferenceType" referenceType="ContributionInBookEdited" />
+      <Field tag="502" tagAddition="b" fieldType="ReferenceType" requiredPattern="Dissertation" referenceType="Thesis" />
+    </ReferenceTypeMapping>
+    <FieldMappingTable>
+      <FieldMapping referenceType="Book">
+        <Field tag="041" tagAddition="a" fieldType="Language" />
+        <Field tag="020" tagAddition="a" fieldType="Isbn" />
+        <Field tag="024" tagAddition="a" fieldType="Doi" />
+        <Field tag="022" tagAddition="a" fieldType="Isbn" />
+        <Field tag="020" tagAddition="c" fieldType="Price" />
+        <Field tag="100" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="110" tagAddition="a" fieldType="Organizations" />
+        <Field tag="240" tagAddition="a" fieldType="UniformTitle" />
+        <Field tag="246" tagAddition="a" fieldType="ParallelTitle" />
+        <Field tag="245" tagAddition="a" fieldType="Title" />
+        <Field tag="245" tagAddition="b" fieldType="Subtitle" />
+        <Field tag="250" tagAddition="a" fieldType="Edition" />
+        <Field tag="246" tagAddition="n" fieldType="TitleInOtherLanguages" />
+        <Field tag="260" tagAddition="c" fieldType="Year" />
+        <Field tag="260" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="PlaceOfPublication" />
+        <Field tag="260" tagAddition="a" startPattern="(:)" endPattern="($)" fieldType="Publishers" />
+        <Field tag="260" tagAddition="b" fieldType="Publishers" />
+        <Field tag="440" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="440" tagAddition="v" fieldType="Volume" />
+        <Field tag="490" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="490" tagAddition="v" fieldType="Volume" />
+        <Field tag="502" tagAddition="a" fieldType="TitleSupplement" />
+        <Field tag="505" tagAddition="a" fieldType="TableOfContents" />
+        <Field tag="520" tagAddition="a" fieldType="Abstract" />
+        <Field tag="650" tagAddition="a" fieldType="Keywords" />
+        <Field tag="650" tagAddition="x" fieldType="Keywords" />
+        <Field tag="650" tagAddition="v" fieldType="Keywords" />
+        <Field tag="650" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="a" fieldType="Keywords" />
+        <Field tag="651" tagAddition="x" fieldType="Keywords" />
+        <Field tag="651" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="v" fieldType="Keywords" />
+        <Field tag="653" tagAddition="a" fieldType="Keywords" />
+        <Field tag="653" tagAddition="x" fieldType="Keywords" />
+        <Field tag="653" tagAddition="y" fieldType="Keywords" />
+        <Field tag="653" tagAddition="v" fieldType="Keywords" />
+        <Field tag="950" tagAddition="a" fieldType="Keywords" />
+        <Field tag="700" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="710" tagAddition="a" fieldType="Organizations" />
+        <Field tag="711" tagAddition="a" fieldType="Organizations" />
+        <Field tag="900" tagAddition="b" fieldType="LocationLibrary" />
+        <Field tag="900" tagAddition="d" startPattern="(!)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="300" tagAddition="a" endPattern="S\s" fieldType="PageCount" />
+        <Field tag="773" tagAddition="g" startPattern="(Vol\.)" endPattern="(\,|$)" fieldType="Volume" />
+        <Field tag="773" tagAddition="g" startPattern="(No\.)" endPattern="(\(|$)" fieldType="Number" />
+        <Field tag="773" tagAddition="g" startPattern="(\()" endPattern="(\)|$)" fieldType="Year" />
+        <Field tag="773" tagAddition="g" startPattern="(p\.)" endPattern="($)" fieldType="PageRange" />
+        <Field tag="773" tagAddition="t" startPattern="(^)" endPattern="($)" fieldType="PeriodicalName" />
+        <Field tag="856" tagAddition="u" fieldType="OnlineAddress" />
+        <Field tag="856" tagAddition="u" fieldType="TableOfContents" requiredPattern="\/toc\/" />
+        <Field tag="035" tagAddition="a" startPattern="(\(DE.+\)GB)" endPattern="($)" fieldType="LocationElectronic" />
+      </FieldMapping>
+      <FieldMapping referenceType="BookEdited">
+        <Field tag="041" tagAddition="a" fieldType="Language" />
+        <Field tag="020" tagAddition="a" fieldType="Isbn" />
+        <Field tag="024" tagAddition="a" fieldType="Doi" />
+        <Field tag="022" tagAddition="a" fieldType="Isbn" />
+        <Field tag="020" tagAddition="c" fieldType="Price" />
+        <Field tag="100" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="240" tagAddition="a" fieldType="UniformTitle" />
+        <Field tag="246" tagAddition="a" fieldType="ParallelTitle" />
+        <Field tag="245" tagAddition="a" fieldType="Title" />
+        <Field tag="245" tagAddition="b" fieldType="Subtitle" />
+        <Field tag="250" tagAddition="a" fieldType="Edition" />
+        <Field tag="246" tagAddition="n" fieldType="TitleInOtherLanguages" />
+        <Field tag="260" tagAddition="c" fieldType="Year" />
+        <Field tag="260" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="PlaceOfPublication" />
+        <Field tag="260" tagAddition="a" startPattern="(:)" endPattern="($)" fieldType="Publishers" />
+        <Field tag="260" tagAddition="b" fieldType="Publishers" />
+        <Field tag="440" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="440" tagAddition="v" fieldType="Volume" />
+        <Field tag="490" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="490" tagAddition="v" fieldType="Volume" />
+        <Field tag="502" tagAddition="a" fieldType="TitleSupplement" />
+        <Field tag="505" tagAddition="a" fieldType="TableOfContents" />
+        <Field tag="520" tagAddition="a" fieldType="Abstract" />
+        <Field tag="650" tagAddition="a" fieldType="Keywords" />
+        <Field tag="650" tagAddition="x" fieldType="Keywords" />
+        <Field tag="650" tagAddition="v" fieldType="Keywords" />
+        <Field tag="650" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="a" fieldType="Keywords" />
+        <Field tag="651" tagAddition="x" fieldType="Keywords" />
+        <Field tag="651" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="v" fieldType="Keywords" />
+        <Field tag="653" tagAddition="a" fieldType="Keywords" />
+        <Field tag="653" tagAddition="x" fieldType="Keywords" />
+        <Field tag="653" tagAddition="y" fieldType="Keywords" />
+        <Field tag="653" tagAddition="v" fieldType="Keywords" />
+        <Field tag="950" tagAddition="a" fieldType="Keywords" />
+        <Field tag="700" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="710" tagAddition="a" fieldType="Organizations" />
+        <Field tag="711" tagAddition="a" fieldType="Organizations" />
+        <Field tag="900" tagAddition="b" fieldType="LocationLibrary" />
+        <Field tag="900" tagAddition="d" startPattern="(!)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="300" tagAddition="a" endPattern="S\s" fieldType="PageCount" />
+        <Field tag="773" tagAddition="g" startPattern="(Vol\.)" endPattern="(\,|$)" fieldType="Volume" />
+        <Field tag="773" tagAddition="g" startPattern="(No\.)" endPattern="(\(|$)" fieldType="Number" />
+        <Field tag="773" tagAddition="g" startPattern="(\()" endPattern="(\)|$)" fieldType="Year" />
+        <Field tag="773" tagAddition="g" startPattern="(p\.)" endPattern="($)" fieldType="PageRange" />
+        <Field tag="773" tagAddition="t" startPattern="(^)" endPattern="($)" fieldType="PeriodicalName" />
+        <Field tag="856" tagAddition="u" fieldType="OnlineAddress" />
+        <Field tag="856" tagAddition="u" fieldType="TableOfContents" requiredPattern="\/toc\/" />
+        <Field tag="035" tagAddition="a" startPattern="(\(DE.+\)GB)" endPattern="($)" fieldType="LocationElectronic" />
+      </FieldMapping>
+      <FieldMapping referenceType="Contribution">
+        <Field tag="041" tagAddition="a" fieldType="Language" />
+        <Field tag="020" tagAddition="c" fieldType="Price" />
+        <Field tag="024" tagAddition="a" fieldType="Doi" />
+        <Field tag="100" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="240" tagAddition="a" fieldType="UniformTitle" />
+        <Field tag="246" tagAddition="a" fieldType="ParallelTitle" />
+        <Field tag="245" tagAddition="a" fieldType="Title" />
+        <Field tag="245" tagAddition="b" fieldType="Subtitle" />
+        <Field tag="250" tagAddition="a" fieldType="Edition" />
+        <Field tag="260" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="ParentReferencePlaceOfPublication" />
+        <Field tag="260" tagAddition="a" startPattern="(:)" endPattern="($)" fieldType="ParentReferencePublishers" />
+        <Field tag="260" tagAddition="b" fieldType="ParentReferencePublishers" />
+        <Field tag="440" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="ParentReferenceSeriesTitle" />
+        <Field tag="440" tagAddition="v" fieldType="ParentReferenceVolume" />
+        <Field tag="490" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="ParentReferenceSeriesTitle" />
+        <Field tag="490" tagAddition="v" fieldType="ParentReferenceVolume" />
+        <Field tag="502" tagAddition="a" fieldType="TitleSupplement" />
+        <Field tag="505" tagAddition="a" fieldType="TableOfContents" />
+        <Field tag="520" tagAddition="a" fieldType="Abstract" />
+        <Field tag="650" tagAddition="a" fieldType="Keywords" />
+        <Field tag="650" tagAddition="x" fieldType="Keywords" />
+        <Field tag="650" tagAddition="v" fieldType="Keywords" />
+        <Field tag="650" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="a" fieldType="Keywords" />
+        <Field tag="651" tagAddition="x" fieldType="Keywords" />
+        <Field tag="651" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="v" fieldType="Keywords" />
+        <Field tag="653" tagAddition="a" fieldType="Keywords" />
+        <Field tag="653" tagAddition="x" fieldType="Keywords" />
+        <Field tag="653" tagAddition="y" fieldType="Keywords" />
+        <Field tag="653" tagAddition="v" fieldType="Keywords" />
+        <Field tag="700" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="710" tagAddition="a" fieldType="ParentReferenceOrganizations" />
+        <Field tag="711" tagAddition="a" fieldType="ParentReferenceOrganizations" />
+        <Field tag="900" tagAddition="b" fieldType="LocationLibrary" />
+        <Field tag="900" tagAddition="d" startPattern="(!)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="300" tagAddition="a" endPattern="S\s" fieldType="PageCount" />
+        <Field tag="773" tagAddition="g" startPattern="(\()" endPattern="(\)|$)" fieldType="ParentReferenceYear" />
+        <Field tag="773" tagAddition="g" startPattern="(p\.)" endPattern="($)" fieldType="PageRange" />
+        <Field tag="773" tagAddition="t" fieldType="ParentReferenceTitle" />
+        <Field tag="773" tagAddition="z" fieldType="ParentReferenceIsbn" />
+        <Field tag="773" tagAddition="d" startPattern="(^)" endPattern="(:)" fieldType="ParentReferencePlaceOfPublication" />
+        <Field tag="773" tagAddition="d" startPattern="(:)" endPattern="($)" fieldType="ParentReferencePublishers" />
+        <Field tag="856" tagAddition="u" fieldType="OnlineAddress" />
+        <Field tag="856" tagAddition="u" fieldType="TableOfContents" requiredPattern="\/toc\/" />
+        <Field tag="035" tagAddition="a" startPattern="(\(DE.+\)GB)" endPattern="($)" fieldType="LocationElectronic" />
+      </FieldMapping>
+      <FieldMapping referenceType="AudioOrVideoDocument">
+        <Field tag="020" tagAddition="a" fieldType="Isbn" />
+        <Field tag="022" tagAddition="a" fieldType="Isbn" />
+        <Field tag="024" tagAddition="a" fieldType="Doi" />
+        <Field tag="020" tagAddition="c" fieldType="Price" />
+        <Field tag="041" tagAddition="a" fieldType="Language" />
+        <Field tag="100" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="240" tagAddition="a" fieldType="UniformTitle" />
+        <Field tag="246" tagAddition="a" fieldType="ParallelTitle" />
+        <Field tag="245" tagAddition="a" fieldType="Title" />
+        <Field tag="245" tagAddition="b" fieldType="Subtitle" />
+        <Field tag="246" tagAddition="n" fieldType="TitleInOtherLanguages" />
+        <Field tag="250" tagAddition="a" fieldType="Edition" />
+        <Field tag="260" tagAddition="c" fieldType="Year" />
+        <Field tag="260" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="PlaceOfPublication" />
+        <Field tag="260" tagAddition="a" startPattern="(:)" endPattern="($)" fieldType="Publishers" />
+        <Field tag="260" tagAddition="b" fieldType="Publishers" />
+        <Field tag="440" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="440" tagAddition="v" fieldType="Volume" />
+        <Field tag="490" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="490" tagAddition="v" fieldType="Volume" />
+        <Field tag="502" tagAddition="a" fieldType="TitleSupplement" />
+        <Field tag="505" tagAddition="a" fieldType="TableOfContents" />
+        <Field tag="520" tagAddition="a" fieldType="Abstract" />
+        <Field tag="650" tagAddition="a" fieldType="Keywords" />
+        <Field tag="650" tagAddition="x" fieldType="Keywords" />
+        <Field tag="650" tagAddition="v" fieldType="Keywords" />
+        <Field tag="650" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="a" fieldType="Keywords" />
+        <Field tag="651" tagAddition="x" fieldType="Keywords" />
+        <Field tag="651" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="v" fieldType="Keywords" />
+        <Field tag="653" tagAddition="a" fieldType="Keywords" />
+        <Field tag="653" tagAddition="x" fieldType="Keywords" />
+        <Field tag="653" tagAddition="y" fieldType="Keywords" />
+        <Field tag="653" tagAddition="v" fieldType="Keywords" />
+        <Field tag="700" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="710" tagAddition="a" fieldType="Organizations" />
+        <Field tag="900" tagAddition="b" fieldType="LocationLibrary" />
+        <Field tag="900" tagAddition="d" startPattern="(!)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="300" tagAddition="a" fieldType="StorageMedium" />
+        <Field tag="856" tagAddition="u" fieldType="OnlineAddress" />
+        <Field tag="856" tagAddition="u" fieldType="TableOfContents" requiredPattern="\/toc\/" />
+        <Field tag="035" tagAddition="a" startPattern="(\(DE.+\)GB)" endPattern="($)" fieldType="LocationElectronic" />
+      </FieldMapping>
+      <FieldMapping referenceType="Unknown">
+        <Field tag="041" tagAddition="a" fieldType="Language" />
+        <Field tag="020" tagAddition="a" fieldType="Isbn" />
+        <Field tag="024" tagAddition="a" fieldType="Doi" />
+        <Field tag="022" tagAddition="a" fieldType="Isbn" />
+        <Field tag="020" tagAddition="c" fieldType="Price" />
+        <Field tag="100" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="240" tagAddition="a" fieldType="UniformTitle" />
+        <Field tag="246" tagAddition="a" fieldType="ParallelTitle" />
+        <Field tag="245" tagAddition="a" fieldType="Title" />
+        <Field tag="245" tagAddition="b" fieldType="Subtitle" />
+        <Field tag="250" tagAddition="a" fieldType="Edition" />
+        <Field tag="246" tagAddition="n" fieldType="TitleInOtherLanguages" />
+        <Field tag="260" tagAddition="c" fieldType="Year" />
+        <Field tag="260" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="PlaceOfPublication" />
+        <Field tag="260" tagAddition="a" startPattern="(:)" endPattern="($)" fieldType="Publishers" />
+        <Field tag="260" tagAddition="b" fieldType="Publishers" />
+        <Field tag="440" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="440" tagAddition="v" fieldType="Volume" />
+        <Field tag="490" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="490" tagAddition="v" fieldType="Volume" />
+        <Field tag="502" tagAddition="a" fieldType="TitleSupplement" />
+        <Field tag="505" tagAddition="a" fieldType="TableOfContents" />
+        <Field tag="520" tagAddition="a" fieldType="Abstract" />
+        <Field tag="650" tagAddition="a" fieldType="Keywords" />
+        <Field tag="650" tagAddition="x" fieldType="Keywords" />
+        <Field tag="650" tagAddition="v" fieldType="Keywords" />
+        <Field tag="650" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="a" fieldType="Keywords" />
+        <Field tag="651" tagAddition="x" fieldType="Keywords" />
+        <Field tag="651" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="v" fieldType="Keywords" />
+        <Field tag="653" tagAddition="a" fieldType="Keywords" />
+        <Field tag="653" tagAddition="x" fieldType="Keywords" />
+        <Field tag="653" tagAddition="y" fieldType="Keywords" />
+        <Field tag="653" tagAddition="v" fieldType="Keywords" />
+        <Field tag="950" tagAddition="a" fieldType="Keywords" />
+        <Field tag="700" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="710" tagAddition="a" fieldType="Organizations" />
+        <Field tag="711" tagAddition="a" fieldType="Organizations" />
+        <Field tag="900" tagAddition="b" fieldType="LocationLibrary" />
+        <Field tag="900" tagAddition="d" startPattern="(!)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="300" tagAddition="a" endPattern="S\s" fieldType="PageCount" />
+        <Field tag="773" tagAddition="g" startPattern="(Vol\.)" endPattern="(\,|$)" fieldType="Volume" />
+        <Field tag="773" tagAddition="g" startPattern="(No\.)" endPattern="(\(|$)" fieldType="Number" />
+        <Field tag="773" tagAddition="g" startPattern="(\()" endPattern="(\)|$)" fieldType="Year" />
+        <Field tag="773" tagAddition="g" startPattern="(p\.)" endPattern="($)" fieldType="PageRange" />
+        <Field tag="773" tagAddition="t" startPattern="(^)" endPattern="($)" fieldType="PeriodicalName" />
+        <Field tag="856" tagAddition="u" fieldType="OnlineAddress" />
+        <Field tag="856" tagAddition="u" fieldType="TableOfContents" requiredPattern="\/toc\/" />
+        <Field tag="035" tagAddition="a" startPattern="(\(DE.+\)GB)" endPattern="($)" fieldType="LocationElectronic" />
+      </FieldMapping>
+      <FieldMapping referenceType="Map">
+        <Field tag="041" tagAddition="a" fieldType="Language" />
+        <Field tag="020" tagAddition="a" fieldType="Isbn" />
+        <Field tag="024" tagAddition="a" fieldType="Doi" />
+        <Field tag="020" tagAddition="c" fieldType="Price" />
+        <Field tag="100" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="240" tagAddition="a" fieldType="UniformTitle" />
+        <Field tag="245" tagAddition="a" fieldType="Title" />
+        <Field tag="245" tagAddition="b" fieldType="Subtitle" />
+        <Field tag="250" tagAddition="a" fieldType="Edition" />
+        <Field tag="246" tagAddition="a" fieldType="ParallelTitle" />
+        <Field tag="246" tagAddition="n" fieldType="TitleInOtherLanguages" />
+        <Field tag="255" tagAddition="a" fieldType="Notes" />
+        <Field tag="255" tagAddition="c" fieldType="Notes" />
+        <Field tag="260" tagAddition="c" fieldType="Year" />
+        <Field tag="260" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="PlaceOfPublication" />
+        <Field tag="260" tagAddition="a" startPattern="(:)" endPattern="($)" fieldType="Publishers" />
+        <Field tag="260" tagAddition="b" fieldType="Publishers" />
+        <Field tag="300" tagAddition="a" fieldType="StorageMedium" />
+        <Field tag="440" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="440" tagAddition="v" fieldType="Volume" />
+        <Field tag="490" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="490" tagAddition="v" fieldType="Volume" />
+        <Field tag="502" tagAddition="a" fieldType="TitleSupplement" />
+        <Field tag="505" tagAddition="a" fieldType="TableOfContents" />
+        <Field tag="520" tagAddition="a" fieldType="Abstract" />
+        <Field tag="650" tagAddition="a" fieldType="Keywords" />
+        <Field tag="650" tagAddition="x" fieldType="Keywords" />
+        <Field tag="650" tagAddition="v" fieldType="Keywords" />
+        <Field tag="650" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="a" fieldType="Keywords" />
+        <Field tag="651" tagAddition="x" fieldType="Keywords" />
+        <Field tag="651" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="v" fieldType="Keywords" />
+        <Field tag="653" tagAddition="a" fieldType="Keywords" />
+        <Field tag="653" tagAddition="x" fieldType="Keywords" />
+        <Field tag="653" tagAddition="y" fieldType="Keywords" />
+        <Field tag="653" tagAddition="v" fieldType="Keywords" />
+        <Field tag="950" tagAddition="a" fieldType="Keywords" />
+        <Field tag="700" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="4" />
+        <Field tag="900" tagAddition="b" fieldType="LocationLibrary" />
+        <Field tag="900" tagAddition="d" startPattern="(!)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="856" tagAddition="u" fieldType="None" />
+        <Field tag="856" tagAddition="u" fieldType="TableOfContents" requiredPattern="\/toc\/" />
+      </FieldMapping>
+      <FieldMapping referenceType="Thesis">
+        <Field tag="020" tagAddition="a" fieldType="Isbn" />
+        <Field tag="022" tagAddition="a" fieldType="Isbn" />
+        <Field tag="020" tagAddition="c" fieldType="Price" />
+        <Field tag="041" tagAddition="a" fieldType="Language" />
+        <Field tag="100" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="(4|e)" />
+        <Field tag="240" tagAddition="a" fieldType="UniformTitle" />
+        <Field tag="245" tagAddition="a" fieldType="Title" />
+        <Field tag="245" tagAddition="n" fieldType="Subtitle" />
+        <Field tag="250" tagAddition="a" fieldType="Edition" />
+        <Field tag="260" tagAddition="c" fieldType="Year" />
+        <Field tag="440" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="440" tagAddition="v" fieldType="Volume" />
+        <Field tag="490" tagAddition="a" startPattern="(^)" endPattern="(:|$)" fieldType="SeriesTitle" />
+        <Field tag="490" tagAddition="v" fieldType="Volume" />
+        <Field tag="502" tagAddition="b" fieldType="TitleSupplement" />
+        <Field tag="502" tagAddition="c" startPattern="(^)" endPattern="(,)" fieldType="PlaceOfPublication" />
+        <Field tag="502" tagAddition="c" startPattern="(,)" endPattern="($)" fieldType="Organizations" />
+        <Field tag="502" tagAddition="d" fieldType="Year" />
+        <Field tag="520" tagAddition="a" fieldType="Abstract" />
+        <Field tag="650" tagAddition="a" fieldType="Keywords" />
+        <Field tag="650" tagAddition="x" fieldType="Keywords" />
+        <Field tag="650" tagAddition="v" fieldType="Keywords" />
+        <Field tag="650" tagAddition="y" fieldType="Keywords" />
+        <Field tag="650" tagAddition="z" fieldType="Keywords" />
+        <Field tag="651" tagAddition="a" fieldType="Keywords" />
+        <Field tag="651" tagAddition="x" fieldType="Keywords" />
+        <Field tag="651" tagAddition="y" fieldType="Keywords" />
+        <Field tag="651" tagAddition="v" fieldType="Keywords" />
+        <Field tag="653" tagAddition="a" fieldType="Keywords" />
+        <Field tag="653" tagAddition="x" fieldType="Keywords" />
+        <Field tag="653" tagAddition="y" fieldType="Keywords" />
+        <Field tag="653" tagAddition="v" fieldType="Keywords" />
+        <Field tag="700" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="(4|e)" />
+        <Field tag="710" tagAddition="a" fieldType="Organizations" />
+        <Field tag="300" tagAddition="a" fieldType="StorageMedium" />
+        <Field tag="856" tagAddition="u" fieldType="LocationElectronic" />
+        <Field tag="999" tagAddition="a" fieldType="LocationLibrary" />
+        <Field tag="999" tagAddition="a" fieldType="LocationCallNumber" />
+        <Field tag="999" tagAddition="b" fieldType="LocationNotes" />
+        <Field tag="505" tagAddition="a" fieldType="TableOfContents" />
+        <Field tag="900" tagAddition="b" fieldType="LocationLibrary" />
+        <Field tag="900" tagAddition="d" startPattern="(!)" endPattern="($)" fieldType="LocationCallNumber" />
+      </FieldMapping>
+    </FieldMappingTable>
+  </Mapping>
+  <FieldEditing>
+    <Substitutions>
+      <Field type="LocationLibrary">
+        <Substitution pattern="&lt;.+?&gt;" replaceBy="" />
+      </Field>
+      <Field type="SeriesTitle">
+        <Substitution pattern=";" replaceBy="" />
+        <Substitution pattern="//" replaceBy="/" />
+        <Substitution pattern="\[" replaceBy="/" />
+      </Field>
+      <Field type="LocationCallNumber">
+        <Substitution pattern="^(?&lt;HALLE&gt;Ha.+?)!" replaceBy="${HALLE}" />
+        <Substitution pattern=".+?!" replaceBy="" />
+      </Field>
+      <Field type="Volume">
+        <Substitution pattern="\]" replaceBy="" />
+        <Substitution pattern="\[" replaceBy="" />
+      </Field>
+      <Field type="TableOfContents">
+        <Substitution pattern="; " replaceBy="\r\n" />
+        <Substitution pattern=" -- " replaceBy="\r\n" />
+      </Field>
+      <Field type="PeriodicalName">
+        <Substitution pattern="in:" replaceBy="" />
+        <Substitution pattern="In:" replaceBy="" />
+      </Field>
+      <Field type="ParentReferenceTitle">
+        <Substitution pattern="in:" replaceBy="" />
+        <Substitution pattern="In:" replaceBy="" />
+      </Field>
+      <Field type="Year">
+        <Substitution pattern="^c\s*" replaceBy="" />
+        <Substitution pattern="^(?&lt;YEAR&gt;\d{4}).+$" replaceBy="${YEAR}" />
+      </Field>
+      <Field type="ParentReferenceYear">
+        <Substitution pattern="^c\s*" replaceBy="" />
+        <Substitution pattern="^(?&lt;YEAR&gt;\d{4}).+$" replaceBy="${YEAR}" />
+      </Field>
+      <Field type="PlaceOfPublication">
+        <Substitution pattern=":" replaceBy="" />
+        <Substitution pattern="\s;" replaceBy=", " />
+        <Substitution pattern="\[" replaceBy="" />
+        <Substitution pattern="\]" replaceBy="" />
+        <Substitution pattern="u\.a\." replaceBy="" />
+      </Field>
+      <Field type="Publishers">
+        <Substitution pattern=":" replaceBy="" />
+        <Substitution pattern="\s;" replaceBy=", " />
+        <Substitution pattern="\[" replaceBy="" />
+        <Substitution pattern="\]" replaceBy="" />
+        <Substitution pattern="u\.a\." replaceBy="" />
+        <Substitution pattern="," replaceBy="" />
+      </Field>
+      <Field type="Keywords">
+        <Substitution pattern="\^" replaceBy="" />
+      </Field>
+      <Field type="PageCount">
+        <Substitution pattern=".+?," replaceBy="" />
+        <Substitution pattern=":" replaceBy="" />
+        <Substitution pattern="\D" replaceBy="" />
+      </Field>
+      <Field type="Title">
+        <Substitution pattern="\/$" replaceBy="" />
+        <Substitution pattern="quot;" replaceBy="&quot;" />
+      </Field>
+      <Field type="Subtitle">
+        <Substitution pattern="\/$" replaceBy="" />
+      </Field>
+      <Field type="OnlineAddress">
+        <Substitution pattern="^.+toc.+$" replaceBy="" />
+      </Field>
+      <Field type="LocationElectronic">
+        <Substitution pattern="^V" replaceBy="http://gso.gbv.de/DB=2.1/PPNSET?PPN=" />
+      </Field>
+    </Substitutions>
+    <KeywordSplitter>;</KeywordSplitter>
+    <PersonTextParserSettings>
+      <Author splitter=";" sequence="LastnameFirstnameWithComma" />
+      <Collaborator splitter=";" sequence="LastnameFirstnameWithComma" />
+      <Editor splitter=";" sequence="LastnameFirstnameWithComma" />
+    </PersonTextParserSettings>
+  </FieldEditing>
+</Transformer>

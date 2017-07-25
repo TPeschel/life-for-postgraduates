@@ -1,0 +1,815 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Transformer>
+  <DisplayName>RIS</DisplayName>
+  <Id>1bdc9da0-328c-4cdf-96de-b9fe2eaef9da</Id>
+  <BuiltIn>True</BuiltIn>
+  <Version>37</Version>
+  <CitaviVersion>3.0</CitaviVersion>
+  <Author>Copyright © 2013 Swiss Academic Software. All rights reserved.</Author>
+  <Culture>en-US</Culture>
+  <ConcentrationAreas>General</ConcentrationAreas>
+  <Provider>Unknown</Provider>
+  <Status>Enabled</Status>
+  <Access>Free</Access>
+  <FileImportSettings>
+    <FilterEx>
+      <de>RIS-Dateien, Textdateien (*.ris; *.txt)|*.ris;*.txt|Alle Dateien (*.*)|*.*</de>
+      <en>RIS-Files, Textfiles (*.ris; *.txt)|*.ris;*.txt|All (*.*)|*.*</en>
+    </FilterEx>
+    <FirstLineIsHeader>False</FirstLineIsHeader>
+    <Flags>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</Flags>
+    <HelpContext type="formatted">
+      <de><![CDATA[{\rtf1\ansi\ansicpg1252\deff0\deflang2055\deflangfe2055{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
+{\colortbl ;\red255\green136\blue17;\red128\green128\blue128;}
+{\*\generator Msftedit 5.41.21.2508;}\viewkind4\uc1\pard\nowidctlpar\sa80\sl264\slmult1\cf1\f0\fs18\u9658? RIS \endash  Research Information System\par
+\cf2 Austauschformat f\'fcr bibliographische Daten. Es handelt sich um eine einfache Textdatei, die einen oder mehrere Titeleintr\'e4ge enth\'e4lt. Die Datei kann die Endung *.ris oder *.txt haben.\par
+\pard\nowidctlpar\sa80\sl264\slmult1\qr https://de.wikipedia.org/wiki/RIS_(Dateiformat)\cf1\par
+}
+]]></de>
+      <en><![CDATA[{\rtf1\ansi\ansicpg1252\deff0\deflang2055\deflangfe2055{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
+{\colortbl ;\red255\green136\blue17;\red128\green128\blue128;}
+{\*\generator Msftedit 5.41.21.2508;}\viewkind4\uc1\pard\nowidctlpar\sa80\sl264\slmult1\cf1\f0\fs18\u9658? RIS \endash  Research Information System\par
+\cf2 Exchange format for bibliographic information. \lang1033 RIS files are simple text files that contain one or more references. These files may have the extension *.ris or *.txt.\par
+\pard\nowidctlpar\sa80\sl264\slmult1\qr https://en.wikipedia.org/wiki/RIS_(file_format)\cf1\par
+}
+]]></en>
+    </HelpContext>
+  </FileImportSettings>
+  <FileExportSettings>
+    <DefaultFileExtension>.txt</DefaultFileExtension>
+    <FilterEx>
+      <de>RIS-Dateien, Textdateien (*.ris; *.txt)|*.ris;*.txt</de>
+    </FilterEx>
+    <Encoding>?</Encoding>
+    <ExportRecordDelimiter>
+      <Start />
+      <End>
+        <DelimiterTag type="Text" value="ER  -" />
+        <DelimiterTag type="Element" value="AppendLine" />
+      </End>
+    </ExportRecordDelimiter>
+    <HelpContext type="formatted">
+      <de><![CDATA[{\rtf1\ansi\ansicpg1252\deff0\deflang2055\deflangfe2055{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
+{\colortbl ;\red255\green136\blue17;\red128\green128\blue128;}
+{\*\generator Msftedit 5.41.21.2508;}\viewkind4\uc1\pard\nowidctlpar\sa80\sl264\slmult1\cf1\f0\fs18\u9658? RIS \endash  Research Information System\par
+\cf2 Austauschformat f\'fcr bibliographische Daten. Es handelt sich um eine einfache Textdatei, die einen oder mehrere Titeleintr\'e4ge enth\'e4lt. Die Datei kann die Endung *.ris oder *.txt haben.\par
+\pard\nowidctlpar\sa80\sl264\slmult1\qr https://de.wikipedia.org/wiki/RIS_(Dateiformat)\cf1\par
+}
+]]></de>
+      <en><![CDATA[{\rtf1\ansi\ansicpg1252\deff0\deflang2055\deflangfe2055{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
+{\colortbl ;\red255\green136\blue17;\red128\green128\blue128;}
+{\*\generator Msftedit 5.41.21.2508;}\viewkind4\uc1\pard\nowidctlpar\sa80\sl264\slmult1\cf1\f0\fs18\u9658? RIS \endash  Research Information System\par
+\cf2 Exchange format for bibliographic information. \lang1033 RIS files are simple text files that contain one or more references. These files may have the extension *.ris or *.txt.\par
+\pard\nowidctlpar\sa80\sl264\slmult1\qr https://en.wikipedia.org/wiki/RIS_(file_format)\cf1\par
+}
+]]></en>
+    </HelpContext>
+    <OneRowPerField>true</OneRowPerField>
+  </FileExportSettings>
+  <RecordLayout>
+    <Format>TextTagged</Format>
+    <Encoding>?</Encoding>
+    <RecordTagLayout>^..\s{1,2}-\s|\r..\s{1,2}-\s|\n..\s{1,2}-\s</RecordTagLayout>
+    <RecordDelimiter>^ER  - |^ER  -|\nER  - |\nER  -|\rER  - |\rER  -</RecordDelimiter>
+    <TagDelimiter />
+    <SubfieldDelimiter />
+  </RecordLayout>
+  <Mapping>
+    <ReferenceTypeMapping defaultReferenceType="Book">
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="STAT" referenceType="StatuteOrRegulation" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="NEWS" referenceType="NewspaperArticle" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="ICOMM" referenceType="InternetDocument" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="MPCT" referenceType="Movie" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="MGZN" referenceType="NewspaperArticle" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="JOUR" referenceType="JournalArticle" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="BOOK" referenceType="Book" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="MAP" referenceType="Map" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="UNPB" referenceType="UnpublishedWork" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="COMP" referenceType="ComputerProgram" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="THES" referenceType="Thesis" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="GEN" referenceType="Unknown" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="JFULL" referenceType="Unknown" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="ART" referenceType="Unknown" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="ELEC" referenceType="InternetDocument" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="SOUND" referenceType="AudioOrVideoDocument" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="VIDEO" referenceType="AudioOrVideoDocument" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="RPRT" referenceType="UnpublishedWork" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="PAT" referenceType="Patent" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="CHAP" referenceType="ContributionInCollectedWorks" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="CPAPER" referenceType="ContributionInConferenceProceedings" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="CHAP" referenceType="ContributionInConferenceProceedings" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="CHAP" referenceType="ContributionInBookEdited" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="CHAPTER" referenceType="ContributionInBookEdited" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="ABST" referenceType="JournalArticle" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="ADVS" referenceType="AudioOrVideoDocument" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="PCOMM" referenceType="PersonalCommunication" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="MUSIC" referenceType="MusicAlbum" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="SER" referenceType="Book" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="INPR" referenceType="Lecture" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="CONF" referenceType="ConferenceProceedings" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="JA" referenceType="JournalArticle" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="CourtDecision" referenceType="CourtDecision" />
+      <Field tag="TY  - " fieldType="ReferenceType" requiredPattern="Article" referenceType="JournalArticle" />
+    </ReferenceTypeMapping>
+    <FieldMappingTable>
+      <FieldMapping referenceType="Book">
+        <Field tag="TY  - " fieldType="ReferenceType" referenceType="None" />
+        <Field tag="SN  - " fieldType="Isbn" />
+        <Field tag="AU  - " fieldType="AuthorsFullName" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="T2  - " fieldType="SeriesTitle" />
+        <Field tag="PY  - " fieldType="Year" />
+        <Field tag="CY  - " fieldType="PlaceOfPublication" />
+        <Field tag="PB  - " fieldType="Publishers" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="ET  - " fieldType="Edition" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="A1  - " fieldType="AuthorsFullName" />
+        <Field tag="Y1  - " fieldType="Year" />
+        <Field tag="IS  - " fieldType="Number" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="A2  - " fieldType="EditorsFullName" />
+        <Field tag="ED  - " fieldType="EditorsFullName" />
+        <Field tag="N1  - " fieldType="Notes" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="L2  - " fieldType="LocationElectronic" />
+        <Field tag="L3  - " fieldType="LocationElectronic" />
+        <Field tag="L4  - " fieldType="LocationElectronic" />
+        <Field tag="JF  - " fieldType="PeriodicalName" />
+        <Field tag="JO  - " fieldType="PeriodicalName" />
+        <Field tag="JA  - " fieldType="PeriodicalStandardAbbreviation" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="A3  - " fieldType="CollaboratorsFullName" />
+        <Field tag="A4  - " fieldType="OthersInvolvedFullName" />
+        <Field tag="NV  - " fieldType="NumberOfVolumes" />
+        <Field tag="VL  - " fieldType="Volume" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="SP  - " fieldType="PageCount" />
+        <Field tag="TI  - " fieldType="Title" />
+        <Field tag="CT  - " fieldType="Title" />
+        <Field tag="BT  - " fieldType="Title" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="T3  - " fieldType="Notes" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="N2  - " fieldType="Abstract" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="LA  - " fieldType="Language" />
+        <Field tag="IN  - " fieldType="Organizations" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="M1  - " fieldType="Notes" />
+        <Field tag="M2  - " fieldType="Notes" />
+        <Field tag="M3  - " fieldType="Notes" />
+        <Field tag="T3  - " fieldType="SeriesTitle" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="T4  - " fieldType="Subtitle" />
+        <Field tag="T5  - " fieldType="TitleSupplement" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="QY  - " fieldType="DownloadPdf" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+      </FieldMapping>
+      <FieldMapping referenceType="UnpublishedWork">
+        <Field tag="TY  - " fieldType="ReferenceType" referenceType="None" />
+        <Field tag="SN  - " fieldType="Number" />
+        <Field tag="AU  - " fieldType="AuthorsFullName" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="T2  - " fieldType="SeriesTitle" />
+        <Field tag="PY  - " fieldType="Date" />
+        <Field tag="CY  - " fieldType="PlaceOfPublication" />
+        <Field tag="PB  - " fieldType="Organizations" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="ET  - " fieldType="Edition" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="A1  - " fieldType="AuthorsFullName" />
+        <Field tag="Y1  - " fieldType="Year" />
+        <Field tag="IS  - " fieldType="Number" />
+        <Field tag="A2  - " fieldType="SeriesTitleEditorsFullName" />
+        <Field tag="ED  - " fieldType="EditorsFullName" />
+        <Field tag="N1  - " fieldType="Notes" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="L2  - " fieldType="LocationElectronic" />
+        <Field tag="L3  - " fieldType="LocationElectronic" />
+        <Field tag="L4  - " fieldType="LocationElectronic" />
+        <Field tag="JF  - " fieldType="PeriodicalName" />
+        <Field tag="JO  - " fieldType="PeriodicalName" />
+        <Field tag="JA  - " fieldType="PeriodicalStandardAbbreviation" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="A3  - " fieldType="CollaboratorsFullName" />
+        <Field tag="VL  - " fieldType="Volume" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="SP  - " fieldType="PageCount" />
+        <Field tag="TI  - " fieldType="Title" />
+        <Field tag="CT  - " fieldType="Title" />
+        <Field tag="BT  - " fieldType="Title" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="N2  - " fieldType="Abstract" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="LA  - " fieldType="Language" />
+        <Field tag="IN  - " fieldType="Organizations" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="M1  - " fieldType="Notes" />
+        <Field tag="M2  - " fieldType="Notes" />
+        <Field tag="M3  - " fieldType="Notes" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="T4  - " fieldType="Subtitle" />
+        <Field tag="T5  - " fieldType="TitleSupplement" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="QY  - " fieldType="DownloadPdf" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+      </FieldMapping>
+      <FieldMapping referenceType="ConferenceProceedings">
+        <Field tag="TY  - " fieldType="ReferenceType" referenceType="None" />
+        <Field tag="SN  - " fieldType="Isbn" />
+        <Field tag="AU  - " fieldType="AuthorsFullName" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="PY  - " fieldType="Year" />
+        <Field tag="CY  - " fieldType="PlaceOfPublication" />
+        <Field tag="PB  - " fieldType="Publishers" />
+        <Field tag="ET  - " fieldType="Edition" />
+        <Field tag="T2  - " fieldType="SpecificField7" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="A1  - " fieldType="AuthorsFullName" />
+        <Field tag="Y1  - " fieldType="Year" />
+        <Field tag="IS  - " fieldType="Number" />
+        <Field tag="A2  - " fieldType="EditorsFullName" />
+        <Field tag="ED  - " fieldType="EditorsFullName" />
+        <Field tag="N1  - " fieldType="Notes" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="L2  - " fieldType="LocationElectronic" />
+        <Field tag="L3  - " fieldType="LocationElectronic" />
+        <Field tag="L4  - " fieldType="LocationElectronic" />
+        <Field tag="JA  - " fieldType="TitleSupplement" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="A3  - " fieldType="CollaboratorsFullName" />
+        <Field tag="VL  - " fieldType="Volume" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="SP  - " fieldType="StartPage" />
+        <Field tag="EP  - " fieldType="EndPage" />
+        <Field tag="TI  - " fieldType="Title" />
+        <Field tag="CT  - " fieldType="Title" />
+        <Field tag="BT  - " fieldType="Title" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="T3  - " fieldType="SeriesTitle" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="N2  - " fieldType="Abstract" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="M1  - " fieldType="Notes" />
+        <Field tag="M2  - " fieldType="Notes" />
+        <Field tag="M3  - " fieldType="Notes" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="T4  - " fieldType="Subtitle" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="QY  - " fieldType="DownloadPdf" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+      </FieldMapping>
+      <FieldMapping referenceType="InternetDocument">
+        <Field tag="TY  - " fieldType="ReferenceType" referenceType="None" />
+        <Field tag="AU  - " fieldType="AuthorsFullName" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="T2  - " fieldType="Subtitle" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="PY  - " fieldType="Year" />
+        <Field tag="ET  - " fieldType="Edition" />
+        <Field tag="SN  - " fieldType="Isbn" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="A1  - " fieldType="AuthorsFullName" />
+        <Field tag="PB  - " fieldType="Publishers" />
+        <Field tag="Y1  - " fieldType="Year" />
+        <Field tag="CY  - " fieldType="PlaceOfPublication" />
+        <Field tag="IS  - " fieldType="Number" />
+        <Field tag="A2  - " fieldType="EditorsFullName" />
+        <Field tag="ED  - " fieldType="EditorsFullName" />
+        <Field tag="N1  - " fieldType="Notes" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="L2  - " fieldType="LocationElectronic" />
+        <Field tag="L3  - " fieldType="LocationElectronic" />
+        <Field tag="L4  - " fieldType="LocationElectronic" />
+        <Field tag="JF  - " fieldType="PeriodicalName" />
+        <Field tag="JO  - " fieldType="PeriodicalName" />
+        <Field tag="JA  - " fieldType="PeriodicalStandardAbbreviation" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="A3  - " fieldType="CollaboratorsFullName" />
+        <Field tag="VL  - " fieldType="Volume" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="SP  - " fieldType="StartPage" />
+        <Field tag="EP  - " fieldType="EndPage" />
+        <Field tag="TI  - " fieldType="Title" />
+        <Field tag="CT  - " fieldType="Title" />
+        <Field tag="BT  - " fieldType="Title" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="T3  - " fieldType="SeriesTitle" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="N2  - " fieldType="Abstract" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="LA  - " fieldType="Language" />
+        <Field tag="IN  - " fieldType="Organizations" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="M1  - " fieldType="Notes" />
+        <Field tag="M2  - " fieldType="Notes" />
+        <Field tag="M3  - " fieldType="Notes" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="T5  - " fieldType="TitleSupplement" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+      </FieldMapping>
+      <FieldMapping referenceType="JournalArticle">
+        <Field tag="TY  - " fieldType="ReferenceType" referenceType="None" />
+        <Field tag="SN  - " fieldType="PeriodicalIssn" />
+        <Field tag="AU  - " fieldType="AuthorsFullName" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="JF  - " fieldType="PeriodicalName" />
+        <Field tag="T2  - " fieldType="PeriodicalName" />
+        <Field tag="SP  - " fieldType="StartPage" />
+        <Field tag="EP  - " fieldType="EndPage" />
+        <Field tag="IS  - " fieldType="Number" />
+        <Field tag="VL  - " fieldType="Volume" />
+        <Field tag="PY  - " fieldType="Year" />
+        <Field tag="ET  - " fieldType="Edition" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="A1  - " fieldType="AuthorsFullName" />
+        <Field tag="PB  - " fieldType="Publishers" />
+        <Field tag="Y1  - " fieldType="Year" />
+        <Field tag="CY  - " fieldType="PlaceOfPublication" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="A2  - " fieldType="EditorsFullName" />
+        <Field tag="ED  - " fieldType="EditorsFullName" />
+        <Field tag="N1  - " fieldType="Notes" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="L2  - " fieldType="LocationElectronic" />
+        <Field tag="L3  - " fieldType="LocationElectronic" />
+        <Field tag="L4  - " fieldType="LocationElectronic" />
+        <Field tag="JO  - " fieldType="PeriodicalName" />
+        <Field tag="JA  - " fieldType="PeriodicalStandardAbbreviation" />
+        <Field tag="J2  - " fieldType="PeriodicalStandardAbbreviation" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="A3  - " fieldType="CollaboratorsFullName" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="TI  - " fieldType="Title" />
+        <Field tag="CT  - " fieldType="Title" />
+        <Field tag="BT  - " fieldType="Title" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="DA  - " fieldType="Date" />
+        <Field tag="T3  - " fieldType="SeriesTitle" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="N2  - " fieldType="Abstract" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="LA  - " fieldType="Language" />
+        <Field tag="IN  - " fieldType="Organizations" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="M1  - " fieldType="Notes" />
+        <Field tag="M2  - " fieldType="Notes" />
+        <Field tag="M3  - " fieldType="Notes" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="QY  - " fieldType="DownloadPdf" />
+        <Field tag="T4  - " fieldType="Subtitle" />
+        <Field tag="T5  - " fieldType="TitleSupplement" />
+        <Field tag="PM  - " fieldType="PubMedId" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+      </FieldMapping>
+      <FieldMapping referenceType="NewspaperArticle">
+        <Field tag="TY  - " fieldType="ReferenceType" referenceType="None" />
+        <Field tag="SN  - " fieldType="PeriodicalIssn" />
+        <Field tag="AU  - " fieldType="AuthorsFullName" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="T2  - " fieldType="Subtitle" />
+        <Field tag="JF  - " fieldType="PeriodicalName" />
+        <Field tag="SP  - " fieldType="StartPage" />
+        <Field tag="EP  - " fieldType="EndPage" />
+        <Field tag="IS  - " fieldType="Number" />
+        <Field tag="VL  - " fieldType="Volume" />
+        <Field tag="PY  - " fieldType="Year" />
+        <Field tag="ET  - " fieldType="Edition" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="A1  - " fieldType="AuthorsFullName" />
+        <Field tag="PB  - " fieldType="Publishers" />
+        <Field tag="Y1  - " fieldType="Year" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="CY  - " fieldType="PlaceOfPublication" />
+        <Field tag="A2  - " fieldType="EditorsFullName" />
+        <Field tag="ED  - " fieldType="EditorsFullName" />
+        <Field tag="N1  - " fieldType="Notes" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="L2  - " fieldType="LocationElectronic" />
+        <Field tag="L3  - " fieldType="LocationElectronic" />
+        <Field tag="L4  - " fieldType="LocationElectronic" />
+        <Field tag="JO  - " fieldType="PeriodicalName" />
+        <Field tag="JA  - " fieldType="PeriodicalStandardAbbreviation" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="A3  - " fieldType="CollaboratorsFullName" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="TI  - " fieldType="Title" />
+        <Field tag="CT  - " fieldType="Title" />
+        <Field tag="BT  - " fieldType="Title" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="T3  - " fieldType="SeriesTitle" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="N2  - " fieldType="Abstract" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="LA  - " fieldType="Language" />
+        <Field tag="IN  - " fieldType="Organizations" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="M1  - " fieldType="Notes" />
+        <Field tag="M2  - " fieldType="Notes" />
+        <Field tag="M3  - " fieldType="Notes" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="QY  - " fieldType="DownloadPdf" />
+        <Field tag="T5  - " fieldType="TitleSupplement" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+      </FieldMapping>
+      <FieldMapping referenceType="Contribution">
+        <Field tag="TY  - " fieldType="ReferenceType" referenceType="None" />
+        <Field tag="SN  - " fieldType="ParentReferenceIsbn" />
+        <Field tag="AU  - " fieldType="AuthorsFullName" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="T2  - " fieldType="ParentReferenceTitle" />
+        <Field tag="ED  - " fieldType="ParentReferenceEditorsFullName" />
+        <Field tag="PY  - " fieldType="ParentReferenceYear" />
+        <Field tag="CY  - " fieldType="ParentReferencePlaceOfPublication" />
+        <Field tag="PB  - " fieldType="ParentReferencePublishers" />
+        <Field tag="ET  - " fieldType="ParentReferenceEdition" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="A1  - " fieldType="AuthorsFullName" />
+        <Field tag="Y1  - " fieldType="ParentReferenceYear" />
+        <Field tag="IS  - " fieldType="Number" />
+        <Field tag="A2  - " fieldType="ParentReferenceEditorsFullName" />
+        <Field tag="N1  - " fieldType="Notes" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="L2  - " fieldType="LocationElectronic" />
+        <Field tag="L3  - " fieldType="LocationElectronic" />
+        <Field tag="L4  - " fieldType="LocationElectronic" />
+        <Field tag="JF  - " fieldType="ParentReferenceTitle" />
+        <Field tag="JO  - " fieldType="ParentReferenceTitle" />
+        <Field tag="JA  - " fieldType="ParentReferenceTitle" />
+        <Field tag="U1  - " fieldType="SpecificField1" />
+        <Field tag="A3  - " fieldType="CollaboratorsFullName" />
+        <Field tag="VL  - " fieldType="Volume" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="SP  - " fieldType="StartPage" />
+        <Field tag="EP  - " fieldType="EndPage" />
+        <Field tag="TI  - " fieldType="Title" />
+        <Field tag="CT  - " fieldType="Title" />
+        <Field tag="BT  - " fieldType="ParentReferenceTitle" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="T3  - " fieldType="ParentReferenceSeriesTitle" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="N2  - " fieldType="Abstract" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="LA  - " fieldType="Language" />
+        <Field tag="IN  - " fieldType="Organizations" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="M1  - " fieldType="Notes" />
+        <Field tag="M2  - " fieldType="Notes" />
+        <Field tag="M3  - " fieldType="Notes" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="QY  - " fieldType="DownloadPdf" />
+        <Field tag="T4  - " fieldType="Subtitle" />
+        <Field tag="T5  - " fieldType="TitleSupplement" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+        <Field tag="C7  - " fieldType="ParentReferenceSpecificField7" />
+        <Field tag="C1  - " fieldType="ParentReferenceSpecificField1" />
+        <Field tag="C4  - " fieldType="ParentReferenceSpecificField4" />
+      </FieldMapping>
+      <FieldMapping referenceType="Thesis">
+        <Field tag="TY  - " fieldType="ReferenceType" referenceType="None" />
+        <Field tag="SN  - " fieldType="Isbn" />
+        <Field tag="AU  - " fieldType="AuthorsFullName" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="PY  - " fieldType="Year" />
+        <Field tag="CY  - " fieldType="PlaceOfPublication" />
+        <Field tag="PB  - " fieldType="Organizations" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="ET  - " fieldType="Edition" />
+        <Field tag="T2  - " fieldType="Subtitle" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="A1  - " fieldType="AuthorsFullName" />
+        <Field tag="Y1  - " fieldType="Year" />
+        <Field tag="IS  - " fieldType="Number" />
+        <Field tag="A2  - " fieldType="EditorsFullName" />
+        <Field tag="ED  - " fieldType="EditorsFullName" />
+        <Field tag="N1  - " fieldType="Notes" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="L2  - " fieldType="LocationElectronic" />
+        <Field tag="L3  - " fieldType="LocationElectronic" />
+        <Field tag="L4  - " fieldType="LocationElectronic" />
+        <Field tag="JF  - " fieldType="PeriodicalName" />
+        <Field tag="JO  - " fieldType="PeriodicalName" />
+        <Field tag="JA  - " fieldType="PeriodicalStandardAbbreviation" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="A3  - " fieldType="CollaboratorsFullName" />
+        <Field tag="VL  - " fieldType="Volume" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="SP  - " fieldType="StartPage" />
+        <Field tag="EP  - " fieldType="EndPage" />
+        <Field tag="TI  - " fieldType="Title" />
+        <Field tag="CT  - " fieldType="Title" />
+        <Field tag="BT  - " fieldType="Title" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="T3  - " fieldType="SeriesTitle" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="N2  - " fieldType="Abstract" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="LA  - " fieldType="Language" />
+        <Field tag="IN  - " fieldType="Organizations" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="M1  - " fieldType="Notes" />
+        <Field tag="M2  - " fieldType="Notes" />
+        <Field tag="M3  - " fieldType="Notes" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="QY  - " fieldType="DownloadPdf" />
+        <Field tag="T5  - " fieldType="TitleSupplement" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+      </FieldMapping>
+      <FieldMapping referenceType="Patent">
+        <Field tag="TY  - " fieldType="ReferenceType" referenceType="None" />
+        <Field tag="AU  - " fieldType="AuthorsFullName" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="T2  - " fieldType="Subtitle" />
+        <Field tag="PY  - " fieldType="SpecificField3" />
+        <Field tag="DA  - " fieldType="Date" />
+        <Field tag="C2  - " fieldType="Date2" />
+        <Field tag="CY  - " fieldType="SpecificField4" />
+        <Field tag="U1  - " fieldType="SpecificField1" />
+        <Field tag="PB  - " fieldType="SpecificField2" />
+        <Field tag="OP  - " fieldType="SpecificField6" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="ET  - " fieldType="Edition" />
+        <Field tag="A1  - " fieldType="AuthorsFullName" />
+        <Field tag="Y1  - " fieldType="Year" />
+        <Field tag="SN  - " fieldType="Number" />
+        <Field tag="A2  - " fieldType="EditorsFullName" />
+        <Field tag="ED  - " fieldType="EditorsFullName" />
+        <Field tag="N1  - " fieldType="Notes" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="L2  - " fieldType="LocationElectronic" />
+        <Field tag="L3  - " fieldType="LocationElectronic" />
+        <Field tag="L4  - " fieldType="LocationElectronic" />
+        <Field tag="JF  - " fieldType="PeriodicalName" />
+        <Field tag="JO  - " fieldType="PeriodicalName" />
+        <Field tag="JA  - " fieldType="PeriodicalStandardAbbreviation" />
+        <Field tag="A3  - " fieldType="CollaboratorsFullName" />
+        <Field tag="VL  - " fieldType="Volume" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="SP  - " fieldType="StartPage" />
+        <Field tag="EP  - " fieldType="EndPage" />
+        <Field tag="TI  - " fieldType="Title" />
+        <Field tag="CT  - " fieldType="Title" />
+        <Field tag="BT  - " fieldType="Title" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="T3  - " fieldType="SeriesTitle" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="N2  - " fieldType="Abstract" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="LA  - " fieldType="Language" />
+        <Field tag="IN  - " fieldType="Organizations" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="M1  - " fieldType="SpecificField5" />
+        <Field tag="M2  - " fieldType="Notes" />
+        <Field tag="M3  - " fieldType="Notes" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="QY  - " fieldType="DownloadPdf" />
+        <Field tag="T5  - " fieldType="TitleSupplement" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+      </FieldMapping>
+      <FieldMapping referenceType="CourtDecision">
+        <Field tag="TY  - " fieldType="ReferenceType" referenceType="None" />
+        <Field tag="AU  - " fieldType="Organizations" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="T2  - " fieldType="Subtitle" />
+        <Field tag="N6  - " fieldType="SpecificField2" />
+        <Field tag="N7  - " fieldType="SpecificField3" />
+        <Field tag="PY  - " fieldType="Year" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="VL  - " fieldType="Volume" />
+        <Field tag="IS  - " fieldType="Number" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="JF  - " fieldType="PeriodicalName" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="SP  - " fieldType="StartPage" />
+        <Field tag="LA  - " fieldType="Language" />
+        <Field tag="QY  - " fieldType="DownloadPdf" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="NT  - " fieldType="PageRangeNumberingType" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="T5  - " fieldType="TitleSupplement" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+      </FieldMapping>
+      <FieldMapping referenceType="ContributionInConferenceProceedings">
+        <Field tag="SN  - " fieldType="ParentReferenceIsbn" />
+        <Field tag="AU  - " fieldType="AuthorsFullName" />
+        <Field tag="T1  - " fieldType="Title" />
+        <Field tag="T2  - " fieldType="ParentReferenceTitle" />
+        <Field tag="ED  - " fieldType="ParentReferenceEditorsFullName" />
+        <Field tag="PY  - " fieldType="ParentReferenceYear" />
+        <Field tag="PB  - " fieldType="ParentReferencePublishers" />
+        <Field tag="ET  - " fieldType="ParentReferenceEdition" />
+        <Field tag="KW  - " fieldType="Keywords" />
+        <Field tag="A1  - " fieldType="AuthorsFullName" />
+        <Field tag="PY  - " fieldType="ParentReferenceYear" />
+        <Field tag="IS  - " fieldType="Number" />
+        <Field tag="NV  - " fieldType="Notes" />
+        <Field tag="A2  - " fieldType="ParentReferenceEditorsFullName" />
+        <Field tag="N1  - " fieldType="Notes" />
+        <Field tag="TT  - " fieldType="TranslatedTitle" />
+        <Field tag="UR  - " fieldType="LocationElectronic" />
+        <Field tag="L1  - " fieldType="LocationElectronic" />
+        <Field tag="L2  - " fieldType="LocationElectronic" />
+        <Field tag="L3  - " fieldType="LocationElectronic" />
+        <Field tag="L4  - " fieldType="LocationElectronic" />
+        <Field tag="JF  - " fieldType="ParentReferenceTitle" />
+        <Field tag="JO  - " fieldType="ParentReferenceTitle" />
+        <Field tag="JA  - " fieldType="ParentReferenceTitle" />
+        <Field tag="A3  - " fieldType="CollaboratorsFullName" />
+        <Field tag="VL  - " fieldType="ParentReferenceVolume" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="SP  - " fieldType="StartPage" />
+        <Field tag="EP  - " fieldType="EndPage" />
+        <Field tag="TI  - " fieldType="Title" />
+        <Field tag="CT  - " fieldType="Title" />
+        <Field tag="BT  - " fieldType="ParentReferenceTitle" />
+        <Field tag="Y2  - " fieldType="Date" />
+        <Field tag="T3  - " fieldType="ParentReferenceSeriesTitle" />
+        <Field tag="AB  - " fieldType="Abstract" />
+        <Field tag="N2  - " fieldType="Abstract" />
+        <Field tag="U1  - " fieldType="Notes" />
+        <Field tag="U2  - " fieldType="Notes" />
+        <Field tag="U3  - " fieldType="Notes" />
+        <Field tag="U4  - " fieldType="Notes" />
+        <Field tag="U5  - " fieldType="Notes" />
+        <Field tag="LA  - " fieldType="Language" />
+        <Field tag="IN  - " fieldType="Organizations" />
+        <Field tag="H1  - " fieldType="LocationLibrary" />
+        <Field tag="H2  - " fieldType="LocationCallNumber" />
+        <Field tag="G1  - " startPattern="(^)" endPattern="(\s)" fieldType="LocationLibrary" />
+        <Field tag="G1  - " startPattern="(^.+?\s)" endPattern="($)" fieldType="LocationCallNumber" />
+        <Field tag="M1  - " fieldType="Notes" />
+        <Field tag="M2  - " fieldType="Notes" />
+        <Field tag="M3  - " fieldType="Notes" />
+        <Field tag="TS  - " fieldType="SourceOfBibliographicInformation" />
+        <Field tag="DO  - " fieldType="Doi" />
+        <Field tag="M3  - " startPattern="(^doi:)" endPattern="($)" fieldType="Doi" />
+        <Field tag="QY  - " fieldType="DownloadPdf" />
+        <Field tag="T4  - " fieldType="Subtitle" />
+        <Field tag="T5  - " fieldType="TitleSupplement" />
+        <Field tag="CN  - " fieldType="LocationCallNumber" />
+        <Field tag="Y3  - " fieldType="AccessDate" />
+        <Field tag="U6  - " fieldType="OnlineAddress" />
+        <Field tag="C7  - " fieldType="ParentReferenceSpecificField7" />
+        <Field tag="C1  - " fieldType="ParentReferenceSpecificField1" />
+        <Field tag="C4  - " fieldType="ParentReferenceSpecificField4" />
+        <Field tag="CY  - " fieldType="ParentReferenceSpecificField1" />
+        <Field tag="DA  - " fieldType="ParentReferenceSpecificField4" />
+      </FieldMapping>
+    </FieldMappingTable>
+  </Mapping>
+  <FieldEditing>
+    <Substitutions>
+      <Field type="Year">
+        <Substitution pattern="^.*(?&lt;YEAR&gt;\d\d\d\d).*$" replaceBy="${YEAR}" />
+      </Field>
+      <Field type="ParentReferenceYear">
+        <Substitution pattern="^.*(?&lt;YEAR&gt;\d\d\d\d).*$" replaceBy="${YEAR}" />
+      </Field>
+      <Field type="PageCount">
+        <Substitution pattern="\sc\." replaceBy="" />
+        <Substitution pattern="\sc\." replaceBy="" />
+      </Field>
+      <Field type="LocationElectronic">
+        <Substitution pattern="^.+?@.+$" replaceBy="" />
+      </Field>
+    </Substitutions>
+    <KeywordSplitter>;|,|/</KeywordSplitter>
+    <PersonTextParserSettings>
+      <Author splitter=";" sequence="None" />
+      <Collaborator splitter=";" sequence="None" />
+      <Editor splitter=";" sequence="None" />
+    </PersonTextParserSettings>
+  </FieldEditing>
+</Transformer>

@@ -1,0 +1,19 @@
+SD_Allg, SD_Hypo, Sd_Hyper, 
+Fruehgeb. =1
+Infekt =2
+Endokr  = 3
+DM1, DM2, = 4
+Blut, Gerinnung, = 5
+ADHS 
+Sonstiges (Tumor, Cafe au lait fleck, Nicht eindeutig, Mutter geraucht während Geburt, Purpura Schönlein-H.(1), Zyste im Kof des Fetus (1), marfanoider Habitus, neurolog. Grunderkrankung mit statomot. Entwickluungsverzögerung) = 6
+Epikrampf = 7
+Kardio_Rhyth = 8
+Psy = 9
+GIT = 10
+
+Pulmo, , GIT, Infekt, HWI, Nierenfehl, Kardio_Rhyth, Kardio, Allergie, , Psy, , Depres, Sucht, MuskelNGScreen, 
+
+Medis:
+L-Thyroxin = 11
+Antibiotikum =12
+Sonsitges (Dafiro HCT, ) = 13

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="recoverySheet.gmxnet-Dateien/bootstrap.css">
+  <link rel="stylesheet" href="recoverySheet.gmxnet-Dateien/mvelo.css">
+  <link rel="stylesheet" href="recoverySheet.gmxnet-Dateien/recoverySheet.css">
+
+  <script src="recoverySheet.gmxnet-Dateien/jquery.js"></script>
+  <script src="recoverySheet.gmxnet-Dateien/jquery_002.js"></script>
+  <script src="recoverySheet.gmxnet-Dateien/qrcode.js"></script>
+  <script src="recoverySheet.gmxnet-Dateien/mvelo.js"></script>
+  <script src="recoverySheet.gmxnet-Dateien/recoverySheet.js"></script>
+<style id="secBgndCss">.secureBackground {background-color: #f5f5f5;background-position: -20px -20px;background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJzZWNCZ25kIiB2ZXJzaW9uPSIxLjEiIHdpZHRoPSI4NS41cHgiIGhlaWdodD0iODUuNXB4IiB2aWV3Qm94PSIwIDAgMjcgMjciPjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDM0NyAxNCAxNCkiIHN0eWxlPSJmaWxsOiAjZTllOWU5OyIgZD0ibSAxMy45NjM2NDksMjUuOTAxNzU0IGMgLTQuNjkwMDAwNSwwIC04LjUwMDAwMDUsLTMuNzggLTguNTAwMDAwNSwtOC40NCAwLC0xLjY0IDAuNDcsLTMuMTcgMS4yOSwtNC40NyBWIDkuMDQxNzU0NiBjIDAsLTMuOTM5OTk5MiAzLjIzLC03LjE0OTk5OTIgNy4yMDAwMDA1LC03LjE0OTk5OTIgMy45NywwIDcuMiwzLjIxIDcuMiw3LjE0OTk5OTIgdiAzLjk0OTk5OTQgYyAwLjgyLDEuMyAxLjMsMi44MyAxLjMsNC40OCAwLDQuNjUgLTMuOCw4LjQzIC04LjQ5LDguNDMgeiBtIC0xLjM1LC03Ljk5IHYgMy4zMyBoIDAgYyAwLDAuMDIgMCwwLjAzIDAsMC4wNSAwLDAuNzQgMC42MSwxLjM0IDEuMzUsMS4zNCAwLjc1LDAgMS4zNSwtMC42IDEuMzUsLTEuMzQgMCwtMC4wMiAwLC0wLjAzIDAsLTAuMDUgaCAwIHYgLTMuMzMgYyAwLjYzLC0wLjQzIDEuMDQsLTEuMTUgMS4wNCwtMS45NyAwLC0xLjMyIC0xLjA3LC0yLjM4IC0yLjQsLTIuMzggLTEuMzIsMCAtMi40LDEuMDcgLTIuNCwyLjM4IDAuMDEsMC44MiAwLjQzLDEuNTQgMS4wNiwxLjk3IHogbSA2LjI5LC04Ljg2OTk5OTQgYyAwLC0yLjcwOTk5OTIgLTIuMjIsLTQuOTA5OTk5MiAtNC45NSwtNC45MDk5OTkyIC0yLjczLDAgLTQuOTUwMDAwNSwyLjIgLTQuOTUwMDAwNSw0LjkwOTk5OTIgViAxMC42MTE3NTQgQyAxMC4zOTM2NDksOS42MjE3NTQ0IDEyLjEwMzY0OSw5LjAzMTc1NDYgMTMuOTUzNjQ5LDkuMDMxNzU0NiBjIDEuODUsMCAzLjU1LDAuNTg5OTk5OCA0Ljk0LDEuNTc5OTk5NCBsIDAuMDEsLTEuNTY5OTk5NCB6IiAvPjwvc3ZnPg==);}.lockBtnIcon, .lockBtnIcon:active {margin: 0px;width: 28px; height: 28px;background-size: 100% 100%;background-repeat: no-repeat;background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJzZWNCZ25kIiB2ZXJzaW9uPSIxLjEiIHdpZHRoPSI4NS41cHgiIGhlaWdodD0iODUuNXB4IiB2aWV3Qm94PSIwIDAgMjcgMjciPjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDAgMTQgMTQpIiBzdHlsZT0iZmlsbDogIzgwODA4MDsiIGQ9Im0gMTMuOTYzNjQ5LDI1LjkwMTc1NCBjIC00LjY5MDAwMDUsMCAtOC41MDAwMDA1LC0zLjc4IC04LjUwMDAwMDUsLTguNDQgMCwtMS42NCAwLjQ3LC0zLjE3IDEuMjksLTQuNDcgViA5LjA0MTc1NDYgYyAwLC0zLjkzOTk5OTIgMy4yMywtNy4xNDk5OTkyIDcuMjAwMDAwNSwtNy4xNDk5OTkyIDMuOTcsMCA3LjIsMy4yMSA3LjIsNy4xNDk5OTkyIHYgMy45NDk5OTk0IGMgMC44MiwxLjMgMS4zLDIuODMgMS4zLDQuNDggMCw0LjY1IC0zLjgsOC40MyAtOC40OSw4LjQzIHogbSAtMS4zNSwtNy45OSB2IDMuMzMgaCAwIGMgMCwwLjAyIDAsMC4wMyAwLDAuMDUgMCwwLjc0IDAuNjEsMS4zNCAxLjM1LDEuMzQgMC43NSwwIDEuMzUsLTAuNiAxLjM1LC0xLjM0IDAsLTAuMDIgMCwtMC4wMyAwLC0wLjA1IGggMCB2IC0zLjMzIGMgMC42MywtMC40MyAxLjA0LC0xLjE1IDEuMDQsLTEuOTcgMCwtMS4zMiAtMS4wNywtMi4zOCAtMi40LC0yLjM4IC0xLjMyLDAgLTIuNCwxLjA3IC0yLjQsMi4zOCAwLjAxLDAuODIgMC40MywxLjU0IDEuMDYsMS45NyB6IG0gNi4yOSwtOC44Njk5OTk0IGMgMCwtMi43MDk5OTkyIC0yLjIyLC00LjkwOTk5OTIgLTQuOTUsLTQuOTA5OTk5MiAtMi43MywwIC00Ljk1MDAwMDUsMi4yIC00Ljk1MDAwMDUsNC45MDk5OTkyIFYgMTAuNjExNzU0IEMgMTAuMzkzNjQ5LDkuNjIxNzU0NCAxMi4xMDM2NDksOS4wMzE3NTQ2IDEzLjk1MzY0OSw5LjAzMTc1NDYgYyAxLjg1LDAgMy41NSwwLjU4OTk5OTggNC45NCwxLjU3OTk5OTQgbCAwLjAxLC0xLjU2OTk5OTQgeiIgLz48L3N2Zz4=);}</style></head>
+<body>
+<div class="recovery-sheet">
+  <header class="recovery-sheet_teaser">
+    <img src="recoverySheet.gmxnet-Dateien/lock.png">
+
+    <h1 class="recovery-sheet_panel-headline">Wichtige Information!</h1>
+    <img src="recoverySheet.gmxnet-Dateien/lock.png">
+  </header>
+
+  <section class="recovery-sheet_content container">
+    <div class="row">
+      <div class="col-xs-2">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAAgCAIAAABrSUp5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzM0MzA1Mjk0OEQzMTFFNUJCMzVEOTNEMzU5MUE5QUEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MzM0MzA1MkE0OEQzMTFFNUJCMzVEOTNEMzU5MUE5QUEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDozMzQzMDUyNzQ4RDMxMUU1QkIzNUQ5M0QzNTkxQTlBQSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDozMzQzMDUyODQ4RDMxMUU1QkIzNUQ5M0QzNTkxQTlBQSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PiiwvTAAAAnPSURBVHjarFp7TBVnFp97eWyBi3B5yEMegluV8hS3iikWZAERAxrAqkhlWXGjW0tlI1j/wBVNXCmhYFJkSYtKWYoxJKKiCKwiqPhITQQXFkHeikgEHwiKwGV/zMhkvDPzzVy2JxdC5p7zfeecOd85v3M+FFNTUxSRHj1+fOPatWvXr9/99deurq7BwcHJyUmVSmVvb/+Ju/sKP7+Vn3++fPlywgqvXr16+/atQqEQY4AORkZGpqamYgxjY2MEcRC+BY++gYFSis3AwEDrIXSDhuT13717Z2NjoxBzFjxy6dKlU6dO1dfXP+rtfTc+/n4/1sKZP6ytrT08PKKjoqJjYmxtbflLrYuM/G9LC0EXLOUyf/758nJDQ0P+t3tTUy9WVJDFLdTq4JCQkpISPT09hTibvp7eTwUFS5cu5ZoZEx39n6YmgpcnJif9P/sMgtNvlU/nzp3z8/P74J2If1iaZ2+fceTImzdvuEu9ePFirrU1JYNu377N12R4eNjezk6OeEVFRWhoqCRbVFQUd/2ysjJJEQN9fUY3bWfBtm3btsnxkZjX4OWGe/fYBZubm02MjSkZsocPH+Y7q6amRiFDE1BpaWlPT49araaIbPozloM0Gs1Kf39KyqLvMjIY/g+chZTEZh/FrD4MWVlZVVdVMWtevnxZprUBAQF8Z+3fv5+St2/6gQPg/2deHll/0IaYGGZx5BmFFHNgQMD4+Li2s/r7+708PWftJq09zObMqautxbKFhYUyrZ1jatrZ2anlrBUrVsgU/1N8PCMSGRlJtt/QwODu3bvgDAkJIXOaqlRNTU2sMu+dhWwfHh7+m3iK3Qkp7El//5EjRyjZIVn0889cT7W2tpqYmMgUD5wJTJyPuXPnkr3w54SEmzdvMkmdwHY0J4erz3tnZWVl/YaeYo0PX7Pmy7g4SrbI5k2buMqdOHFCvuwnbm4AAYxgcXEx4TAygb940SKyp1AuJiYmtJ3V19dnZWlJybOfXCJZMjYyWhMW9ktx8fJly+Qb7OToiArDKrdp40b5sqi5vb29rGzcli2SmZvwLQrFgwcPtHLCtLNQhmR6yt3dHQGckpICVWCYFvJiyNvb++DBgyiCzAZuixdTusQjCgIj+Pz5c2YLmYJAWPc4VRgpeL6zMzXbM5F37Bi/2lCjo6NLliyRRFLm5ub5+fkjIyOs5MDAwK5du1gf2dnZAXNUV1e/5eCs7u5uSwsLnZyVsmcPI3vlyhWd6jLo4sWLWmhRQcxKYuusDQ8HqhBw1oULF3BkyDGJLAsvCMLXY7m5ERERJ0+ehO/436LoKHVRF7TU1xfVBrL7vv2W0tHI3NxcLQV27typ6yLISB3t7YLGUsnJyZJhdYCGMLMgFh/L1xW9G3OE/WjEp5Ode2aikoux5ecBho4fPy5mjv7tW7coYttlbWW1Y8cO9klba2t2Tg4dLTMho1BohBpMtF2Ojo4FBQXnz5+H1xRCi/MfAgFeq6uztLREAqLkibDU3dWl9cTMzOxYXh7wFOqaQkbPhGYoISFB9GsbKUiCA8z17r+rqynZxOCUnOxsSnZJAsVu3oxzzf8WhEOtpPOQ4Gpod/GGBNqAtDSFiBRXHM18b08P4aAop6cTRIOZMGYJRUfmyQK5urri95uxMcEYWeLjgwTBj8na2tqffvyREgqioKAgIyMjsaESKuDr16/5z0NCQ9ESTkm9WrR6DjMlXpCUWIW8hEp8zEQ+v2jW7eiBAeqjIA9amVWrVvGx2+O+vus3bih4C6L5+HLrVtQpsU2fPHny8uVL/rgqNSUFp1vyGJ4pK6uqrCQ5C00v2eWvR0aoWRHyhZ29Pf54PjQkyODk7Mz0WFM8fwmSt4+Pv78/YVo5MjoKf2k9/D4r6+atW5KeUtAjxqSkJNQEUWctXLiQvAoy+uycBRBsY2MznXe7u/lxN43dzMyCg4MFQ1vQtrCwMFtbW2N64CNGXR/m+PuNjQzklkPY9EFr69/pOYews5YRJ8IgYCWAaW6NYw1mP8KB4+SEBAf+lpYWQQZztRo5wtvLS86hRl5fu3atUqk0JaYFbkFEBUz65huEm0KXdwywhi5C2FkBAQEqlWpK3NmPHj8+ffo0+wRFHf19YGDgKvqzOjTUQq0WFJ/v4oLfD9va0LIJLm5JN6R/DA6WYwM6LQ8Pj2lnzZkjpuq0s3p6uGZfvXpVp9OARSY1mqSvv0bdE/ga+e8P9EyaUNTsbG0fPnwoWE0bGhrU5uaCCODQoUNgYOsaHzQ0NjaCAfZITgfZNghxSphwMfN+dryDY07NdmSSvHu3AILHT/qBA5K6urm51dfXawl3dnai/FPE4VTY6tWCDCbGxj00qME7BMAhvy2ApLq6OmZTZtBO6JY0NNQij+ckpw76eno1NTUCzmpvb8dJlPQXWsgtsbFFRUVVVVXl5eVpaWkMMhA2j76AwOv9HX1hw2dwmDfv2bNnjBLx8fFk1Rd+/DHbw8dERxOcBYwNHgbTkhtA8uwI5OnhAdQmMPxDVzWLeRZBaQROX1+f2OQP5OXpyd4DMTmRsO+ur75iNf7L9u0UcTZdUVGBN0Fe8G/JyQgRyQkCAJqAs1DvyJND+THMxsK/ior0lEpKxvUE3GohcivDUGVlJcu8d+9eihj+XnR5Jd8PdHR0YKm/EmcS09N6Q0P2+H9wYYGUZCp1GOUnyAWurs7iozvQ+nXruC9NLMWAnJ2choeHWc6MjAzCstsTEyUPNRsvAGUWUldnPt7e7O5KbvPxS0kJIN8U9X8RxF1dXNavX98tghgYYu4UuIBTjDMkJIRJqSzWFdsXVfu7zMxF9BEhDFF201Op6dfg7MwMvAhI4l5Dwz9YWKuV8Kurqx0cHGZ3dcjQ7xcsaGpqOnr0KPmNoT5w921ubuaXAobKzpzhcpaWlorFYGFhIRiOFxQQrgjS09O5qw0MDIiVKVYEit2kkYDA9X1nR8fGL77Q6VKapQ0bNjC3Blu3biVrkPvDD9xNAaCWffop31m2NjZDQ0NcTmbcLICwZs612Dwa5OjgMDg4qGVvZmamZAoGFB0dHaXEZjcIsYiICKOPPhIsf9p9gFIJTH/27Fn2WtzD3Z18WlEBtXbct28fn23Th5djoDt37vDZkHqYnA1qa2sT2zQ7O5tvKYCeK91skCk1NVV0PhNM0/3799EoXa2pgSpPnz7FumP0cAqRiR7N0srK0dFx5cqVQJ7cHhNhEhsbi4hQKpXC/6Kj0fj6+mo9jIuLA65hRq9MftBMTcFZWmzYEYV/fGJierqvUECTicnJoKAglxmD0WwfTE9/NTzM/ccYvD8TlSoxMZGvDAzJz8+/VFmpJ6Ito4zKxOR/AgwA14zS5hlIgHkAAAAASUVORK5CYII=" class="logo logo-gmx">
+      </div>
+      <div class="col-xs-10">
+        <h2>Wiederherstellungsbeleg zur verschlüsselten Kommunikation</h2>
+
+        <h3 class="hidden-print">Bitte drucken Sie diesen Beleg aus und verwahren Sie ihn sicher!</h3>
+
+        <h3 class="visible-print-block">Bitte bewahren Sie diesen Beleg sicher auf!</h3>
+      </div>
+    </div>
+
+    <section class="recovery-sheet_print hidden-print">
+      <img src="recoverySheet.gmxnet-Dateien/printer.png">
+      <img src="recoverySheet.gmxnet-Dateien/btn.png" class="recovery-sheet_print-button">
+      <img src="recoverySheet.gmxnet-Dateien/printer.png">
+    </section>
+
+    <section class="recovery-sheet_panel">
+      <div class="recovery-sheet_panel-content">
+        <div class="recovery-sheet_code">
+          <div class="recovery-sheet_code-header">
+            <h3>Wiederherstellungscode</h3>
+
+            <h3>Erstellungsdatum: <span id="currentDate">3.3.2016</span></h3>
+          </div>
+          <div class="recovery-sheet_code-container secureBackground">
+            <span class="recovery-sheet_code-digit">uk82m</span>
+            <span class="recovery-sheet_code-separator">-</span>
+            <span class="recovery-sheet_code-digit">c0fl7</span>
+            <span class="recovery-sheet_code-separator">-</span>
+            <span class="recovery-sheet_code-digit">cs8lv</span>
+            <span class="recovery-sheet_code-separator">-</span>
+            <span class="recovery-sheet_code-digit">clppf</span>
+            <span class="recovery-sheet_code-separator">-</span>
+            <span class="recovery-sheet_code-digit">c2tkr</span>
+            <span class="recovery-sheet_code-separator">-</span>
+            <span class="recovery-sheet_code-digit">b</span>
+          </div>
+        </div>
+
+        <div class="recovery-sheet_plain-content">
+          <h3>Verschlüsselte Kommunikation wiederherstellen</h3>
+
+          <p>Wenn Ihre verschlüsselte Kommunikation nicht mehr funktioniert, z. B.</p>
+
+          <ul>
+            <li>weil Sie Ihr Schlüssel-Passwort vergessen haben</li>
+            <li>weil es Probleme mit der Browser-Erweiterung gibt</li>
+            <li>aus sonstigen Gründen</li>
+          </ul>
+
+          <p>prüfen Sie bitte die Einstellungen in Ihrem Postfach unter:</p>
+
+          <p><em>Posteingang</em> &gt; <em>Einstellungen</em> &gt; <em>Sicherheit</em> &gt; <em>Verschlüsselte Kommunikation</em>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="recovery-sheet_panel">
+      <div class="recovery-sheet_panel-content">
+        <h3>Verschlüsselte Kommunikation auf weiteren Geräten</h3>
+
+        <div class="recovery-sheet_devices">
+          <div class="recovery-sheet_devices-item recovery-sheet_devices-desktop">
+            <div class="recovery-sheet_devices-split-content">
+              <h4>Auf einem anderen Computer</h4>
+              <img src="recoverySheet.gmxnet-Dateien/desktop.png">
+            </div>
+            <p>Geben Sie den Wiederherstellungscode zur Einrichtung auf anderen Computern in den Einstellungen unter</p>
+
+            <p><em>Posteingang</em> &gt; <em>Einstellungen</em> &gt; <em>Sicherheit</em> &gt; <em>Verschlüsselte Kommunikation</em> ein.</p>
+          </div>
+          <div class="recovery-sheet_devices-item recovery-sheet_devices-mobile">
+            <div class="recovery-sheet_devices-split-content">
+              <h4>Auf mobilen Geräten</h4>
+              <img src="recoverySheet.gmxnet-Dateien/smartphone.png">
+              <img src="recoverySheet.gmxnet-Dateien/tablet.png">
+            </div>
+            <div class="recovery-sheet_devices-split-content">
+              <p>Scannen Sie den QR- Code mit Ihrem mobilen Gerät.</p>
+              <div title="uk82mc0fl7cs8lvclppfc2tkrb" id="qrcode"><canvas style="display: none;" height="175" width="175"></canvas><img src="data:image/png;base64,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" style="display: block;" alt="Scan me!"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="recovery-sheet_print hidden-print">
+      <img src="recoverySheet.gmxnet-Dateien/printer.png">
+      <img src="recoverySheet.gmxnet-Dateien/btn.png" class="recovery-sheet_print-button">
+      <img src="recoverySheet.gmxnet-Dateien/printer.png">
+    </section>
+  </section>
+
+  <footer class="recovery-sheet_teaser visible-print-block">
+    <img src="recoverySheet.gmxnet-Dateien/lock.png">
+
+    <h1 class="recovery-sheet_panel-headline">Wichtige Information!</h1>
+    <img src="recoverySheet.gmxnet-Dateien/lock.png">
+  </footer>
+
+  <hr class="page-breaker">
+
+  <header class="recovery-sheet_teaser">
+    <img src="recoverySheet.gmxnet-Dateien/lock.png">
+
+    <h1 class="recovery-sheet_panel-headline">Wichtige Information!</h1>
+    <img src="recoverySheet.gmxnet-Dateien/lock.png">
+  </header>
+
+  <section class="recovery-sheet_content container">
+    <div class="row">
+      <div class="col-xs-2">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAAgCAIAAABrSUp5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzM0MzA1Mjk0OEQzMTFFNUJCMzVEOTNEMzU5MUE5QUEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MzM0MzA1MkE0OEQzMTFFNUJCMzVEOTNEMzU5MUE5QUEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDozMzQzMDUyNzQ4RDMxMUU1QkIzNUQ5M0QzNTkxQTlBQSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDozMzQzMDUyODQ4RDMxMUU1QkIzNUQ5M0QzNTkxQTlBQSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PiiwvTAAAAnPSURBVHjarFp7TBVn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" class="logo logo-gmx">
+      </div>
+      <div class="col-xs-10">
+        <h2>Hinweise zur verschlüsselten Kommunikation bei GMX</h2>
+
+        <p>Verschlüsselte Kommunikation bei GMX ist ein PGP-basiertes 
+Verfahren. Es ermöglicht Ihnen, bei Bedarf E-Mails verschlüsselt zu 
+versenden und stellt zugleich sicher, dass nur Sie und der Empfänger 
+diese lesen können.</p>
+
+        <div class="recovery-sheet_description">
+          <h4>Sicherung Ihrer Daten</h4>
+          <ul>
+            <li>Zur Sicherung Ihrer, für die verschlüsselte 
+Kommunikation wichtigen Daten (z. B. Schlüssel-Passwort), werden diese 
+von unserem deutschen Sicherheitspartner „Mailvelope“ verschlüsselt auf 
+unseren GMX Servern gespeichert.</li>
+            <li>Möchten Sie Ihre Daten ausschließlich lokal auf Ihrem 
+Computer speichern, finden Sie diese Möglichkeit in den Einstellungen 
+zur verschlüsselten Kommunikation in Ihrem GMX Postfach.</li>
+            <li><em>Bitte beachten Sie</em>: Ohne Sicherung können Ihre 
+verschlüsselten Nachrichten bei Verlust Ihres Schlüssel-Passworts, 
+Defekt Ihres Endgeräts oder Problemen mit der Browser-Erweiterung nicht 
+wieder entschlüsselt werden!</li>
+          </ul>
+
+          <h4>Wiederherstellen Ihrer Daten</h4>
+          <ul>
+            <li>Die Sicherungskopie Ihrer Daten lässt sich nur mit Hilfe des Wiederherstellungscodes auf diesem Beleg entschlüsseln.</li>
+            <li><em>Empfehlung</em>: Legen Sie dieses Dokument als 
+Ausdruck an einem sicheren Ort ab und gewähren Sie auch keinem Dritten 
+Zugriff auf den Wiederherstellungscode.</li>
+          </ul>
+
+          <h4>Verschlüsselte Kommunikation mit anderen Kontakten</h4>
+          <ul>
+            <li>Sie können mit anderen Kontakten verschlüsselt kommunizieren, wenn diese auch verschlüsselte Kommunikation (PGP) nutzen.</li>
+            <li>GMX Nutzer, die das von GMX und WEB.DE verwendete 
+PGP-Verfahren verwenden, finden Sie direkt in einem zentralen 
+Verzeichnis in Ihrem GMX Postfach. Wenn Sie keinen Eintrag in diesem 
+Verzeichnis wünschen, widersprechen Sie diesem bitte in Ihren GMX 
+Postfach Einstellungen.</li>
+            <li>Sie haben die Möglichkeit, über Ihre Einstellungen zur 
+verschlüsselten Kommunikation im GMX Postfach weitere Kontakte zur 
+Kommunikation mit PGP einzuladen. Bereits erfolgreich eingeladene 
+Kontakte erkennen Sie anhand des Schlosssymbols an der E-Mail-Adresse.</li>
+            <li><em>Empfehlung</em>: Bei GMX und WEB.DE Kontakten können
+ Sie sicher sein, dass es sich tatsächlich um die angezeigten Nutzer 
+handelt. Bei Kontakten, die Ihre E-Mail-Adresse bei anderen 
+E-Mail-Anbietern haben, sollten Sie die Identität stets noch einmal 
+überprüfen.</li>
+          </ul>
+
+          <h4>Verschlüsselte Kommunikation auf weiteren Geräten einrichten</h4>
+          <ul>
+            <li><em>Generell gilt</em>: Richten Sie verschlüsselte Kommunikation nur auf sicheren Geräten ein, auf die kein unbekannter Dritter Zugriff hat.</li>
+          </ul>
+        </div>
+
+        <p>Weitere Informationen und Einstellungsmöglichkeiten finden Sie In Ihrem GMX Postfach unter <em>Posteingang</em> &gt; <em>Einstellungen</em> &gt; <em>Sicherheit</em> &gt; <em>Verschlüsselte Kommunikation</em>.</p>
+      </div>
+    </div>
+    <section class="recovery-sheet_print hidden-print">
+      <img src="recoverySheet.gmxnet-Dateien/printer.png">
+      <img src="recoverySheet.gmxnet-Dateien/btn.png" class="recovery-sheet_print-button">
+      <img src="recoverySheet.gmxnet-Dateien/printer.png">
+    </section>
+
+  </section>
+
+  <footer class="recovery-sheet_teaser">
+    <img src="recoverySheet.gmxnet-Dateien/lock.png">
+
+    <h1 class="recovery-sheet_panel-headline">Wichtige Information!</h1>
+    <img src="recoverySheet.gmxnet-Dateien/lock.png">
+  </footer>
+</div>
+
+
+</body></html>

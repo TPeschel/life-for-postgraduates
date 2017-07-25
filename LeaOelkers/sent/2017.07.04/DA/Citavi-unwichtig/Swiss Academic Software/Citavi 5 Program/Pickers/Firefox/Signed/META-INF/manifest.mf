@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+
+Name: install.rdf
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: mm1YN2FMcgyNBXUuLZnhIw==
+SHA1-Digest: WwJAir3QSQ66VEOLxvHrl479u2s=
+
+Name: chrome.manifest
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: NjeNQMo+Ab9EQy7nhEuhfQ==
+SHA1-Digest: sKvfslURah+pZLeoKfEo3GYa4qk=
+
+Name: chrome/citavipicker.jar
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 2LHk6kVN/9V5kHSnWLjD2Q==
+SHA1-Digest: /jAGvDYQnk7J/a3YvtxVk5UAa8c=
+
+Name: components/FirefoxPickerCommunication.dll
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: WNA1NhNgR2w7cTh1F/IykQ==
+SHA1-Digest: iVWfiw88HCvGfDzow0BlgKoz12g=
+

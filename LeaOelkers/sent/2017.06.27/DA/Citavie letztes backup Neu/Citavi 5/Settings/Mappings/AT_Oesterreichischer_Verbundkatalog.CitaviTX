@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Transformer>
+  <DisplayName>Österreichischer Bibliothekenverbund Gesamtkatalog</DisplayName>
+  <Id>941fff6c-bdfa-47b6-8c80-3e471dbd9c70</Id>
+  <BuiltIn>True</BuiltIn>
+  <Version>8</Version>
+  <CitaviVersion>3.0</CitaviVersion>
+  <Author>Copyright © 2009 Swiss Academic Software. All rights reserved.</Author>
+  <Culture>de-AT</Culture>
+  <ConcentrationAreas>General</ConcentrationAreas>
+  <Keywords>obv;Österreichischer Verbundkataglog</Keywords>
+  <Provider>Library</Provider>
+  <Status>Enabled</Status>
+  <Access>Free</Access>
+  <OnlineImportSettings>
+    <ServerAddress>z3950.obvsg.at</ServerAddress>
+    <Port>9991</Port>
+    <DatabaseName>ACC01EN</DatabaseName>
+    <ElementSet>F</ElementSet>
+    <DatabaseType>Z3950</DatabaseType>
+    <Username />
+    <Password />
+    <Group />
+    <Timeout>30000</Timeout>
+    <HelpContext type="fragment">
+      <MiddleTruncation>*</MiddleTruncation>
+      <LeftTruncation>*</LeftTruncation>
+      <RightTruncation>*</RightTruncation>
+      <MultipleTruncation>#|*</MultipleTruncation>
+      <ReplacesMultipleSymbol>*</ReplacesMultipleSymbol>
+      <ReplacesOneOrMultipleSymbol />
+      <ReplacesOneOrNoSymbol>#</ReplacesOneOrNoSymbol>
+    </HelpContext>
+    <QuerySettings>
+      <AcceptIsbnHyphenEx>true</AcceptIsbnHyphenEx>
+      <Encoding>-1</Encoding>
+      <SearchAttributes andValue="AND" orValue="OR" notValue="NOT" supportGroups="True">
+        <SearchAttribute name="AnyField" value="1016" />
+        <SearchAttribute name="Author" value="1004" />
+        <SearchAttribute name="Title" value="4" />
+        <SearchAttribute name="Isbn" value="7" />
+        <SearchAttribute name="Issn" value="8" />
+        <SearchAttribute name="CorporateName" value="2" />
+        <SearchAttribute name="ConferenceName" value="3" />
+        <SearchAttribute name="TitleSeries" value="5" />
+        <SearchAttribute name="TitleUniform" value="6" />
+        <SearchAttribute name="SubjectHeading" value="21" />
+        <SearchAttribute name="Date" value="30" />
+        <SearchAttribute name="DateOfPublication" value="31" />
+        <SearchAttribute name="TitleParallel" value="35" />
+        <SearchAttribute name="SubjectRSWK" value="46" />
+        <SearchAttribute name="CodeLanguage" value="54" />
+        <SearchAttribute name="CodeGeographicArea" value="55" />
+        <SearchAttribute name="PlacePublication" value="59" />
+        <SearchAttribute name="Publisher" value="1018" />
+      </SearchAttributes>
+      <Substitutions>
+        <Substitution pattern="ä" replaceBy="ae" />
+        <Substitution pattern="ö" replaceBy="oe" />
+        <Substitution pattern="ü" replaceBy="ue" />
+        <Substitution pattern="Ä" replaceBy="Ae" />
+        <Substitution pattern="Ö" replaceBy="Oe" />
+        <Substitution pattern="Ü" replaceBy="Ue" />
+        <Substitution pattern="&quot;" replaceBy="" />
+        <Substitution pattern="\?" replaceBy="" />
+      </Substitutions>
+    </QuerySettings>
+  </OnlineImportSettings>
+  <RecordLayout>
+    <Format>Usmarc</Format>
+    <Encoding>28591</Encoding>
+    <RecordTagLayout>^\d\d\d</RecordTagLayout>
+    <RecordDelimiter />
+    <TagDelimiter />
+    <SubfieldDelimiter>\$</SubfieldDelimiter>
+  </RecordLayout>
+  <Mapping>
+    <ReferenceTypeMapping defaultReferenceType="Book">
+      <Field tag="433" tagAddition="a" fieldType="ReferenceType" requiredPattern="\sKt" referenceType="Map" />
+    </ReferenceTypeMapping>
+    <FieldMappingTable>
+      <FieldMapping referenceType="Book">
+        <Field tag="089" tagAddition="a" fieldType="Notes" />
+        <Field tag="100" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="104" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="105" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="108" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="112" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="116" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="120" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="200" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="204" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="208" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="100" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="104" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="105" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="108" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="112" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="116" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="120" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="200" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="204" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="208" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="331" tagAddition="a" fieldType="Title" />
+        <Field tag="335" tagAddition="a" fieldType="Subtitle" />
+        <Field tag="403" tagAddition="a" fieldType="Edition" />
+        <Field tag="410" tagAddition="a" fieldType="PlaceOfPublication" />
+        <Field tag="412" tagAddition="a" fieldType="Publishers" />
+        <Field tag="425" tagAddition="a" fieldType="Year" />
+        <Field tag="419" tagAddition="a" fieldType="PlaceOfPublication" />
+        <Field tag="419" tagAddition="b" fieldType="Publishers" />
+        <Field tag="433" tagAddition="a" fieldType="PageCount" />
+        <Field tag="451" tagAddition="a" startPattern="(^)" endPattern="(;|$)" fieldType="SeriesTitle" />
+        <Field tag="451" tagAddition="a" startPattern="(;)" endPattern="(:|$)" fieldType="Volume" />
+        <Field tag="519" tagAddition="a" fieldType="TitleSupplement" />
+        <Field tag="540" tagAddition="a" fieldType="Isbn" />
+        <Field tag="540" tagAddition="b" fieldType="Price" />
+        <Field tag="655" tagAddition="u" fieldType="LocationElectronic" />
+        <Field tag="902" tagAddition="p" fieldType="Keywords" />
+        <Field tag="902" tagAddition="f" fieldType="Keywords" />
+        <Field tag="902" tagAddition="s" fieldType="Keywords" />
+        <Field tag="902" tagAddition="z" fieldType="Keywords" />
+        <Field tag="902" tagAddition="g" fieldType="Keywords" />
+      </FieldMapping>
+      <FieldMapping referenceType="Map">
+        <Field tag="089" tagAddition="a" fieldType="Notes" />
+        <Field tag="100" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="104" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="105" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="108" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="112" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="116" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="120" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="200" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="204" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="208" tagAddition="a" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="100" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="104" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="105" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="108" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="112" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="116" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="120" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="200" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="204" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="208" tagAddition="p" fieldType="AuthorsFullName" personRoleTag="b" />
+        <Field tag="331" tagAddition="a" fieldType="Title" />
+        <Field tag="335" tagAddition="a" fieldType="Subtitle" />
+        <Field tag="403" tagAddition="a" fieldType="Edition" />
+        <Field tag="410" tagAddition="a" fieldType="PlaceOfPublication" />
+        <Field tag="412" tagAddition="a" fieldType="Publishers" />
+        <Field tag="419" tagAddition="a" fieldType="PlaceOfPublication" />
+        <Field tag="419" tagAddition="b" fieldType="Publishers" />
+        <Field tag="425" tagAddition="a" fieldType="Year" />
+        <Field tag="433" tagAddition="a" fieldType="PageCount" />
+        <Field tag="451" tagAddition="a" startPattern="(^)" endPattern="(;|$)" fieldType="SeriesTitle" />
+        <Field tag="451" tagAddition="a" startPattern="(;)" endPattern="(:|$)" fieldType="Volume" />
+        <Field tag="519" tagAddition="a" fieldType="TitleSupplement" />
+        <Field tag="540" tagAddition="a" fieldType="Isbn" />
+        <Field tag="540" tagAddition="b" fieldType="Price" />
+        <Field tag="655" tagAddition="u" fieldType="LocationElectronic" />
+        <Field tag="902" tagAddition="p" fieldType="Keywords" />
+        <Field tag="902" tagAddition="f" fieldType="Keywords" />
+        <Field tag="902" tagAddition="s" fieldType="Keywords" />
+        <Field tag="902" tagAddition="z" fieldType="Keywords" />
+        <Field tag="902" tagAddition="g" fieldType="Keywords" />
+      </FieldMapping>
+    </FieldMappingTable>
+  </Mapping>
+  <FieldEditing>
+    <Substitutions>
+      <Field type="Title">
+        <Substitution pattern="&lt;" replaceBy="" />
+        <Substitution pattern="&gt;" replaceBy="" />
+      </Field>
+      <Field type="Keywords">
+        <Substitution pattern="&lt;" replaceBy="" />
+        <Substitution pattern="&gt;" replaceBy="" />
+      </Field>
+      <Field type="Year">
+        <Substitution pattern="-" replaceBy="" />
+        <Substitution pattern="\." replaceBy="" />
+      </Field>
+      <Field type="PlaceOfPublication">
+        <Substitution pattern=":" replaceBy="" />
+        <Substitution pattern="," replaceBy="" />
+        <Substitution pattern="\[" replaceBy="" />
+        <Substitution pattern="\]" replaceBy="" />
+        <Substitution pattern="etc\." replaceBy="" />
+        <Substitution pattern="&lt;" replaceBy="" />
+        <Substitution pattern="&gt;" replaceBy="" />
+      </Field>
+      <Field type="Publishers">
+        <Substitution pattern="," replaceBy="" />
+      </Field>
+    </Substitutions>
+    <KeywordSplitter>
+    </KeywordSplitter>
+    <PersonTextParserSettings>
+      <Author splitter=";" sequence="LastnameFirstnameWithComma" />
+      <Collaborator splitter=";" sequence="LastnameFirstnameWithComma" />
+      <Editor splitter=";" sequence="LastnameFirstnameWithComma" />
+    </PersonTextParserSettings>
+  </FieldEditing>
+</Transformer>

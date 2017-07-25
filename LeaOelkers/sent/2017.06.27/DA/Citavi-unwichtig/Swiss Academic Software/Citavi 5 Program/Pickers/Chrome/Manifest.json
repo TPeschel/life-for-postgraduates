@@ -1,0 +1,12 @@
+﻿{
+  "name": "com.citavi.picker",
+  "description": "Chrome Picker Broker",
+  "path": "ChromePickerBroker.exe",
+  "type": "stdio",
+  "version": "2015.10.26.11",
+  "allowed_origins": [
+	"chrome-extension://ohgndokldibnndfnjnagojmheejlengn/",
+	"chrome-extension://eaandldnbchhjimdfnaagaaidgebplgj/",
+	"chrome-extension://ndahmgeoecpnplkdnejnidmbbahoamkc/"
+  ]
+}

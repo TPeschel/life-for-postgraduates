@@ -110,15 +110,58 @@ sapply( at[ at$SEX == "female", ], summary )
 # und fuer die es einen Kortisol-Wert gibt?
 ##
 
-sapply( at[ at$SEX == "male" & !is.na( at$TANNER ) & at$TANNER == 2 &  at$BMI_ADJ < -1.28 & !is.na( at$CORTISOL ), ], function( col ) { sum( !is.na( col ) ) } )
-sapply( at[ at$SEX == "male" & !is.na( at$TANNER ) & at$TANNER == 2 &  at$BMI_ADJ < -1.28 & !is.na( at$CORTISOL ), ], function( col ) { sum( is.na( col ) ) } )
+auswahl <-
+	at$SEX == "male" & !is.na( at$TANNER ) & at$TANNER == 2 &  at$BMI_ADJ < -1.28 & !is.na( at$CORTISOL )
+	
+at.ausw <-
+	at[ auswahl, ]
 
-sapply( at[ at$SEX == "male" & !is.na( at$TANNER ) & at$TANNER == 2 &  at$BMI_ADJ < -1.28 & !is.na( at$CORTISOL ), ], summary )
+sapply( at.ausw, function( col ) { sum( !is.na( col ) ) } )
+sapply( at.ausw, function( col ) { sum( is.na( col ) ) } )
+
+sapply( at.ausw, summary )
+
 # so kannste vorher noch nach Nicht-Faktoren suchen
-sapply( at[ at$SEX == "male" & !is.na( at$TANNER ) & at$TANNER == 2 &  at$BMI_ADJ < -1.28 & !is.na( at$CORTISOL ), ], function( col ) { if( !is.factor( col ) ) summary( col ) } )
+sapply( at.ausw, function( col ) { if( !is.factor( col ) ) summary( col ) } )
 
-sapply( at[ at$SEX == "male" & !is.na( at$TANNER ) & at$TANNER == 2 &  at$BMI_ADJ < -1.28 & !is.na( at$CORTISOL ), ], table )
+sapply( at.ausw, table )
+
 # so kannste vorher noch nach Faktoren suchen
-sapply( at[ at$SEX == "male" & !is.na( at$TANNER ) & at$TANNER == 2 &  at$BMI_ADJ < -1.28 & !is.na( at$CORTISOL ), ], function( col ) { if( is.factor( col ) ) table( col ) } )
+sapply( at.ausw, function( col ) { if( is.factor( col ) ) table( col ) } )
 
+
+
+
+##
+# PLOTS
+##
+
+at.plot <-
+	main.table.complete.cortisol
+
+summary( at.plot )
+
+at.plot$AGE.CAT <-
+	cut(
+		at.plot$AGE,
+		c( -1 : 20 ),
+		c( +0 : 20 ) )
+
+at.plot.sum <-
+	at.plot %>% 
+	group_by( 
+		SEX,
+		AGE.CAT ) %>%
+	summarise(
+		N = n( ) )
+
+ggplot( at.plot.sum ) +
+	theme_classic( ) +
+	scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
+	scale_fill_manual( values = c( "deeppink", "deepskyblue" ) ) +
+	geom_histogram( aes( AGE.CAT, N, fill = as.factor( SEX ) ), stat = "identity" ) +
+	facet_grid( SEX ~ . ) +
+	geom_hline( yintercept = 30, linetype = 2 )
+
+View( at.plot.sum )
 
