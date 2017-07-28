@@ -27,31 +27,68 @@ ablines <-
 				"male" ) ) }
 
 n <- 
-	1000
+	100000
 
-intersept.male <-
+intersept.male.black <-
+	1
+
+intersept.male.blond <-
 	2
 
-intersept.female <-
-	4
+intersept.male.brown <-
+	3
+
+intersept.female.black <-
+	+11
+
+intersept.female.blond <-
+	-11
+
+intersept.female.brown <-
+	+20s
 
 intersepts <-
-	c( intersept.female, intersept.male )
+	c( 
+		intersept.female.black, 
+		intersept.female.blond, 
+		intersept.female.brown,
+		intersept.male.black, 
+		intersept.male.blond, 
+		intersept.male.brown )
 
-slope.male <-
+slope.female.black <-
+	+.1
+
+slope.female.blonde <-
+	+.2
+
+slope.female.brown <-
+	+.3
+
+slope.male.black <-
+	-.1
+
+slope.male.blonde <-
 	-.2
 
-slope.female <-
-	-.4
+slope.male.brown <-
+	-.3
 
 slopes <-
-	c( slope.female, slope.male )
+	c( 
+		slope.female.black, 
+		slope.female.blonde, 
+		slope.female.brown, 
+		slope.male.black, 
+		slope.male.blonde, 
+		slope.male.brown )
 
 d <-
 	data.frame(
 		age = a<-runif( n, 3, 18 ),
 		sex = s<-sample( sx<-c( "female", "male" ), n, T ),
-		val = intersepts[ match( s, sx ) ] + slopes[ match( s, sx ) ] * a )
+		hair = h<-sample( hr<-as.factor( c( "blond", "brown", "black" ) ), n, T ),
+		val = intersepts[ match( s, sx ) * match( h, hr )  ] + slopes[ match( s, sx ) * match( h, hr ) ] * a )
 
 d$val[ d$sex == "male" ] <-
 	d$val[ d$sex == "male" ] +
@@ -59,7 +96,15 @@ d$val[ d$sex == "male" ] <-
 
 d$val[ d$sex == "female" ] <- 
 	d$val[ d$sex == "female" ] +
-	rnorm( sum( d$sex == "female" ), 0, 3 )
+	rnorm( sum( d$sex == "female" ), 0, 11 )
+
+(
+	d.lm <-
+		lm( val ~ age * sex * hair, d ) )
+
+ablines( d.lm )
+
+
 
 (
 	p1 <-
@@ -73,12 +118,6 @@ d$val[ d$sex == "female" ] <-
 		theme_bw( ) +
 		scale_color_manual( values = c( "deeppink", "deepskyblue" ), guide = F ) +
 		geom_point( aes( age, val, col = sex ), d ) )
-
-(
-	d.lm <-
-		lm( val ~ age * sex, d ) )
-
-ablines( d.lm )
 
 (
 	p3 <-
@@ -106,6 +145,3 @@ ggsubplot(
 				2, 2, 2, 4, 4,
 				3, 3, 3, 4, 4 ),
 			ncol = 3 ) ) )
-
-d.lm
-( ablines( d.lm ) )
