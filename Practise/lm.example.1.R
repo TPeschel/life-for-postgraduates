@@ -30,25 +30,43 @@ ablines <-
 n <- 
 	1000
 
+sex  <-
+	c( "female", "male" ),
+
+hair <-
+	c( "black", "blonde", "brown" ),
+
+
 params <-
 	data.frame( 
 		sex  = c( "female", "male" ),
+		hair = c( "black", "blonde", "brown" ),
 		mue  = c( 2, 4 ),
 		beta = c( -.1, -.3 ), 
 		var  = c( 2, 5 ) )
 
+sex.levels <-
+	c( "female", "male" )
+	
+hair.levels <-
+	c( "black", "blonde", "brown" )
+
+
 d <-
 	data.frame(
 		age  = a<-runif( n, 3, 18 ),
-		sex  = s<-sample( params$sex, n, T ),
-		val  = params$beta[ match( s, params$sex ) ] * a +
-			rnorm( n, params$mue[ match( s, params$sex ) ], params$var[ match( s, params$sex ) ] ) )
+		sex  = s<-sample( sex.levels, n, T ),
+		hair = h<-sample( hair.levels, n, T ),
+		val  = 
+			intersepts[ match( s, sex.levels ) * match( h, hair.levels ) ] + 
+			slopes[ match( s, sex.levels ) * match( h, hair.levels ) ] * a +
+			rnorm( n, 0, variances[ match( s, sex.levels ) * match( h, hair.levels ) ] ) )
 
-(
-	d.lm <-
-		lm( val ~ age * sex, d ) )
 
-ablines( d.lm )
+colors()
+
+my.colors <-
+	"darkblue";
 
 (
 	p1 <-
@@ -62,6 +80,15 @@ ablines( d.lm )
 		theme_bw( ) +
 		scale_color_manual( values = c( "deeppink", "deepskyblue" ), guide = F ) +
 		geom_point( aes( age, val, col = sex ), d ) )
+
+(
+	d.lm <-
+		lm( val ~ age * sex * hair, d ) )
+
+
+summary( d.lm )
+
+ablines( d.lm )
 
 (
 	p3 <-
@@ -90,3 +117,5 @@ ggsubplot(
 				3, 3, 3, 4, 4 ),
 			ncol = 3 ) ) )
 
+d.lm
+( ablines( d.lm ) )
