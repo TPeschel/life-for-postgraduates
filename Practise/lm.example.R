@@ -1,4 +1,7 @@
+devtools::install_github( "TPeschel/hlpr4life" )
+
 library( hlpr4life )
+
 load.pkgs( c( "ggplot2" ) )
 
 ablines <-
@@ -27,7 +30,7 @@ ablines <-
 				"male" ) ) }
 
 n <- 
-	100000
+	1000
 
 intersept.male.black <-
 	1
@@ -45,7 +48,7 @@ intersept.female.blond <-
 	-11
 
 intersept.female.brown <-
-	+20s
+	+20
 
 intersepts <-
 	c( 
@@ -98,9 +101,29 @@ d$val[ d$sex == "female" ] <-
 	d$val[ d$sex == "female" ] +
 	rnorm( sum( d$sex == "female" ), 0, 11 )
 
+f <-
+	as.formula( val ~ age * hair * sex )
+
 (
 	d.lm <-
-		lm( val ~ age * sex * hair, d ) )
+		lm( f, d ) )
+
+d.lm
+
+d.lm$terms
+
+a<-attr( d.lm$terms, "factors" )
+
+b<-d.lm$coefficients
+
+a
+b
+
+colnames(attr(d.lm$terms, "factors"))
+rownames(attr(d.lm$terms, "factors"))
+
+
+summary( d.lm )
 
 ablines( d.lm )
 
@@ -145,3 +168,6 @@ ggsubplot(
 				2, 2, 2, 4, 4,
 				3, 3, 3, 4, 4 ),
 			ncol = 3 ) ) )
+
+
+
