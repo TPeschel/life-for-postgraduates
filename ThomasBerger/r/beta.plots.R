@@ -3,14 +3,25 @@ rm( list = ls( ) )
 
 library( hlpr4life )
 
+load.pkgs( 
+    c( 
+        "ggplot2",
+        "dplyr",
+        "reshape2",
+        "lme4",
+        "lifecuration" ) )
+
 WDTH <-
     8
+
 HGHT <-
     4
+
 ENDING <-
     "png"
+
 COL <-
-    T
+    F
 
 plot.lmer.coefficients.with.errorbars <-
     function( 
@@ -145,8 +156,6 @@ setwd( "~/LIFE/life-for-postgraduates/ThomasBerger/gfx/betaPlots" )
 
 load( "~/LIFE/life-for-postgraduates/ThomasBerger/original/Stimme/Stimme-Dateien/save/voice_clean.Rda" )
 
-library( lifecuration )
-
 ldb <-
     connect.db( "user" )
 
@@ -266,16 +275,29 @@ voice_speak.lmer$SES <-
         c( 3., 8.4, 15.4, 21. ),
         c( "LOW", "MIDDLE", "HIGH" ) )
 
-i<-1
+i <- 
+    4
+
 model <-
         paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + bmi.sds.cat + strain_past + training_past + wind_instrument_past + I( u_sing_singen_mot * u_sing_zaehl_mot ) + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
 
-lmer( model, data = voice_speak.lmer )
+lmer.m <-
+    lmerTest::lmer( model, voice_speak.lmer[ voice_speak.lmer$geschlecht == "m", ] )
+
+lmer.f.1 <-
+    lmerTest::lmer( st_sprech_1 ~ spl_sprech_2 + ( 1 | sic ) + ( 1 | fam.id2 ), voice_speak.lmer[ voice_speak.lmer$geschlecht == "f", ], REML = F )
+
+lmer.f.2 <-
+    lmerTest::lmer( st_sprech_1 ~ spl_sprech_2 + tanner + ( 1 | sic ) + ( 1 | fam.id2 ), voice_speak.lmer[ voice_speak.lmer$geschlecht == "f", ], REML = F )
+
+
+summary( lmer.m )
+summary( lmer.f )
 
 for( i in profiles ) {
     
     model <-
-        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + bmi.sds.cat + strain_past + training_past + wind_instrument_past + I( u_sing_singen_mot * u_sing_zaehl_mot ) + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
+        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + bmi.sds.cat + strain_past + training + wind_instrument + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
     
     print( 
         plot.lmer.coefficients.with.errorbars( 
@@ -292,12 +314,12 @@ for( i in profiles ) {
 }
 
 plts <-
-    list(NA,NA,NA,NA)
+    list( NA, NA, NA, NA )
 
 for( i in profiles ) {
     
     model <-
-        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + tanner + strain + training + wind_instrument + u_sing_singen_mot : u_sing_zaehl_mot + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
+        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + u_sing_singen_mot + strain_past + tanner + SES + wind_instrument + ( 1 | sic ) + ( 1 | fam.id2 )" )
     
     plts[[ i ]] <-
         plot.lmer.coefficients.with.errorbars( 
@@ -319,6 +341,27 @@ ggsubplot(
     plts[[ 3 ]],
     plts[[ 4 ]],
     cols = 2 )
+
+i <- 
+    2
+
+model <-
+        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + bmi.sds.cat + u_sing_singen_mot + tanner + wind_instrument + SES + ( 1 | sic ) + ( 1 | fam.id2 )" )
+
+lmer.m <-
+    lmerTest::lmer( model, data = voice_speak.lmer[ voice_speak.lmer$geschlecht == "m", ] )
+
+anova( lmer.m )
+
+summary( lmer.m )
+
+lmer.f <-
+    lmerTest::lmer( model, data = voice_speak.lmer[ voice_speak.lmer$geschlecht == "f", ] )
+
+anova( lmer.f )
+
+summary( lmer.f )
+
 
 View( voice_speak.lmer[ ,c( "sic", "gruppe", "datum", "wind_instrument", "u_sing_instr_v_1", "u_sing_instr_v_2", "u_sing_instr_v_3", "u_sing_instr_v_1", "u_sing_instr_v_2", "u_sing_instr_v_3" ) ] )
 
