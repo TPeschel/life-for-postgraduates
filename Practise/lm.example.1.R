@@ -1,5 +1,3 @@
-devtools::install_github( "TPeschel/hlpr4life" )
-
 library( hlpr4life )
 
 load.pkgs( c( "ggplot2" ) )
@@ -31,86 +29,44 @@ ablines <-
 
 n <- 
 	1000
-<<<<<<< HEAD
 
-intersept.male.black <-
-	1
+sex  <-
+	c( "female", "male" ),
 
-intersept.male.blond <-
-	2
+hair <-
+	c( "black", "blonde", "brown" ),
 
-intersept.male.brown <-
-	3
-
-intersept.female.black <-
-	+11
-
-intersept.female.blond <-
-	-11
-
-intersept.female.brown <-
-	+20
-
-intersepts <-
-	c( 
-		intersept.female.black, 
-		intersept.female.blond, 
-		intersept.female.brown,
-		intersept.male.black, 
-		intersept.male.blond, 
-		intersept.male.brown )
-
-slope.female.black <-
-	+.1
-
-slope.female.blonde <-
-	+.2
-=======
->>>>>>> e54f79ced47f2649fffedd1c4cc354363c80c1eb
 
 params <-
 	data.frame( 
 		sex  = c( "female", "male" ),
+		hair = c( "black", "blonde", "brown" ),
 		mue  = c( 2, 4 ),
 		beta = c( -.1, -.3 ), 
 		var  = c( 2, 5 ) )
 
+sex.levels <-
+	c( "female", "male" )
+	
+hair.levels <-
+	c( "black", "blonde", "brown" )
+
+
 d <-
 	data.frame(
 		age  = a<-runif( n, 3, 18 ),
-		sex  = s<-sample( params$sex, n, T ),
-		val  = params$beta[ match( s, params$sex ) ] * a +
-			rnorm( n, params$mue[ match( s, params$sex ) ], params$var[ match( s, params$sex ) ] ) )
-
-f <-
-	as.formula( val ~ age * hair * sex )
-
-(
-	d.lm <-
-<<<<<<< HEAD
-		lm( f, d ) )
-
-d.lm
-
-d.lm$terms
-
-a<-attr( d.lm$terms, "factors" )
-
-b<-d.lm$coefficients
-
-a
-b
-
-colnames(attr(d.lm$terms, "factors"))
-rownames(attr(d.lm$terms, "factors"))
+		sex  = s<-sample( sex.levels, n, T ),
+		hair = h<-sample( hair.levels, n, T ),
+		val  = 
+			intersepts[ match( s, sex.levels ) * match( h, hair.levels ) ] + 
+			slopes[ match( s, sex.levels ) * match( h, hair.levels ) ] * a +
+			rnorm( n, 0, variances[ match( s, sex.levels ) * match( h, hair.levels ) ] ) )
 
 
-summary( d.lm )
-=======
-		lm( val ~ age * sex, d ) )
->>>>>>> e54f79ced47f2649fffedd1c4cc354363c80c1eb
+colors()
 
-ablines( d.lm )
+my.colors <-
+	"darkblue";
 
 (
 	p1 <-
@@ -124,6 +80,15 @@ ablines( d.lm )
 		theme_bw( ) +
 		scale_color_manual( values = c( "deeppink", "deepskyblue" ), guide = F ) +
 		geom_point( aes( age, val, col = sex ), d ) )
+
+(
+	d.lm <-
+		lm( val ~ age * sex * hair, d ) )
+
+
+summary( d.lm )
+
+ablines( d.lm )
 
 (
 	p3 <-
@@ -152,8 +117,5 @@ ggsubplot(
 				3, 3, 3, 4, 4 ),
 			ncol = 3 ) ) )
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> e54f79ced47f2649fffedd1c4cc354363c80c1eb
+d.lm
+( ablines( d.lm ) )
