@@ -13,12 +13,15 @@ library( life.helper )
 
 WDTH <-
     9
+
 HGHT <-
     6
+
 ENDING <-
     "png"
+
 COL <-
-    T
+    F
 
 d <-
     data.sprech[ , c( "SIC", "sex", "age", "EDAT.x", "F0_SPRECH_1", "F0_SPRECH_2", "F0_SPRECH_3", "F0_SPRECH_4", "SPL_SPRECH_1", "SPL_SPRECH_2", "SPL_SPRECH_3", "SPL_SPRECH_4" ) ]
@@ -79,29 +82,50 @@ d.df <-
 d.df$variable <- 
     c( "I", "II", "III", "IV" )[ match( d.df$variable, c( "d.m.f0.1", "d.m.f0.2", "d.m.f0.3", "d.m.f0.4" ) ) ]
 
-ggplot( 
-    d.df, 
-    aes( as.numeric( as.character( age.cat ) ), value ) ) +
-    geom_point( aes( size = d.cnt ), alpha = .25 ) +
-    geom_path( aes( size = 1 ), alpha = .25 ) +
-    geom_smooth( method = "loess", alpha = .2 ) +
-    facet_grid( variable ~ sex ) +
-    labs( title = TeX( "monthly change of fundamental frequency of voice levels I-IV measured in steps of 18 months" ) ) +
-    scale_size( name = "count of\nmeasurements" ) +
-    scale_x_continuous( name = "age [y]", breaks = c( 6 : 18 ), limits = c( 6.5, 17.5 ) ) +
-    scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}=\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -6 : 4 ) ) +
-    geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#8030a0", nudge_y = -2 ) +
-    geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#80a0c0", nudge_y = +2 ) +
-    annotate( "text", label = "change in f0", col = "#8030a0", x = 12, y = -6 ) +
-    annotate( "text", label = "number of measurements", col = "#80a0c0", x = 12, y = 4 ) +
-    geom_hline( yintercept = 0 ) +
-    theme_bw( )
+if( COL == T ) {
+    ggplot( 
+        d.df, 
+        aes( as.numeric( as.character( age.cat ) ), value ) ) +
+        geom_point( aes( size = d.cnt ), alpha = .25 ) +
+        geom_path( aes( size = 1 ), alpha = .25 ) +
+        geom_smooth( method = "loess", alpha = .2 ) +
+        facet_grid( variable ~ sex ) +
+        labs( title = TeX( "monthly change of fundamental frequency of voice levels I-IV measured in steps of 18 months" ) ) +
+        scale_size( name = "count of\nmeasurements" ) +
+        scale_x_continuous( name = "age [y]", breaks = c( 6 : 18 ), limits = c( 6.5, 17.5 ) ) +
+        scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}=\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -6 : 4 ) ) +
+        geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#8030a0", nudge_y = -2 ) +
+        geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#80a0c0", nudge_y = +2 ) +
+        annotate( "text", label = "change in f0", col = "#8030a0", x = 12, y = -6 ) +
+        annotate( "text", label = "number of measurements", col = "#80a0c0", x = 12, y = 4 ) +
+        geom_hline( yintercept = 0 ) +
+        theme_bw( )
+}else{
+    ggplot( 
+        d.df, 
+        aes( as.numeric( as.character( age.cat ) ), value ) ) +
+        geom_point( aes( size = d.cnt ), alpha = .25 ) +
+        geom_path( aes( size = 1 ), alpha = .25 ) +
+        geom_smooth( method = "loess", alpha = .2, col = "#404040" ) +
+        facet_grid( variable ~ sex ) +
+        labs( title = TeX( "monthly change of fundamental frequency of voice levels I-IV measured in steps of 18 months" ) ) +
+        scale_size( name = "count of\nmeasurements" ) +
+        scale_x_continuous( name = "age [y]", breaks = c( 6 : 18 ), limits = c( 6.5, 17.5 ) ) +
+        scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}=\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -6 : 4 ) ) +
+        geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#808080", nudge_y = -2 ) +
+        geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#808080", nudge_y = +2 ) +
+        annotate( "text", label = "change in f0", col = "#606060", x = 12, y = -6 ) +
+        annotate( "text", label = "number of measurements", col = "#606060", x = 12, y = 4 ) +
+        geom_hline( yintercept = 0 ) +
+        theme_bw( ) }
 
 WDTH <-
     11
+
 HGHT <-
     9
-ggsave( filename = paste( "changesOfMeansOfFreqEvery18MonthsForAllVoiceLevels.", ENDING ), device = ENDING, width = WDTH, height = HGHT )
+
+ggsave( filename = paste( "changesOfMeansOfFreqEvery18MonthsForAllVoiceLevelsBW.", ENDING ), device = ENDING, width = WDTH, height = HGHT )
 
 d.df.2 <-
     d.df[ d.df$variable == "II", ]
@@ -109,26 +133,47 @@ d.df.2 <-
 d.df.2 <-
     d.df.2[ !is.na( d.df.2$value ) | !is.na( d.df.2$d.cnt ), ]
 
-ggplot( 
-    d.df.2, 
-    aes( as.numeric( as.character( age.cat ) ), value ) ) +
-    geom_point( aes( size = d.cnt ), alpha = .25 ) +
-    geom_path( aes( size = 1 ), alpha = .25 ) +
-    geom_smooth( method = "loess", alpha = .2 ) +
-    facet_grid( . ~ sex ) +
-    labs( title = TeX( "monthly change of fundamental frequency of voice level II measured in steps of 18 months" ) ) +
-    scale_size( name = "count of\nmeasurements" ) +
-    scale_x_continuous( name = "age [y]", breaks = c( 5 : 18 ) ) +
-    scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}=\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -5 : 3 ) ) +
-    geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#8030a0", nudge_y = -1 ) +
-    geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#80a0c0", nudge_y = +1 ) +
-    annotate( "text", label = "change in f0", col = "#8030a0", x = 12, y = -5 ) +
-    annotate( "text", label = "number of measurements", col = "#80a0c0", x = 12, y = 2 ) +
-    geom_hline( yintercept = 0 ) +
-    theme_bw( )
+if( COL == T ) {
+    ggplot( 
+        d.df.2, 
+        aes( as.numeric( as.character( age.cat ) ), value ) ) +
+        geom_point( aes( size = d.cnt ), alpha = .25 ) +
+        geom_path( aes( size = 1 ), alpha = .25 ) +
+        geom_smooth( method = "loess", alpha = .2 ) +
+        facet_grid( . ~ sex ) +
+        labs( title = TeX( "monthly change of fundamental frequency of voice level II measured in steps of 18 months" ) ) +
+        scale_size( name = "count of\nmeasurements" ) +
+        scale_x_continuous( name = "age [y]", breaks = c( 5 : 18 ) ) +
+        scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}=\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -5 : 3 ) ) +
+        geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#8030a0", nudge_y = -1 ) +
+        geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#80a0c0", nudge_y = +1 ) +
+        annotate( "text", label = "change in f0", col = "#8030a0", x = 12, y = -5 ) +
+        annotate( "text", label = "number of measurements", col = "#80a0c0", x = 12, y = 2 ) +
+        geom_hline( yintercept = 0 ) +
+        theme_bw( )
+}else{
+    ggplot( 
+        d.df.2, 
+        aes( as.numeric( as.character( age.cat ) ), value ) ) +
+        geom_point( aes( size = d.cnt ), alpha = .25 ) +
+        geom_path( aes( size = 1 ), alpha = .25 ) +
+        geom_smooth( method = "loess", alpha = .2, col = "#404040" ) +
+        facet_grid( . ~ sex ) +
+        labs( title = TeX( "monthly change of fundamental frequency of voice level II measured in steps of 18 months" ) ) +
+        scale_size( name = "count of\nmeasurements" ) +
+        scale_x_continuous( name = "age [y]", breaks = c( 5 : 18 ) ) +
+        scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}=\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -5 : 3 ) ) +
+        geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#808080", nudge_y = -1 ) +
+        geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#808080", nudge_y = +1 ) +
+        annotate( "text", label = "change in f0", col = "#606060", x = 12, y = -5 ) +
+        annotate( "text", label = "number of measurements", col = "#606060", x = 12, y = 2 ) +
+        geom_hline( yintercept = 0 ) +
+        theme_bw( ) }
 
 WDTH <-
     11
+
 HGHT <-
     5
-ggsave( filename = paste( "changesOfMeansOfFreqEvery18MonthsForVoiceLevelII.", ENDING ), device = ENDING, width = WDTH, height = HGHT )
+
+ggsave( filename = paste( "changesOfMeansOfFreqEvery18MonthsForVoiceLevelIIBW.", ENDING ), device = ENDING, width = WDTH, height = HGHT )
