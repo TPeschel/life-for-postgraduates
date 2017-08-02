@@ -290,10 +290,6 @@ lmer.f.1 <-
 lmer.f.2 <-
     lmerTest::lmer( st_sprech_1 ~ spl_sprech_2 + tanner + ( 1 | sic ) + ( 1 | fam.id2 ), voice_speak.lmer[ voice_speak.lmer$geschlecht == "f", ], REML = F )
 
-
-summary( lmer.m )
-summary( lmer.f )
-
 for( i in profiles ) {
     
     model <-
@@ -358,7 +354,7 @@ summary( lmer.m )
 lmer.f <-
     lmerTest::lmer( model, data = voice_speak.lmer[ voice_speak.lmer$geschlecht == "f", ] )
 
-anova( lmer.f )
+anova( lmer.f.1, lmer.f.2 )
 
 summary( lmer.f )
 
