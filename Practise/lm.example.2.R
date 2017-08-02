@@ -45,7 +45,7 @@ load.pkgs( c( "ggplot2", "broom", "reshape2" ) )
 
 ( 
 	n <-
-		1000 )
+		10000 )
 
 d <-
 	data.frame(
@@ -140,14 +140,13 @@ ggplot(
 	facet_grid( . ~ hair ) +
 	scale_color_manual( values = cols.sex.hair, guide = F )
 
+(
+	m <-
+		attr( lm.d.y.age.sex.hair$terms, "factors" ) )
 
-lm.d.y.age.sex.hair$terms
-
-m <-
-	attr( lm.d.y.age.sex.hair$terms, "factors" )
-
-l <-
-	 lm.d.y.age.sex.hair$coefficients
+(
+	l <-
+		lm.d.y.age.sex.hair$coefficients )
 
 age <-
 	c( 3 : 18 )
@@ -162,9 +161,11 @@ age <-
 ( y0_male_brown    <- l[ "(Intercept)" ] + l[ "sexmale" ] + l[ "hairbrown" ]  + l[ "sexmale:hairbrown" ] )
 
 ( beta_female_black  <- l[ "age" ] )
+
 ( beta_female_blonde <- l[ "age" ] + l[ "age:hairblonde" ] )
 ( beta_female_brown  <- l[ "age" ] + l[ "age:hairbrown" ] )
 ( beta_male_black    <- l[ "age" ] + l[ "age:sexmale" ] )
+
 ( beta_male_blonde   <- l[ "age" ] + l[ "age:sexmale" ] + l[ "age:hairblonde" ] + l[ "age:sexmale:hairblonde" ] )
 ( beta_male_brown    <- l[ "age" ] + l[ "age:sexmale" ] + l[ "age:hairbrown" ]  + l[ "age:sexmale:hairbrown" ] )
 
