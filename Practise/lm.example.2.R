@@ -80,7 +80,7 @@ set.seed( 4 )
 ##
 ( 
 	n <-
-		1000 )
+		10000 )
 
 ##
 # Erstelle Tabelle Alter und Gruppen 
@@ -232,13 +232,17 @@ ggplot(
 	facet_grid( . ~ hair ) +
 	scale_color_manual( values = cols.sex.hair, guide = F )
 
+<<<<<<< HEAD
 ##
 # model matrix
 ##
+=======
+>>>>>>> 99548ade58805d7a82bc598b74cbc5f53df50913
 (
 	m <-
 		attr( lm.d.y.age.sex.hair$terms, "factors" ) )
 
+<<<<<<< HEAD
 ##
 # Regressionskoeffizienten
 ##
@@ -274,6 +278,33 @@ reg.coef <-
 ##
 # Plotte alle Gruppen
 ##
+=======
+(
+	l <-
+		lm.d.y.age.sex.hair$coefficients )
+
+age <-
+	c( 3 : 18 )
+
+( y0_female_black  <- l[ "(Intercept)" ] )
+
+( y0_female_blonde <- l[ "(Intercept)" ] + l[ "hairblonde" ] )
+( y0_female_brown  <- l[ "(Intercept)" ] + l[ "hairbrown" ] )
+( y0_male_black    <- l[ "(Intercept)" ] + l[ "sexmale" ] )
+
+( y0_male_blonde   <- l[ "(Intercept)" ] + l[ "sexmale" ] + l[ "hairblonde" ] + l[ "sexmale:hairblonde" ] )
+( y0_male_brown    <- l[ "(Intercept)" ] + l[ "sexmale" ] + l[ "hairbrown" ]  + l[ "sexmale:hairbrown" ] )
+
+( beta_female_black  <- l[ "age" ] )
+
+( beta_female_blonde <- l[ "age" ] + l[ "age:hairblonde" ] )
+( beta_female_brown  <- l[ "age" ] + l[ "age:hairbrown" ] )
+( beta_male_black    <- l[ "age" ] + l[ "age:sexmale" ] )
+
+( beta_male_blonde   <- l[ "age" ] + l[ "age:sexmale" ] + l[ "age:hairblonde" ] + l[ "age:sexmale:hairblonde" ] )
+( beta_male_brown    <- l[ "age" ] + l[ "age:sexmale" ] + l[ "age:hairbrown" ]  + l[ "age:sexmale:hairbrown" ] )
+
+>>>>>>> 99548ade58805d7a82bc598b74cbc5f53df50913
 (
 	plt <-
 		ggplot( 

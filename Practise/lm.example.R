@@ -1,3 +1,5 @@
+devtools::install_github( "TPeschel/hlpr4life" )
+
 library( hlpr4life )
 
 load.pkgs( c( "ggplot2" ) )
@@ -29,6 +31,42 @@ ablines <-
 
 n <- 
 	1000
+<<<<<<< HEAD
+
+intersept.male.black <-
+	1
+
+intersept.male.blond <-
+	2
+
+intersept.male.brown <-
+	3
+
+intersept.female.black <-
+	+11
+
+intersept.female.blond <-
+	-11
+
+intersept.female.brown <-
+	+20
+
+intersepts <-
+	c( 
+		intersept.female.black, 
+		intersept.female.blond, 
+		intersept.female.brown,
+		intersept.male.black, 
+		intersept.male.blond, 
+		intersept.male.brown )
+
+slope.female.black <-
+	+.1
+
+slope.female.blonde <-
+	+.2
+=======
+>>>>>>> e54f79ced47f2649fffedd1c4cc354363c80c1eb
 
 params <-
 	data.frame( 
@@ -44,9 +82,33 @@ d <-
 		val  = params$beta[ match( s, params$sex ) ] * a +
 			rnorm( n, params$mue[ match( s, params$sex ) ], params$var[ match( s, params$sex ) ] ) )
 
+f <-
+	as.formula( val ~ age * hair * sex )
+
 (
 	d.lm <-
+<<<<<<< HEAD
+		lm( f, d ) )
+
+d.lm
+
+d.lm$terms
+
+a<-attr( d.lm$terms, "factors" )
+
+b<-d.lm$coefficients
+
+a
+b
+
+colnames(attr(d.lm$terms, "factors"))
+rownames(attr(d.lm$terms, "factors"))
+
+
+summary( d.lm )
+=======
 		lm( val ~ age * sex, d ) )
+>>>>>>> e54f79ced47f2649fffedd1c4cc354363c80c1eb
 
 ablines( d.lm )
 
@@ -90,3 +152,8 @@ ggsubplot(
 				3, 3, 3, 4, 4 ),
 			ncol = 3 ) ) )
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> e54f79ced47f2649fffedd1c4cc354363c80c1eb
