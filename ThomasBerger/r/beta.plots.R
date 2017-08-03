@@ -284,11 +284,27 @@ model <-
 lmer.m <-
     lmerTest::lmer( model, voice_speak.lmer[ voice_speak.lmer$geschlecht == "m", ] )
 
+
+vp.f <-
+    na.omit( voice_speak.lmer[ voice_speak.lmer$geschlecht == "f", c( "sic", "fam.id2", "st_sprech_2", "spl_sprech_2", "tanner", "bmi.sds.cat", "wind_instrument_past", "wind_instrument", "SES", "training", "strain", "training_past", "strain_past" ) ] )
+
 lmer.f.1 <-
-    lmerTest::lmer( st_sprech_1 ~ spl_sprech_2 + ( 1 | sic ) + ( 1 | fam.id2 ), voice_speak.lmer[ voice_speak.lmer$geschlecht == "f", ], REML = F )
+    lmer( st_sprech_2 ~ spl_sprech_2 + tanner + bmi.sds.cat + SES + wind_instrument + training_past + strain_past + ( 1 | sic ) + ( 1 | fam.id2 ), vp.f, REML = F )
 
 lmer.f.2 <-
-    lmerTest::lmer( st_sprech_1 ~ spl_sprech_2 + tanner + ( 1 | sic ) + ( 1 | fam.id2 ), voice_speak.lmer[ voice_speak.lmer$geschlecht == "f", ], REML = F )
+    lmer( st_sprech_2 ~ spl_sprech_2 + tanner + bmi.sds.cat + SES + wind_instrument_past * training_past * strain_past + ( 1 | sic ) + ( 1 | fam.id2 ), vp.f, REML = F )
+
+lmer.f.3 <-
+    lmer( st_sprech_2 ~ spl_sprech_2 + tanner + bmi.sds.cat + SES + wind_instrument_past + training_past + strain_past + ( 1 | sic ) + ( 1 | fam.id2 ), vp.f, REML = F )
+
+anova( lmer.f.1, lmer.f.2, lmer.f.3 )
+
+plot.lmer.coefficients.with.errorbars( 
+    voice_speak.lmer, 
+    lmer.f.3,
+    title = paste0( "coefficients of linear regression of speaking voice ", endings[ i ] ),
+    xlab  = "coefficients", 
+    ylab  = "semi tones" )
 
 for( i in profiles ) {
     
@@ -315,7 +331,7 @@ plts <-
 for( i in profiles ) {
     
     model <-
-        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + u_sing_singen_mot + strain_past + tanner + SES + wind_instrument + ( 1 | sic ) + ( 1 | fam.id2 )" )
+        paste0( "st_sprech_", i, " ~ spl_sprech_", i, " + u_sing_zaehl_mot + strain_past + bmi.sds.cat + tanner + SES + wind_instrument_past + strain_past + ( 1 | sic ) + ( 1 | fam.id2 )" )
     
     plts[[ i ]] <-
         plot.lmer.coefficients.with.errorbars( 
@@ -330,6 +346,7 @@ for( i in profiles ) {
     #     width = WDTH, 
     #     height = HGHT )
 }
+summary( lmerTest::lmer(st_sprech_2 ~ spl_sprech_2 + tanner + bmi.sds.cat + SES + wind_instrument_past + training_past + strain_past + u_sing_singen_mot + ( 1 | sic ) + ( 1 | fam.id2 ), voice_speak.lmer, REML = T ))
 
 ggsubplot( 
     plts[[ 1 ]],
@@ -337,6 +354,8 @@ ggsubplot(
     plts[[ 3 ]],
     plts[[ 4 ]],
     cols = 2 )
+
+ggsave( filename = "~/LIFE/life-for-postgraduates/ThomasBerger/gfx/betaPlots/betaPlotsLineareRegressionSpeakingVoice_BW_II.png", width = 8, height = 6 )
 
 i <- 
     2
