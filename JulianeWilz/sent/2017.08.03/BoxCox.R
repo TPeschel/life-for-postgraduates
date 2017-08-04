@@ -7,7 +7,7 @@ rm( list =  ls( ) )
 if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devtools" )
 
 ##
-# installiere helper for life 
+# installiere helper for life vom github
 ##
 devtools::install_github( "TPeschel/hlpr4life" )
 
@@ -16,6 +16,9 @@ devtools::install_github( "TPeschel/hlpr4life" )
 ##
 library( hlpr4life )
 
+##
+# installiere gegebenenfalls und lade noetige Pakete
+##
 load.pkgs(
     c(
         "readxl",
@@ -81,18 +84,18 @@ box.cox.01.m.CALCITONIN.AGE <- boxCox( lin.reg.01.m.CALCITONIN.AGE )
 ##
 # transformiere Kalzitonin mit dem ermittelten Lambda
 ##
-calcitonin.trans <- car::bcPower( d01m$CALCITONIN, lambda )
+d01m$CALC.TRANS <- bcPower( d01m$CALCITONIN, lambda )
 
 ##
 # nochmal qqplot anschauen, jz aba das transformierte Kalzitonin
 ##
-qqnorm( calcitonin.trans )
-qqline( calcitonin.trans )
+qqnorm( d01m$CALC.TRANS )
+qqline( d01m$CALC.TRANS )
 ##
 # viel besser!
 # also lin reg jz mit transformiertem Kalzitonin
 ##
-lin.reg.01.m.CALCITONIN_TRANSF.AGE <- lm( calcitonin.trans ~ d01m$AGE )
+lin.reg.01.m.CALCITONIN_TRANSF.AGE <- lm( d01m$CALC.TRANS ~ d01m$AGE )
 summary( lin.reg.01.m.CALCITONIN_TRANSF.AGE )
 #P1NP
 
@@ -103,17 +106,36 @@ summary( lin.reg.01.m.CALCITONIN.AGE_P1NP )
 box.cox.01.m.CALCITONIN.AGE_P1NP <- boxCox( lin.reg.01.m.CALCITONIN.AGE_P1NP )
 ( lambda <- box.cox.01.m.CALCITONIN.AGE_P1NP$x[ which.max( box.cox.01.m.CALCITONIN.AGE_P1NP$y ) ] )
 # lambda ist jetzt anders, dh es muss wieder transformiert werden
-calcitonin.trans <- car::bcPower( d01m$CALCITONIN, lambda )
+d01m$CALC.TRANS <- bcPower( d01m$CALCITONIN, lambda )
 
 ##
 # nochmal qqplot anschauen, jz aba das transformierte Kalzitonin
 ##
-qqnorm( calcitonin.trans )
-qqline( calcitonin.trans )
+qqnorm( d01m$CALC.TRANS )
+qqline( d01m$CALC.TRANS )
 ##
 # sieht auch gut aus!
 # also lin reg jz wieder mit transformiertem Kalzitonin
 ##
-lin.reg.01.m.CALCITONIN_TRANSF.AGE_P1NP <- lm( calcitonin.trans ~ d01m$AGE + d01m$P1NP )
+lin.reg.01.m.CALCITONIN_TRANSF.AGE_P1NP <- lm( d01m$CALC.TRANS ~ d01m$AGE + d01m$P1NP )
 summary( lin.reg.01.m.CALCITONIN_TRANSF.AGE_P1NP )
+
+d01m$AGE.CAT <-
+    cut( d01m$AGE, breaks = c( 0, .375, .75, 1 ) )
+
+d01m.s <-
+    summarise( group_by( d01m,AGE.CAT ), m.c = mean( CALCITONIN, na.rm = T ), m.c.t = mean( CALC.TRANS, na.rm = T ) )
+
+ggsubplot(
+    ggplot( ) + theme_bw( ) +
+        geom_boxplot( aes( d01m$AGE.CAT, d01m$CALCITONIN ), col = "red", alpha = .2 )+
+        geom_point( aes( d01m$AGE.CAT, d01m$CALCITONIN ), col = "red" ) +
+        geom_point( aes( d01m.s$AGE.CAT, d01m.s$m.c ), col = "black" ) +
+        geom_line( aes( d01m.s$AGE.CAT, d01m.s$m.c, group = NA ), col = "black" ),
+    ggplot( ) + theme_bw( ) +
+        geom_boxplot( aes( d01m$AGE.CAT, d01m$CALC.TRANS ), col = "green", alpha = .2 )+
+        geom_point( aes( d01m$AGE.CAT, d01m$CALC.TRANS ), col = "green" ) +
+        geom_point( aes( d01m.s$AGE.CAT, d01m.s$m.c.t ), col = "black" ) +
+        geom_line( aes( d01m.s$AGE.CAT, d01m.s$m.c.t, group = NA ), col = "black" ),
+    cols = 2 )
 
