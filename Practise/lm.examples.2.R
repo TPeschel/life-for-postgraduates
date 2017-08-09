@@ -140,7 +140,6 @@ tidy( summary( lm.d.y.age ) )
 co <- 
 	lm.d.y.age$coefficients
 
-
 lm.d.y.age.line <-
 	data.frame( 
 		x = age<-c( 0, 3, 18 ),
@@ -255,7 +254,6 @@ lm.d.y.age.sex <-
 		lm( y ~ age * sex + hair, d ) )
 
 tidy( summary( lm.d.y.age.sex.hair.1 ) )
-
 
 co <-
 	lm.d.y.age.sex.hair.1$coefficients
@@ -382,6 +380,7 @@ ggplot( ) +
 	facet_grid( hair ~ sex )
 
 
+# jetzt wieder alle Modelle mithilfe von anova vergleichen
 anova( lm.d.y.age.sex.hair.1, lm.d.y.age.sex.hair.2, lm.d.y.age.sex.hair.3 )
 
 ##
