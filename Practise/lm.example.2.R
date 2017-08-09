@@ -16,7 +16,7 @@ library( hlpr4life )
 ##
 # installiere bei Bedarf und lade weiter Pakete
 ##
-load.pkgs( c( "ggplot2", "broom", "reshape2", "lme4" ) )
+load.pkgs( c( "ggplot2", "broom", "reshape2", "lme4", "dplyr" ) )
 
 ##
 # setze Startwert fuer Zufallsgenerator auf 1 wegen der Reproduzierbarkeit
@@ -50,9 +50,9 @@ set.seed( 4 )
 	prms <-
 		data.frame(
 			lvls = as.vector( sapply( sex.lvls, function( l ) paste0( l, ":", hair.lvls ) ) ), #levels
-			mue  = m<-runif( 6, -10, +10 ), #mean
-			var  = runif( 6,  +10, +20 ), #variance
-			slp  = -m / 5  ) ) # slope
+			mue  = m<-c( 30, 35, 32, 39, 41, 38 ), #mean
+			var  = v<-c( 7, 5, 7, 11, 13, 15 ), #variance
+			slp  = m + v ) ) # slope
 
 ##
 # Farben fuer Plots in Abhaengigkeit vom Geschlecht und der Haarfarbe
@@ -80,7 +80,7 @@ set.seed( 4 )
 ##
 ( 
 	n <-
-		10000 )
+		1000 )
 
 ##
 # Erstelle Tabelle Alter und Gruppen 
@@ -92,11 +92,15 @@ d <-
 		hair = sample( hair.lvls, n, T ) )
 
 ##
-# Berechne abhaengige Zufallswerte fuer Variable y
+# Berechne abhaengige Zufallswerte fuer Variable height = y
 ##
 d$y <-
-	rnorm( n, prms$mue[ match( paste0( d$sex, ":", d$hair ), prms$lvls ) ], prms$var[ match( paste0( d$sex, ":", d$hair ), prms$lvls ) ] ) +
-	d$age * prms$slp[ match( paste0( d$sex, ":", d$hair ), prms$lvls ) ]
+	rnorm( 
+		n, 
+		prms$mue[ match( paste0( d$sex, ":", d$hair ), prms$lvls ) ],
+		prms$var[ match( paste0( d$sex, ":", d$hair ), prms$lvls ) ] ) +
+	.16 * d$age * prms$slp[ match( paste0( d$sex, ":", d$hair ), prms$lvls ) ]
+
 
 ##
 # Zeige die ersten sechs Zeilen
@@ -109,6 +113,18 @@ head( d )
 ##
 
 ##
+# Zeige Plot!
+##
+ggplot( ) +
+	geom_point( aes( age, y ), d ) +
+	theme_bw( )
+
+##
+# ganz offensichtlich gibt es ein Abhaengikeit vom Alter
+# also sollte in jedem Modell das Alter eine Rolle spielen
+##
+
+##
 # fitte nur Alter
 ##
 (
@@ -118,276 +134,262 @@ head( d )
 ##
 # Fasse zusammen
 ##
-summary( lm.d.y.age )
+tidy( summary( lm.d.y.age ) )
 # age ist signifikant, bleibt im Modell
 
+co <- 
+	lm.d.y.age$coefficients
+
+
+lm.d.y.age.line <-
+	data.frame( 
+		x = age<-c( 0, 3, 18 ),
+		y = co[ "(Intercept)" ] + 
+			co[ "age" ] * age )
 ##
 # Zeige Plot!
 ##
-ggplot( 
-	d,
-	aes( age, y ) ) +
-	theme_bw( ) +
-	geom_point( alpha = .1 ) +
-	geom_smooth( method = "lm", col = "black" )
+ggplot( ) +
+	theme_bw( ) + xlim( 0, 20 ) + ylim( 0, 250 ) +
+	geom_point( aes( age, y ), d ) +
+	geom_smooth( aes( age, y ), d, method = "lm", col = "gray" ) +
+	geom_line( aes( x, y ), lm.d.y.age.line, col = "gray" ) +
+	geom_point( aes( x, y, shape = as.factor( x ) ), lm.d.y.age.line, size = 4, col = "gray" ) +
+	geom_text( aes( x, y, label = round( y, 2 ) ), lm.d.y.age.line, nudge_x = 0, nudge_y = -1, col = "black" )
+	
 
 ##
 # Nimm das Geschlecht hinzu!
 ##
 (
-	lm.d.y.age.sex <-
+	lm.d.y.age.sex.1 <-
+		lm( y ~ age + sex, d ) )
+
+tidy( summary( lm.d.y.age.sex.1 ) )
+
+co <-
+	lm.d.y.age.sex.1$coefficients
+	
+lm.d.y.age.sex.1.line <-
+	data.frame( 
+		sex =  s<-rep( c( "female", "male" ), 3 ), 
+		x = age<-c( 0, 0, 3, 3, 18, 18 ),
+		sex.lvl <- c( 0, 1 )[ match( s, sex.lvls ) ],
+		y = co[ "(Intercept)" ] + sex.lvl * co[ "sexmale" ] + co[ "age" ] * age )
+
+ggplot( ) +
+	theme_bw( ) + xlim( 0, 20 ) + ylim( 0, 250 ) +
+	geom_point( aes( age, y, col = sex ), d, alpha = .1 ) +
+#	geom_smooth( aes( age, y, col = sex ), d, method = "lm", alpha = .1 ) +
+	scale_color_manual( values = cols.sex, guide = F ) +
+	geom_line( aes( x, y, col = sex ), lm.d.y.age.sex.1.line ) +
+	geom_point( aes( x, y, shape = as.factor( x ), col = sex ), lm.d.y.age.sex.1.line, size = 3 ) +
+	geom_text( aes( x, y, label = round( y, 2 ), col = sex ), lm.d.y.age.sex.1.line, nudge_x = 0, nudge_y = -5 )
+
+(
+	lm.d.y.age.sex.2 <-
+		lm( y ~ age : sex, d ) )
+
+tidy( summary( lm.d.y.age.sex.2 ) )
+
+co <-
+	lm.d.y.age.sex.2$coefficients
+
+lm.d.y.age.sex.2.line <-
+	data.frame( 
+		sex =  s<-rep( c( "female", "male" ), 3 ), 
+		x = age<-c( 0, 0, 3, 3, 18, 18 ),
+		y = co[ "(Intercept)" ] + co[ paste0( "age:sex", s ) ] * age )
+
+ggplot( ) +
+	theme_bw( ) + xlim( 0, 20 ) + ylim( 0, 250 ) +
+	geom_point( aes( age, y, col = sex ), d, alpha = .1 ) +
+#	geom_smooth( aes( age, y, col = sex ), d, method = "lm", alpha = .1 ) +
+	scale_color_manual( values = cols.sex, guide = F ) +
+	geom_line( aes( x, y, col = sex ), lm.d.y.age.sex.2.line ) +
+	geom_point( aes( x, y, shape = as.factor( x ), col = sex ), lm.d.y.age.sex.2.line, size = 3 ) +
+	geom_text( aes( x, y, label = round( y, 2 ), col = sex ), lm.d.y.age.sex.2.line, nudge_x = 0, nudge_y = -5 )
+
+(
+	lm.d.y.age.sex.3 <-
 		lm( y ~ age * sex, d ) )
 
-summary( lm.d.y.age.sex )
-# sex ist nicht signifikant
-# aber age und age in abhaengigkeit von sex sind signifikant
-# also zwei unterschiedliche Intercepts und Anstiege fuer die Geschlechter
-ggplot( 
-	d,
-	aes( age, y, col = sex ) ) +
-	theme_bw( ) +
-	geom_point( alpha = .1 ) +
-	geom_smooth( method = "lm" ) +
-	scale_color_manual( values = cols.sex, guide = F )
+tidy( summary( lm.d.y.age.sex.3 ) )
+
+(
+	co <-
+		lm.d.y.age.sex.3$coefficients )
+
+lm.d.y.age.sex.3.line <-
+	data.frame( 
+		sex =  s<-rep( sex.lvls, 3 ), 
+		x = age<-c( 0, 0, 3, 3, 18, 18 ),
+		sex.male <- c( 0, 1 )[ match( s, sex.lvls ) ],
+		y = co[ "(Intercept)" ] + sex.male * co[ "sexmale" ] + 
+			( co[ "age" ]  + sex.male * co[ "age:sexmale" ] ) * age )
+
+ggplot( ) +
+	theme_bw( ) + xlim( 0, 20 ) + ylim( 0, 250 ) +
+	geom_point( aes( age, y, col = sex ), d, alpha = .1 ) +
+#	geom_smooth( aes( age, y, col = sex ), d, method = "lm", alpha = .1 ) +
+	scale_color_manual( values = cols.sex, guide = F ) +
+	geom_line( aes( x, y, col = sex ), lm.d.y.age.sex.3.line ) +
+	geom_point( aes( x, y, shape = as.factor( x ), col = sex ), lm.d.y.age.sex.3.line, size = 3 ) +
+	geom_text( aes( x, y, label = round( y, 2 ), col = sex ), lm.d.y.age.sex.3.line, nudge_x = 0, nudge_y = -5 )
+
+anova( lm.d.y.age, lm.d.y.age.sex.1, lm.d.y.age.sex.2, lm.d.y.age.sex.3 )
+# das letzte modell ist das beste
+# kleinster RSS-Wert
 
 ##
-# Vergleiche die beiden Modelle
-# Der p-Wert gibt Aufschluss darueber, ob sich das eine Modell signifikant vom anderen unterscheidet und 
-# ein kleinerer Wert fuer RSS gibt zeigt das bessere Modell an
+# also hier gehts weiter
 ##
-anova( lm.d.y.age, lm.d.y.age.sex )
-##
-# hier ist das 2. besser
-##
-
+lm.d.y.age.sex <- 
+	lm.d.y.age.sex.3
 
 ##
-# Sex raus, Haare rein!
+# jetzt Haare rein!
 ##
 (
-	lm.d.y.age.hair <-
-		lm( y ~ age * hair, d ) )
+	lm.d.y.age.sex.hair.1 <-
+		lm( y ~ age * sex + hair, d ) )
 
-summary( lm.d.y.age.hair )
+tidy( summary( lm.d.y.age.sex.hair.1 ) )
 
-ggplot( 
-	d,
-	aes( age, y, col = hair ) ) +
-	theme_bw( ) +
-	geom_point( alpha = .1 ) +
-	geom_smooth( method = "lm" ) +
-	scale_color_manual( values = cols.hair, guide = F )
 
-##
-# besser als das "Nur-Alter-Modell"
-##
-anova( lm.d.y.age, lm.d.y.age.hair )
+co <-
+	lm.d.y.age.sex.hair.1$coefficients
 
-##
-# Haare erklaeren mehr als Sex
-##
-anova( lm.d.y.age.hair, lm.d.y.age.sex )
-
-##
-# jetzt mal alles rein, Alter, Geschlecht, Haare
-##
-(
-	lm.d.y.age.sex.hair <-
-		lm( y ~ age * sex * hair, d ) )
-
-summary( lm.d.y.age.sex.hair )
-
-anova( lm.d.y.age.sex.hair, lm.d.y.age.hair )
-anova( lm.d.y.age.sex.hair, lm.d.y.age.sex )
-##
-# Das vollstaendige Modell ist das Beste
-##
-
-##
-# diverse Plots um Sache zu veranschaulichen
-##
-ggplot( 
-	d,
-	aes( age, y, col = paste0( sex, ":", hair ) ) ) +
-	theme_bw( ) +
-	geom_point( alpha = .1 ) +
-	geom_smooth( method = "lm" ) +
-	scale_color_manual( values = cols.sex.hair, guide = F )
-
-ggplot( 
-	d,
-	aes( age, y, col = paste0( sex, ":", hair ) ) ) +
-	theme_bw( ) +
-	geom_point( alpha = .1 ) +
-	geom_smooth( method = "lm" ) +
-	facet_grid( . ~ sex ) +
-	scale_color_manual( values = cols.sex.hair, guide = F )
-
-ggplot( 
-	d,
-	aes( age, y, col = paste0( sex, ":", hair ) ) ) +
-	theme_bw( ) +
-	geom_point( alpha = .1 ) +
-	geom_smooth( method = "lm" ) +
-	facet_grid( . ~ hair ) +
-	scale_color_manual( values = cols.sex.hair, guide = F )
-
-<<<<<<< HEAD
 ##
 # model matrix
 ##
-=======
->>>>>>> 99548ade58805d7a82bc598b74cbc5f53df50913
-(
-	m <-
-		attr( lm.d.y.age.sex.hair$terms, "factors" ) )
-
-<<<<<<< HEAD
-##
-# Regressionskoeffizienten
-##
-reg.coef <-
-	 lm.d.y.age.sex.hair$coefficients
-
-##
-# Echte Koeffizienten berechnen
-##
-
-##
-# Alle Intercepts in den Gruppen
-##
-( y0_female_black  <- reg.coef[ "(Intercept)" ] )
-
-( y0_female_blonde <- reg.coef[ "(Intercept)" ] + reg.coef[ "hairblonde" ] )
-( y0_female_brown  <- reg.coef[ "(Intercept)" ] + reg.coef[ "hairbrown" ] )
-( y0_male_black    <- reg.coef[ "(Intercept)" ] + reg.coef[ "sexmale" ] )
-
-( y0_male_blonde   <- reg.coef[ "(Intercept)" ] + reg.coef[ "sexmale" ] + reg.coef[ "hairblonde" ] + reg.coef[ "sexmale:hairblonde" ] )
-( y0_male_brown    <- reg.coef[ "(Intercept)" ] + reg.coef[ "sexmale" ] + reg.coef[ "hairbrown" ]  + reg.coef[ "sexmale:hairbrown" ] )
-
-##
-# Alle Anstiege in den Gruppen
-##
-( beta_female_black  <- reg.coef[ "age" ] )
-( beta_female_blonde <- reg.coef[ "age" ] + reg.coef[ "age:hairblonde" ] )
-( beta_female_brown  <- reg.coef[ "age" ] + reg.coef[ "age:hairbrown" ] )
-( beta_male_black    <- reg.coef[ "age" ] + reg.coef[ "age:sexmale" ] )
-( beta_male_blonde   <- reg.coef[ "age" ] + reg.coef[ "age:sexmale" ] + reg.coef[ "age:hairblonde" ] + reg.coef[ "age:sexmale:hairblonde" ] )
-( beta_male_brown    <- reg.coef[ "age" ] + reg.coef[ "age:sexmale" ] + reg.coef[ "age:hairbrown" ]  + reg.coef[ "age:sexmale:hairbrown" ] )
-
-##
-# Plotte alle Gruppen
-##
-=======
-(
-	l <-
-		lm.d.y.age.sex.hair$coefficients )
-
-age <-
-	c( 3 : 18 )
-
-( y0_female_black  <- l[ "(Intercept)" ] )
-
-( y0_female_blonde <- l[ "(Intercept)" ] + l[ "hairblonde" ] )
-( y0_female_brown  <- l[ "(Intercept)" ] + l[ "hairbrown" ] )
-( y0_male_black    <- l[ "(Intercept)" ] + l[ "sexmale" ] )
-
-( y0_male_blonde   <- l[ "(Intercept)" ] + l[ "sexmale" ] + l[ "hairblonde" ] + l[ "sexmale:hairblonde" ] )
-( y0_male_brown    <- l[ "(Intercept)" ] + l[ "sexmale" ] + l[ "hairbrown" ]  + l[ "sexmale:hairbrown" ] )
-
-( beta_female_black  <- l[ "age" ] )
-
-( beta_female_blonde <- l[ "age" ] + l[ "age:hairblonde" ] )
-( beta_female_brown  <- l[ "age" ] + l[ "age:hairbrown" ] )
-( beta_male_black    <- l[ "age" ] + l[ "age:sexmale" ] )
-
-( beta_male_blonde   <- l[ "age" ] + l[ "age:sexmale" ] + l[ "age:hairblonde" ] + l[ "age:sexmale:hairblonde" ] )
-( beta_male_brown    <- l[ "age" ] + l[ "age:sexmale" ] + l[ "age:hairbrown" ]  + l[ "age:sexmale:hairbrown" ] )
-
->>>>>>> 99548ade58805d7a82bc598b74cbc5f53df50913
-(
-	plt <-
-		ggplot( 
-			d,
-			aes( age, y, col = paste0( sex, ":", hair ) ) ) +
-			theme_bw( ) +
-			geom_point( alpha = .1 ) +
-			geom_smooth( method = "lm" ) +
-			facet_grid( sex ~ hair ) +
-			scale_color_manual( values = cols.sex.hair, guide = F ) )
-
-##
-# Berechne aus "echten Koeffizienten die y-Werte bei 3 und 18 Jahren 
-## 
-(
-	fit <-
+mm <-
+	(
 		data.frame(
-			sex = c(
-				rep( sex.lvls[ 1 ], 3 ),
-				rep( sex.lvls[ 2 ], 3 ) ),
-			hair = rep( hair.lvls, 2 ),
-			y0 = c(
-				y0_female_black,
-				y0_female_blonde,
-				y0_female_brown,
-				y0_male_black,
-				y0_male_blonde,
-				y0_male_brown ),
-			beta = c(
-				beta_female_black,
-				beta_female_blonde,
-				beta_female_brown,
-				beta_male_black,
-				beta_male_blonde,
-				beta_male_brown ) ) )
+			'(Intercept)' = 1,
+			age =
+				c( 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 18, 18, 18, 18, 18, 18 ),
+			sexmale =
+				c( 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1,  0,  0,  0,  1,  1,  1 ),
+			hairblonde =
+				c( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,  0,  1,  0,  0,  1,  0 ),
+			hairbrown =
+				c( 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,  0,  0,  1,  0,  0,  1  ),
+			'age:sexmale' =
+				c( 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3,  0,  0,  0,  18, 18, 18 ) ) )
 
-fit$xs <-
-	3
+lm.d.y.age.sex.hair.1.line <-
+	data.frame( 
+		sex  =  rep( c( rep( "female", 3 ), rep( "male", 3 ) ), 3 ),
+		hair = rep( hair.lvls, 2 * 3 ), 
+		x    = mm$age,
+		y    = as.matrix( mm ) %*% co )
 
-fit$ys <-
-	fit$y0 + fit$beta * fit$xs
+ggplot( ) +
+	theme_bw( ) + xlim( 0, 20 ) + ylim( 0, 250 ) +
+	scale_color_manual( values = cols.sex.hair, guide = F ) +
+	geom_point( aes( age, y, col = paste0( sex, ":", hair ) ), d, alpha = .1 ) +
+	geom_smooth( aes( age, y, col = paste0( sex, ":", hair ) ), d, method = "lm" ) +
+	geom_line( aes( x, y, col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.1.line ) +
+	geom_point( aes( x, y, shape = as.factor( x ), col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.1.line, size = 3 ) +
+	geom_text( aes( x, y, label = round( y, 2 ), col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.1.line, nudge_x = 0, nudge_y = -5 ) +
+	facet_grid( sex ~ hair )
 
-fit$xf <-
-	18
-
-fit$yf <-
-	fit$y0 + fit$beta * fit$xf
-
-##
-# Erzeuge Dataframe fuer Anfangs- und Endpunkte (3,18)
-##
 (
-	lmts <-
+	lm.d.y.age.sex.hair.2 <-
+		lm( y ~ age * sex + age : hair, d ) )
+
+tidy( summary( lm.d.y.age.sex.hair.2 ) )
+
+mm <-
+	(
 		data.frame(
-			age           = a <- c( 3, 18 ),
-			female_black  = y0_female_black  + beta_female_black * a,
-			female_blonde = y0_female_blonde + beta_female_blonde * a,
-			female_brown  = y0_female_brown  + beta_female_brown * a,
-			male_black    = y0_male_black    + beta_male_black * a,
-			male_blonde   = y0_male_blonde   + beta_male_blonde * a,
-			male_brown    = y0_male_brown    + beta_male_brown * a ) )
+			'(Intercept)' = 1,
+			age =
+				c( 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 18, 18, 18, 18, 18, 18 ),
+			sexmale =
+				c( 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1,  0,  0,  0,  1,  1,  1 ),
+			'age:sexmale' =
+				c( 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3,  0,  0,  0, 18, 18, 18 ),
+			'age:hairblonde' =
+				c( 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 3, 0,  0, 18,  0,  0, 18,  0 ),
+			"age:hairbrown" =
+				c( 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 3,  0,  0, 18,  0,  0, 18  ) ) )
+
+co <-
+	lm.d.y.age.sex.hair.2$coefficients
+
+lm.d.y.age.sex.hair.2.line <-
+	data.frame( 
+		sex = sex.lvls[ match( mm$sexmale, c( 0, 1 ) ) ],
+		hair = rep( hair.lvls, 6 ), 
+		x =  mm$age,
+		y = as.matrix( mm ) %*% co )
+
+ggplot( ) +
+	theme_bw( ) + xlim( 0, 20 ) + ylim( 0, 250 ) +
+	scale_color_manual( values = cols.sex.hair, guide = F ) +
+	geom_point( aes( age, y, col = paste0( sex, ":", hair ) ), d, alpha = .1 ) +
+	geom_smooth( aes( age, y, col = paste0( sex, ":", hair ) ), d, method = "lm" ) +
+	geom_line( aes( x, y, col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.2.line ) +
+	geom_point( aes( x, y, shape = as.factor( x ), col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.2.line, size = 3 ) +
+	geom_text( aes( x, y, label = round( y, 2 ), col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.2.line, nudge_x = 0, nudge_y = -5 ) +
+	facet_grid( hair ~ sex )
+
+(
+	lm.d.y.age.sex.hair.3 <-
+		lm( y ~ age * ( sex + hair ), d ) )
+
+tidy( summary( lm.d.y.age.sex.hair.3 ) )
+
+mm <-
+	(
+		data.frame(
+			'(Intercept)' = 1,
+			age =
+				c( 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 18, 18, 18, 18, 18, 18 ),
+			sexmale =
+				c( 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1,  0,  0,  0,  1,  1,  1 ),
+			'hairblonde' =
+				c( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,  0,  1,  0,  0,  1,  0 ),
+			"hairbrown" =
+				c( 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,  0,  0,  1,  0,  0,  1  ),
+			'age:sexmale' =
+				c( 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3,  0,  0,  0, 18, 18, 18 ),
+			'age:hairblonde' =
+				c( 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 3, 0,  0, 18,  0,  0, 18,  0 ),
+			"age:hairbrown" =
+				c( 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 3,  0,  0, 18,  0,  0, 18  ) ) )
+
+co <-
+	lm.d.y.age.sex.hair.3$coefficients
+
+lm.d.y.age.sex.hair.3.line <-
+	data.frame( 
+		sex = sex.lvls[ match( mm$sexmale, c( 0, 1 ) ) ],
+		hair = rep( hair.lvls, 6 ), 
+		x =  mm$age,
+		y = as.matrix( mm ) %*% co )
+
+ggplot( ) +
+	theme_bw( ) + xlim( -1, 20 ) + ylim( 0, 250 ) +
+	scale_color_manual( values = cols.sex.hair, guide = F ) +
+	geom_point( aes( age, y, col = paste0( sex, ":", hair ) ), d, alpha = .1 ) +
+	geom_smooth( aes( age, y, col = paste0( sex, ":", hair ) ), d, method = "lm" ) +
+	geom_line( aes( x, y, col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.3.line ) +
+	geom_point( aes( x, y, shape = as.factor( x ), col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.3.line, size = 3 ) +
+	geom_text( aes( x, y, label = round( y, 2 ), col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.3.line, nudge_x = 0, nudge_y = -5 ) +
+	facet_grid( hair ~ sex )
+
+
+anova( lm.d.y.age.sex.hair.1, lm.d.y.age.sex.hair.2, lm.d.y.age.sex.hair.3 )
 
 ##
-# Fuege letztem Plot, gefittete Anfangs und Endpunkte hinzu
+# das 3. Modell ist wieder das beste und das engueltige
 ##
-plt + 
-	geom_point( aes( xs, ys, col = paste0( fit$sex, ":", fit$hair ) ), fit, shape = 1, size = 3 ) +
-	geom_point( aes( xf, yf, col = paste0( fit$sex, ":", fit$hair ) ), fit, shape = 2, size = 3 )
 
-##
-# Uebersicht uber Regression
-##
-tidy( lm.d.y.age.sex.hair )
 
-##
-# Ubersicht ueber tatsaechliche Schnittpunkt und Anstiege
-##
-fit[ , c( 1 : 4 ) ]
-##
-# Vergleiche dazu Simulationsparameter
-##
+# Ergebnisse
+tidy( lm.d.y.age.sex.hair.3 )
+# urspruengliche Simulationsparameter
 prms
-##
-# mue = y0
-# beta = slp    ... slope
-##
