@@ -140,7 +140,6 @@ tidy( summary( lm.d.y.age ) )
 co <- 
 	lm.d.y.age$coefficients
 
-
 lm.d.y.age.line <-
 	data.frame( 
 		x = age<-c( 0, 3, 18 ),
@@ -231,7 +230,7 @@ lm.d.y.age.sex.3.line <-
 ggplot( ) +
 	theme_bw( ) + xlim( 0, 20 ) + ylim( 0, 250 ) +
 	geom_point( aes( age, y, col = sex ), d, alpha = .1 ) +
-#	geom_smooth( aes( age, y, col = sex ), d, method = "lm", alpha = .1 ) +
+	geom_smooth( aes( age, y, col = sex ), d, method = "lm", alpha = .1 ) +
 	scale_color_manual( values = cols.sex, guide = F ) +
 	geom_line( aes( x, y, col = sex ), lm.d.y.age.sex.3.line ) +
 	geom_point( aes( x, y, shape = as.factor( x ), col = sex ), lm.d.y.age.sex.3.line, size = 3 ) +

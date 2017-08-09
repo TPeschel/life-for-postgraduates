@@ -106,9 +106,8 @@ rownames(attr(d.lm$terms, "factors"))
 
 
 summary( d.lm )
-=======
-		lm( val ~ age * sex, d ) )
->>>>>>> e54f79ced47f2649fffedd1c4cc354363c80c1eb
+lm( val ~ age * sex, d )
+
 
 ablines( d.lm )
 
@@ -152,8 +151,3 @@ ggsubplot(
 				3, 3, 3, 4, 4 ),
 			ncol = 3 ) ) )
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> e54f79ced47f2649fffedd1c4cc354363c80c1eb

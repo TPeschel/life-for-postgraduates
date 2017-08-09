@@ -62,20 +62,6 @@ set.seed( 4 )
 		c( "black", "yellow", "brown", "midnightblue", "orange", "orange4" ) )
 
 ##
-# Farben fuer Plots in Abhaengigkeit vom Geschlecht
-##
-( 
-	cols.sex <-
-		c( "deeppink", "deepskyblue" ) )
-
-##
-# Farben fuer Plots in Abhaengigkeit von der Haarfarbe
-##
-( 
-	cols.hair <-
-		c( "#302020", "#d0a030", "#a88020" ) )
-
-##
 # Anzahl an Messungen
 ##
 ( 
@@ -114,31 +100,28 @@ modelMatrix <-
 						data.frame( hair = hair.lvls ) ) ) ) )
 
 plot.lin.reg <-
-	function( frml, data, txt = "" ) {
+	function( frml, data, txt = "", verbose = T ) {
 	
 	# (
 	# 	frml <-
 	# 		"y ~ hair * sex" )
 	
-	(
-		ages <-
-			c( 0, 3, 18  ) )
+	ages <-
+		c( 0, 3, 18  )
 	
-	(
-		mm <-
-			modelMatrix( frml, ages ) )
+	mm <-
+		modelMatrix( frml, ages )
 	
-	(
-		m <-
-			as.matrix( mm ) )
+
+	m <-
+		as.matrix( mm )
 	
-	(
-		lm.d <-
-			lm( frml, data ) )
+
+	lm.d <-
+		lm( frml, data )
 	
-	(
-		co <-
-			lm.d$coefficients )
+	co <-
+		lm.d$coefficients
 	
 	m %*% co
 	
@@ -158,32 +141,68 @@ plot.lin.reg <-
 	line <-
 		lm.d.line( mm )
 
-	ggplot( ) +
-		theme_bw( ) + xlim( -1, 20 ) + ylim( 0, 230 ) + ggtitle( frml, txt ) +
-		scale_color_manual( values = cols.sex.hair, guide = F ) +
-		scale_shape_discrete( guide = F ) +
-		geom_point( aes( age, y, col = paste0( sex, ":", hair ) ), data, alpha = .1 ) +
-#		geom_smooth( aes( age, y, col = paste0( sex, ":", hair ) ), data, method = "lm", alpha = .01 ) +
-		geom_line( aes( x, y, col = paste0( sex, ":", hair ) ), line ) +
-		geom_point( aes( x, y, shape = as.factor( x ), col = paste0( sex, ":", hair ) ), line, size = 3 ) +
-		geom_text( aes( x, y, label = round( y, 2 ), col = paste0( sex, ":", hair ) ), line, nudge_x = 0, nudge_y = -8 ) }
+	p <-
+		ggplot( ) +
+			theme_bw( ) + xlim( -1, 20 ) + ylim( 0, 230 ) + ggtitle( frml, txt ) +
+			scale_color_manual( values = cols.sex.hair, guide = F ) +
+			scale_shape_discrete( guide = F ) +
+			geom_point( aes( age, y, col = paste0( sex, ":", hair ) ), data, alpha = .1 ) +
+	#		geom_smooth( aes( age, y, col = paste0( sex, ":", hair ) ), data, method = "lm", alpha = .01 ) +
+			geom_line( aes( x, y, col = paste0( sex, ":", hair ) ), line ) +
+			geom_point( aes( x, y, shape = as.factor( x ), col = paste0( sex, ":", hair ) ), line, size = 3 )
+	if( verbose )
+		p <- p + geom_text( aes( x, y, label = round( y, 2 ) ), line, col = "black" )
+	p }
+
+
+plot.lin.reg( "y ~ 0", d, "empty model no intercept no slope" )
+plot.lin.reg( "y ~ 1", d, "null model only 1 intercept (overall mean)"  )
+plot.lin.reg( "y ~ sex", d, "only 2 different intercepts for sex\n(group means for sex)"  )
+plot.lin.reg( "y ~ hair", d, "only 3 different intercepts for hair\n(group means for hair)"  )
+plot.lin.reg( "y ~ sex + hair", d, "6 different but dependent intercepts for sex and hair\n(group means for sex and hair)"  )
+plot.lin.reg( "y ~ sex * hair", d, "6 different independent intercepts for sex and hair\n(group means for sex and hair)"  )
+plot.lin.reg( "y ~ age", d, "only 1 slope for all groups" )
+plot.lin.reg( "y ~ age + sex", d, "only 1 slope for all groups\nbut 2 different intercepts for sex" )
+plot.lin.reg( "y ~ age + hair", d, "only 1 slope for all groups\nbut 3 different intercepts for hair" )
+plot.lin.reg( "y ~ age + sex + hair", d, "only 1 slope for all groups\nbut 6 different intercepts for sex and hair" )
+plot.lin.reg( "y ~ age * sex + hair", d, "2 different slopes for sex and\n6 different intercepts for sex and hair" )
+plot.lin.reg( "y ~ age * hair + sex", d, "3 different slopes for hair and\n6 different intercepts for sex and hair" )
+plot.lin.reg( "y ~ age : ( hair + sex )", d, "only 1 intercept and \n6 different slopes for all groups" )
+plot.lin.reg( "y ~ age * ( hair + sex )", d, "6 different intercepts and \n6 different but dependent slopes for all groups" )
+plot.lin.reg( "y ~ age * hair * sex", d, "complete model" )
+
+plot.lin.reg( "y ~ 0", d, "empty model no intercept no slope"  ) + facet_grid( sex ~ hair )
+plot.lin.reg( "y ~ 1", d, "null model only 1 intercept (overall mean)"  ) + facet_grid( sex ~ hair )
+plot.lin.reg( "y ~ sex", d, "only 2 different intercepts for sex\n(group means for sex)"  ) + facet_grid( sex ~ hair )
+plot.lin.reg( "y ~ hair", d, "only 3 different intercepts for hair\n(group means for hair)"  ) + facet_grid( sex ~ hair )
+plot.lin.reg( "y ~ sex + hair", d, "6 different but dependent intercepts for sex and hair\n(group means for sex and hair)"  ) + facet_grid( sex ~ hair)
+plot.lin.reg( "y ~ sex * hair", d, "6 different independent intercepts for sex and hair\n(group means for sex and hair)"  ) + facet_grid( sex ~ hair)
+plot.lin.reg( "y ~ age", d, "only 1 slope for all groups" ) + facet_grid( sex ~ hair)
+plot.lin.reg( "y ~ age + sex", d, "only 1 slope for all groups\nbut 2 different intercepts for sex" ) + facet_grid( sex ~ hair)
+plot.lin.reg( "y ~ age + hair", d, "only 1 slope for all groups\nbut 3 different intercepts for hair" ) + facet_grid( sex ~ hair)
+plot.lin.reg( "y ~ age + sex + hair", d, "only 1 slope for all groups\nbut 6 different intercepts for sex and hair" ) + facet_grid( sex ~ hair)
+plot.lin.reg( "y ~ age * sex + hair", d, "2 different slopes for sex and\n6 different intercepts for sex and hair" ) + facet_grid( sex ~ hair)
+plot.lin.reg( "y ~ age * hair + sex", d, "3 different slopes for hair and\n6 different intercepts for sex and hair" ) + facet_grid( sex ~ hair)
+plot.lin.reg( "y ~ age : ( hair + sex )", d, "only 1 intercept and \n6 different slopes for all groups" ) + facet_grid( sex ~ hair)
+plot.lin.reg( "y ~ age * ( hair + sex )", d, "6 different intercepts and \n6 different but dependent slopes for all groups" ) + facet_grid( sex ~ hair)
+plot.lin.reg( "y ~ age * hair * sex", d, "complete model" ) + facet_grid( sex ~ hair)
 
 ggsubplot(
-	plot.lin.reg( "y ~ 0", d, "empty model no intercept no slope"  ),
-	plot.lin.reg( "y ~ 1", d, "null model only 1 intercept (overall mean)"  ),
-	plot.lin.reg( "y ~ sex", d, "only 2 different intercepts for sex\n (group means for sex)"  ),
-	plot.lin.reg( "y ~ hair", d, "only 3 different intercepts for sex\n (group means for hair)"  ),
-	plot.lin.reg( "y ~ sex + hair", d, "6 different but dependent intercepts for sex and hair\n (group means for sex and hair)"  ),
-	plot.lin.reg( "y ~ sex * hair", d, "6 different independent intercepts for sex and hair\n (group means for sex and hair)"  ),
-	plot.lin.reg( "y ~ age", d, "only 1 slope for all groups" ),
-	plot.lin.reg( "y ~ age + sex", d, "only 1 slope for all groups \nbut different intercepts for sex" ),
-	plot.lin.reg( "y ~ age + hair", d, "only 1 slope for all groups \nbut different intercepts for hair" ),
-	plot.lin.reg( "y ~ age + sex + hair", d, "only 1 slope for all groups\n but different intercepts for sex and hair" ),
-	plot.lin.reg( "y ~ age * sex + hair", d, "different slopes for sex and \ndifferent intercepts for sex and hair" ),
-	plot.lin.reg( "y ~ age * hair + sex", d, "different slopes for hair and \ndifferent intercepts for sex and hair" ),
-	plot.lin.reg( "y ~ age : ( hair + sex )", d, "one intercept and \ndifferent but dependent slopes for all groups" ),
-	plot.lin.reg( "y ~ age * ( hair + sex )", d, "different intercepts and \ndifferent but dependent slopes for all groups" ),
-	plot.lin.reg( "y ~ age * hair * sex", d, "complete model" ) + facet_grid( sex ~ hair),
+	plot.lin.reg( "y ~ 0", d, "empty model no intercept no slope", F  ),
+	plot.lin.reg( "y ~ 1", d, "null model only 1 intercept (overall mean)", F  ),
+	plot.lin.reg( "y ~ sex", d, "only 2 different intercepts for sex\n(group means for sex)", F  ),
+	plot.lin.reg( "y ~ hair", d, "only 3 different intercepts for hair\n(group means for hair)", F  ),
+	plot.lin.reg( "y ~ sex + hair", d, "6 different but dependent intercepts for sex and hair\n(group means for sex and hair)", F  ),
+	plot.lin.reg( "y ~ sex * hair", d, "6 different independent intercepts for sex and hair\n(group means for sex and hair)", F  ),
+	plot.lin.reg( "y ~ age", d, "only 1 slope for all groups", F ),
+	plot.lin.reg( "y ~ age + sex", d, "only 1 slope for all groups\nbut 2 different intercepts for sex", F ),
+	plot.lin.reg( "y ~ age + hair", d, "only 1 slope for all groups\nbut 3 different intercepts for hair", F ),
+	plot.lin.reg( "y ~ age + sex + hair", d, "only 1 slope for all groups\nbut 6 different intercepts for sex and hair", F ),
+	plot.lin.reg( "y ~ age * sex + hair", d, "2 different slopes for sex and\n6 different intercepts for sex and hair", F ),
+	plot.lin.reg( "y ~ age * hair + sex", d, "3 different slopes for hair and\n6 different intercepts for sex and hair", F ),
+	plot.lin.reg( "y ~ age : ( hair + sex )", d, "only 1 intercept and \n6 different but dependent slopes for all groups", F ),
+	plot.lin.reg( "y ~ age * ( hair + sex )", d, "6 different intercepts and \n6 different but dependent slopes for all groups", F ),
+	plot.lin.reg( "y ~ age * hair * sex", d, "complete model", F ),
 	layout = 
 		t(
 			matrix( 
@@ -193,3 +212,27 @@ ggsubplot(
 					11, 12, 13, 14, 15 ),
 				nrow = 5 ) ) )
 
+ggsubplot(
+	plot.lin.reg( "y ~ 0", d, "empty model no intercept no slope"  ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ 1", d, "null model only 1 intercept (overall mean)"  ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ sex", d, "only 2 different intercepts for sex\n(group means for sex)"  ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ hair", d, "only 3 different intercepts for hair\n(group means for hair)"  ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ sex + hair", d, "6 different but dependent intercepts for sex and hair\n(group means for sex and hair)"  ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ sex * hair", d, "6 different independent intercepts for sex and hair\n(group means for sex and hair)"  ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ age", d, "only 1 slope for all groups" ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ age + sex", d, "only 1 slope for all groups\nbut 2 different intercepts for sex" ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ age + hair", d, "only 1 slope for all groups\nbut 3 different intercepts for hair" ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ age + sex + hair", d, "only 1 slope for all groups\nbut 6 different intercepts for sex and hair" ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ age * sex + hair", d, "2 different slopes for sex and\n6 different intercepts for sex and hair" ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ age * hair + sex", d, "3 different slopes for hair and\n6 different intercepts for sex and hair" ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ age : ( hair + sex )", d, "only 1 intercept and \n6 different but dependent slopes for all groups" ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ age * ( hair + sex )", d, "6 different intercepts and \n6 different but dependent slopes for all groups" ) + facet_grid( sex ~ hair ),
+	plot.lin.reg( "y ~ age * hair * sex", d, "complete model" ) + facet_grid( sex ~ hair ),
+	layout = 
+		t(
+			matrix( 
+				c( 
+					1, 2, 3, 4, 5,
+					6, 7, 8, 9, 10, 
+					11, 12, 13, 14, 15 ),
+				nrow = 5 ) ) )
