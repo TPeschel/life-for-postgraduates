@@ -6,10 +6,6 @@ rm( list = ls( ) )
 
 library( hlpr4life )
 
-Sys.time( )
-Sys.timezone( )
-Sys.setenv( TZ = "BMT" )
-
 load.pkgs( 
 	c( 
 		"dplyr",
@@ -20,7 +16,7 @@ load.pkgs(
 		"reshape2",
 		"lubridate" ) )
 
-load( "../ThomasBerger/r/data_sprech.Rda" )
+load( "~/Schreibtisch/ThomasBerger/r/data_sprech.Rda" )
 
 d <-
 	data.sprech[ , c( "age", "sex",  "F0_SPRECH_2" ) ]

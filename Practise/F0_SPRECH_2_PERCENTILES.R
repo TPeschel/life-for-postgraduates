@@ -134,8 +134,6 @@ for( bins in c( bins.min : bins.max ) ) {
 	p.mlt <-
 		melt( p, c( "age.bins", "sex" ) )
 	
-	print( paste0( "compute.percentiles for males with 2 · ", bins, " + 1 months wide gaussian box operator" ) )
-
 	print(
 		ggplot( ) +
 			geom_point( data = d, aes( age.bins, F0_SPRECH_2 ), alpha = .5 ) +
