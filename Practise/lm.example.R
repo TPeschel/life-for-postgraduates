@@ -1,3 +1,5 @@
+if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devtools" )
+
 devtools::install_github( "TPeschel/hlpr4life" )
 
 library( hlpr4life )

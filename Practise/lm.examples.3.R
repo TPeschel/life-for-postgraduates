@@ -6,7 +6,7 @@ rm( list = ls( ) )
 ##
 # intalliere HelperForLife-Paket, wenn noch nicht passiert
 ##
-devtools::install_github( "TPeschel/hlpr4life" )
+#devtools::install_github( "TPeschel/hlpr4life" )
 
 ##
 # lade hlpr4life
