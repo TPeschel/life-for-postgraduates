@@ -142,7 +142,7 @@ plot.lin.reg <-
 		lm.d.line( mm )
 
 	p <-
-		ggplot( ) +
+		ggplot( )+ gitlab
 			theme_bw( ) + xlim( -1, 20 ) + ylim( 0, 230 ) + ggtitle( frml, txt ) +
 			scale_color_manual( values = cols.sex.hair, guide = F ) +
 			scale_shape_discrete( guide = F ) +
