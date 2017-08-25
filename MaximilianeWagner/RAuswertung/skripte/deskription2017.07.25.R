@@ -133,3 +133,10 @@ sapply( at[ at$SEX == "male" & !is.na( at$PUBSTAT ) & at$PUBSTAT == 2 &  at$BMI_
 # so kannste vorher noch nach Faktoren suchen
 sapply( at[ at$SEX == "male" & !is.na( at$PUBSTAT ) & at$PUBSTAT == 2 &  at$BMI_ADJ < -1.28 & !is.na( at$CORTISOL ), ], function( col ) { if( is.factor( col ) ) table( col ) } )
 
+at$age.cat.2 <-
+	cut(
+		at$AGE,
+		seq( 0, 25, 2 ),
+		seq( 1, 24, 2 ) )
+
+ggplot( at ) + geom_histogram( aes( age.cat.2, fill = PUBSTAT ), stat = "count" ) + facet_grid( . ~ SEX )

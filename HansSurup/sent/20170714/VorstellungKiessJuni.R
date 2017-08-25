@@ -80,10 +80,10 @@ names( tbl)
 
 # Wie viele Besuche gab es?
 
-nrow(tbl.thyroid.complete)
+nrow(tbl)
 
 # Wie viele männliche/ weibliche?
-table( tbl.thyroid.complete$TEILNEHMER_GESCHLECHT )
+table( tbl$SEX )
 
 # Ändere Namen
 

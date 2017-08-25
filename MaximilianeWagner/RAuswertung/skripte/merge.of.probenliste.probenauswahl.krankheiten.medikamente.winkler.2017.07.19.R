@@ -14,7 +14,7 @@ load.pkgs(
 Sys.setenv( TZ = "BMT" )
 
 # hier Deinen Pfad eintragen
-setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/RAuswertung/daten/originale" )
+setwd( "~/LIFE/life-for-postgraduates/MaximilianeWagner/RAuswertung/daten/original" )
 #setwd( "C:/Users/Anwender/Documents/Dissertation/RAuswertung/daten/originale" )
 
 probenliste <-

@@ -25,6 +25,9 @@ N <-
 
 #################################################################
 
+zeit <-
+	runif( N, 0, 20 )
+
 x1 <-
 	rnorm( N, +10 )
 
@@ -35,7 +38,7 @@ y <-
 	x1 - x2 + zeit
 
 d <-
-	data.frame( zeit, y, x1, x2 )
+	data.frame( y, x1, x2 )
 
 ggsubplot(
 	ggplot( d, aes( x1, x2 ) ) + theme_bw( ) + geom_point( ) + geom_smooth( method = "lm" ),
@@ -97,10 +100,13 @@ cor( d$x2, d$y )
 d.scaled <-
 	as.data.frame( sapply( d, scale ) )
 
+# Hier siehst Du, wie bei korrelierten Daten x1 und x2
+# die Betraege der Betawerte deutlich groesser als 1 sind
 tidy(
 	lm.scaled.y.x1.x2 <-
 		lm( y ~ x1 + x2, d.scaled ) )
 
+# weil x1 und x2 fast gleich sind
 cor( d.scaled$x1, d.scaled$x2 )
 cor( d.scaled$x1, d.scaled$y )
 cor( d.scaled$x2, d.scaled$y )

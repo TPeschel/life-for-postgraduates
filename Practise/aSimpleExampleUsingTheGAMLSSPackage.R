@@ -1,8 +1,6 @@
 rm( list = ls( ) )
 
-library( hlpr4life )
-
-load.pkgs( c( "gamlss", "gamlss.data", "ggplot2", "ggthemes" ) )
+hlpr4life::load.pkgs( c( "hlpr4life", "gamlss", "gamlss.data", "ggplot2", "ggthemes" ) )
 
 d <-
 	film90[ , c( "lboopen", "lborev1") ]
