@@ -289,9 +289,9 @@ ggplot(
     scale_color_discrete( guide = F, "age [y]" ) +
     scale_linetype( "age [y]" ) +
     labs(
-        title = "sound pressure vs fundamental frequency",
+        title = "sound pressure level vs fundamental frequency",
         x = "fundamental frequency [Hz]",
-        y = "sound pressure [dB]",
+        y = "sound pressure level [dB]",
         subtitle = "voice levels: I: softest speaking   II: conversational   III: classroom   IV: shouting" ) +
     theme_bw( ) +
     geom_text( inherit.aes = F, data = notes.2, aes( label = note, x = frq, y = 94 ), check_overlap = T, col = "#606060", size = 2.5 ) +

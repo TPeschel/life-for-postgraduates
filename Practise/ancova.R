@@ -39,3 +39,4 @@ ancova(yield ~ treat + pre, data=apple, blocks=block)
 ## Please see
 ##      demo("ancova")
 ## for a composite graph illustrating the four models listed above.
+demo("ancova")

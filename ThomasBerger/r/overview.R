@@ -14,6 +14,9 @@ load( "~/LIFE/life-for-postgraduates/ThomasBerger/original/Stimme/Stimme-Dateien
 vp <-
     voice_speak
 
+vp$bmi.sds
+
+
 ## change working dir to results
 setwd( "~/LIFE/life-for-postgraduates/ThomasBerger/results/" )
 
