@@ -36,14 +36,14 @@ setwd( "~/LIFE/life-for-postgraduates/JulianeWilz/" )
 # read in main table: mt
 ##
 mt <-
-    read_excel( "data/NeueTabelle170517excel.xlsx" )
+    read_excel( "sent/data.2017.08.31/AktuelleTabelle190517excel.xlsx" )
 
 ##
 # show warnings
 ##
 warnings( )
 
-# 6021 obs
+# 5425 obs
 
 ##
 # rename ugly column names
@@ -105,7 +105,10 @@ mt <-
             "WEIGHT.ADJ",
             "BMI.ADJ" ) ] )
     
-# 5637 obs left
+# 5387 obs left
+
+mt$AGE <-
+    as.numeric( mt$AGE )
 
 ##
 # plot problems withs sds values
@@ -140,12 +143,12 @@ mt$HEIGHT.SDS <-
 
 ggsubplot(
     ggplot( mt, aes( AGE, HEIGHT ) ) + geom_point( alpha = .2 ) + geom_smooth( method = "lm" ) + theme_bw( ),
-    ggplot( mt, aes( AGE, HEIGHT ) ) + geom_point( alpha = .2 ) + geom_smooth( method = "lm" ) + theme_bw( ),
     ggplot( mt, aes( AGE, HEIGHT.ADJ ) ) + geom_point( alpha = .2 ) + geom_smooth( method = "lm" ) + theme_bw( ),
     ggplot( mt, aes( AGE, HEIGHT.SDS ) ) + geom_point( alpha = .2 ) + geom_smooth( method = "lm" ) + theme_bw( ),
+    ggplot( mt, aes( AGE, HEIGHT ) ) + geom_point( alpha = .2 ) + geom_smooth( method = "lm" ) + theme_bw( ) + facet_grid( SEX ~ . ),
     ggplot( mt, aes( AGE, HEIGHT.ADJ ) ) + geom_point( alpha = .2) + geom_smooth( method = "lm" ) + theme_bw( ) + facet_grid( SEX ~ . ),
     ggplot( mt, aes( AGE, HEIGHT.SDS ) ) + geom_point( alpha = .2) + geom_smooth( method = "lm" ) + theme_bw( ) + facet_grid( SEX ~ . ),
-    cols = 3 )
+    cols = 2 )
 
 ##
 # box cox for height
@@ -175,7 +178,6 @@ powerTransform <-
     
     switch(
         method,
-        ,
         boxcox = boxcoxTrans( y, lambda1, lambda2 ),
         tukey = y ^ lambda1 ) }
 
@@ -206,13 +208,9 @@ ggsubplot(
 
 ggsubplot(
     ggplot( mt, aes( AGE, HEIGHT ) ) + geom_point( alpha = .2 ) + geom_smooth( ) + theme_bw( ),
-    ggplot( mt, aes( AGE, HEIGHT ) ) + geom_point( alpha = .2 ) + geom_smooth( ) + theme_bw( ) + facet_grid( SEX ~ . ),
-    ggplot( mt, aes( AGE ) ) + geom_histogram( alpha = .2 ) + theme_bw( ),
-    ggplot( mt, aes( AGE, sd( AGE ) ) ) + geom_point( alpha = .2 ) + geom_smooth( ) + theme_bw( ) + facet_grid( SEX ~ . ),
+    ggplot( mt ) + geom_histogram( aes( AGE ), alpha = .2 ) + geom_point( aes( AGE, HEIGHT ), alpha = .2 ) + geom_smooth( aes( AGE, HEIGHT ) ) + theme_bw( ) + facet_grid( SEX ~ . ),
     ggplot( mt, aes( AGE, HEIGHT.BOX.COX ) ) + geom_point( alpha = .2 ) + geom_smooth( ) + theme_bw( ),
-    ggplot( mt, aes( AGE, HEIGHT.BOX.COX ) ) + geom_point( alpha = .2 ) + geom_smooth( ) + theme_bw( ) + facet_grid( SEX ~ . ),
-    ggplot( mt, aes( AGE ) ) + geom_histogram( alpha = .2 ) + theme_bw( ) + facet_grid( SEX ~ . ),
-    ggplot( mt, aes( AGE, sd( HEIGHT ) ) ) + geom_point( alpha = .2 ) + geom_smooth( ) + theme_bw( ) + facet_grid( SEX ~ . ),
+    ggplot( mt  ) + geom_histogram( aes( AGE ), alpha = .2 ) + geom_point( aes( AGE, HEIGHT.BOX.COX ), alpha = .2 ) + geom_smooth( aes( AGE, HEIGHT.BOX.COX ) ) + theme_bw( ) + facet_grid( SEX ~ . ),
     cols = 2 )
 
 
