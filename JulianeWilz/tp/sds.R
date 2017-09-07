@@ -26,7 +26,17 @@ hlpr4life::load.pkgs(
         "lsr",        
         "dplyr",      
         "Hmisc",
-        "MASS") )   
+        "MASS",
+        "reshape2",
+        "gamlss") )   
+
+sds <-
+    function( y, x, f = c( "NO", "BCPEo", "BCCGo", "BCTo" ) ) {
+        lms. <-
+            lms( y, x, families = f, cent = c( ), points = F  )
+        lms.
+    }
+
 ##
 # set working directory
 ##
@@ -198,56 +208,87 @@ ggsubplot(
     ggplot( mt, aes( AGE, HEIGHT.BOX.COX ) ) + geom_point( alpha = .2 ) + geom_smooth( ) + theme_bw( ) + facet_grid( SEX ~ . ),
     cols = 2 )
 
-##
-# Solution is Discrete-Fourier-Trafo of GAM Fits
-# Then build for all Oscillations the Taylor-Function 
-# up to a certain degree
-# add them and use the resilting polynomial for
-# creating real sds values from gam
-##
+
+mt.f <-
+    mt[ mt$SEX == "female", ]
+
+mt.m <-
+    mt[ mt$SEX == "male", ]
+
+sds.f <-
+    sds( mt.f$HEIGHT, mt.f$AGE, "BCTo" )
+
+sds.m <-
+    sds( mt.m$HEIGHT, mt.m$AGE, "BCTo" )
+
+mt.f$HGHT.SDS <-
+    sds.f$residuals
+
+mt.m$HGHT.SDS <-
+    sds.m$residuals
+
+mt. <-
+    rbind( mt.f, mt.m )
 
 ggsubplot(
-    ggplot( mt, aes( AGE, HEIGHT ) ) + geom_point( alpha = .2 ) + geom_smooth( ) + theme_bw( ),
-    ggplot( mt ) + geom_histogram( aes( AGE ), alpha = .2 ) + geom_point( aes( AGE, HEIGHT ), alpha = .2 ) + geom_smooth( aes( AGE, HEIGHT ) ) + theme_bw( ) + facet_grid( SEX ~ . ),
-    ggplot( mt, aes( AGE, HEIGHT.BOX.COX ) ) + geom_point( alpha = .2 ) + geom_smooth( ) + theme_bw( ),
-    ggplot( mt  ) + geom_histogram( aes( AGE ), alpha = .2 ) + geom_point( aes( AGE, HEIGHT.BOX.COX ), alpha = .2 ) + geom_smooth( aes( AGE, HEIGHT.BOX.COX ) ) + theme_bw( ) + facet_grid( SEX ~ . ),
+    ggplot( mt., aes( AGE, HGHT.SDS, col = SEX ) ) + 
+        theme_bw( ) + 
+        scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
+        geom_point( ) +
+        geom_smooth( ) +
+        facet_grid( . ~ SEX ),
+    ggplot( mt., aes( AGE, HEIGHT.ADJ, col = SEX ) ) + 
+        theme_bw( ) + 
+        scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
+        geom_point( ) +
+        geom_smooth( ) +
+        facet_grid( . ~ SEX ),
     cols = 2 )
 
+ggsubplot(
+    ggplot( mt., aes( AGE, HGHT.SDS, col = SEX ) ) + 
+        theme_bw( ) + 
+        scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
+        geom_point( ) +
+        geom_smooth( ) +
+        facet_grid( . ~ SEX ),
+    ggplot( mt., aes( AGE, HEIGHT.ADJ, col = SEX ) ) + 
+        theme_bw( ) + 
+        scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
+        geom_point( ) +
+        geom_smooth( ) +
+        facet_grid( . ~ SEX ),
+    cols = 2 )
 
+ages <-
+    seq( from = 0, to = 20, by = 1 / 12 )
 
-divide.and.conquere <-
-    function( x, fct ) {
-        
-        d.a.q <-
-            function( x, mn, mx, fct ) {
-            
-                if( mx < mn ) {
-                    
-                    return( NA )
-                }
-                
-                if( mx == mn ) {
-                    
-                    return( x[ mn ] )
-                }
-                
-                md <-
-                    ( mn + mx ) / 2
-                
-                d.a.q( x, mn, md, fct ) +
-                d.a.q( x, md + 1, mx, fct ) }
-        
-        d.a.q(
-            x,
-            1,
-            length( x ),
-            fct ) }
+prms.f <-
+    as.data.frame( predict( sds.f, newdata = ages ) )
 
-divide.and.conquere(
-    c( 1 : 2 ),
-    sum
-)
+prms.f$sex <-
+    "female"
 
-sum( 1:2)
-x <- c( 1 : 2 )
-fct <- sum
+prms.m <-
+    as.data.frame( predict( sds.m, newdata = ages ) )
+
+prms.m$sex <-
+    "male"
+
+prms <-
+    rbind( prms.f, prms.m )
+
+prms$age <-
+    rep( ages, 2 )
+
+ggsubplot(
+    ggplot( prms ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) +
+        geom_line( aes( age, mu, col = sex ) ),
+    ggplot( prms ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) +
+        geom_line( aes( age, sigma, col = sex ) ),
+    ggplot( prms ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) +
+        geom_line( aes( age, nu, col = sex ) ),
+    ggplot( prms ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) +
+        geom_line( aes( age, tau, col = sex ) ),
+    cols = 2 )
+    
