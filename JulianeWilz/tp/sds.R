@@ -27,6 +27,7 @@ hlpr4life::load.pkgs(
         "dplyr",      
         "Hmisc",
         "MASS",
+<<<<<<< HEAD
         "reshape2",
         "gamlss") )   
 
@@ -37,6 +38,9 @@ sds <-
         lms.
     }
 
+=======
+        "gamlss" ) )   
+>>>>>>> 50b2678b61db20ea6ddf312751609970334e3a2d
 ##
 # set working directory
 ##
@@ -46,7 +50,7 @@ setwd( "~/LIFE/life-for-postgraduates/JulianeWilz/" )
 # read in main table: mt
 ##
 mt <-
-    read_excel( "sent/data.2017.08.31/AktuelleTabelle190517excel.xlsx" )
+    read_excel( "data/NeueTabelle170517excel.xlsx" )
 
 ##
 # show warnings
@@ -94,8 +98,6 @@ str( mt )
 mt$CALCITONIN <-
     as.numeric( mt$CALCITONIN )
 
-mt$SEX <-
-    as.factor( mt$SEX )
 
 ##
 # only complete observations of
@@ -119,6 +121,9 @@ mt <-
 
 mt$AGE <-
     as.numeric( mt$AGE )
+
+mt$SEX <-
+    factor( as.character( mt$SEX ) )
 
 ##
 # plot problems withs sds values
@@ -263,6 +268,7 @@ ggsubplot(
 ages <-
     seq( from = 0, to = 20, by = 1 / 12 )
 
+<<<<<<< HEAD
 prms.f <-
     as.data.frame( predict( sds.f, newdata = ages ) )
 
@@ -292,3 +298,65 @@ ggsubplot(
         geom_line( aes( age, tau, col = sex ) ),
     cols = 2 )
     
+mt.f$HGHT.SDS <-
+    ( sds( y = mt.f$HEIGHT[ mt.f$AGE < 1.25 ], x = mt.f$AGE[ mt.f$AGE < 1.25 ] ) )$residuals    
+
+mt.m$HGHT.SDS <-
+    ( sds( y = mt.m$HEIGHT[ mt.m$AGE < 1.25 ], x = mt.m$AGE[ mt.m$AGE < 1.25 ] ) )$residuals
+
+mt. <-
+    rbind(
+        mt.f,
+        mt.m )
+
+ggsubplot(
+    ggplot( mt., aes( AGE, HEIGHT.ADJ, col = SEX ) ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) + facet_grid( . ~ SEX ) +
+        geom_point( ) + geom_smooth( ),
+    ggplot( mt., aes( AGE, HGHT.SDS, col = SEX ) ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) + facet_grid( . ~ SEX ) +
+        geom_point(  ) + geom_smooth( ),
+    cols = 2 )
+
+
+ggsubplot(
+    ggplot( mt., aes( HEIGHT.ADJ, log10CT, col = SEX ) ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) + facet_grid( . ~ SEX ) +
+        geom_point( ) + geom_smooth( ),
+    ggplot( mt., aes( HGHT.SDS, log10CT, col = SEX ) ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) + facet_grid( . ~ SEX ) +
+        geom_point(  ) + geom_smooth( ),
+    cols = 1 )
+
+ggsubplot(
+    ggplot( mt., aes( HEIGHT.ADJ, log10CT, col = SEX ) ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) + facet_grid( . ~ SEX ) +
+        geom_point( ) + geom_smooth( method = "lm" ),
+    ggplot( mt., aes( HGHT.SDS, log10CT, col = SEX ) ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) + facet_grid( . ~ SEX ) +
+        geom_point(  ) + geom_smooth( method = "lm" ),
+    cols = 1 )
+
+ggsubplot(
+    ggplot( mt., aes( HEIGHT.ADJ, log10CT, col = SEX ) ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) +
+        geom_point( ) + geom_smooth( method = "lm" ),
+    ggplot( mt., aes( HGHT.SDS, log10CT, col = SEX ) ) + theme_bw( ) + scale_color_manual( values = sex.colors, guide = F ) + 
+        geom_point(  ) + geom_smooth( method = "lm" ),
+    cols = 2 )
+
+summary(
+    lm.sds <-
+        lm( log10CT ~ HGHT.SDS * SEX, mt. ) )
+
+summary(
+    lm.adj <-
+        lm( log10CT ~ HEIGHT.ADJ * SEX, mt. ) )
+
+summary(
+    lm.sds <-
+        lm( log10CT ~ HGHT.SDS + SEX, mt. ) )
+
+summary(
+    lm.adj <-
+        lm( log10CT ~ HEIGHT.ADJ + SEX, mt. ) )
+
+
+mt.f$log10CT.adj.for.AGE <-
+    ( sds( mt.f$log10CT, mt.f$AGE ) )$residuals
+
+mt.m$log10CT.adj.for.AGE <-
+    ( sds( mt.f$log10CT, mt.f$AGE ) )$residuals

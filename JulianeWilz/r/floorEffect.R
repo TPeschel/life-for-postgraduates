@@ -416,3 +416,7 @@ summary( lm( log10CT.adj.for.AGE ~ OSTEO.adj.for.AGE * SEX, mt01 ) )
 lms( mt$CALCITONIN[ mt$SEX == "male" ], mt$AGE[ mt$SEX == "male" ] )
 
 l.m.s( mt$CALCITONIN[ mt$SEX == "male" ], mt$AGE[ mt$SEX == "male" ], f = "BCTo" )
+
+lms( mt$log10CT[ mt$SEX == "male" ], mt$AGE[ mt$SEX == "male" ] )
+
+l.m.s( mt$log10CT[ mt$SEX == "male" ], mt$AGE[ mt$SEX == "male" ], f = "BCTo" )
