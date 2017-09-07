@@ -26,7 +26,8 @@ hlpr4life::load.pkgs(
         "lsr",        
         "dplyr",      
         "Hmisc",
-        "MASS") )   
+        "MASS",
+        "gamlss" ) )   
 ##
 # set working directory
 ##
@@ -36,7 +37,7 @@ setwd( "~/LIFE/life-for-postgraduates/JulianeWilz/" )
 # read in main table: mt
 ##
 mt <-
-    read_excel( "sent/data.2017.08.31/AktuelleTabelle190517excel.xlsx" )
+    read_excel( "data/NeueTabelle170517excel.xlsx" )
 
 ##
 # show warnings
@@ -84,8 +85,6 @@ str( mt )
 mt$CALCITONIN <-
     as.numeric( mt$CALCITONIN )
 
-mt$SEX <-
-    as.factor( mt$SEX )
 
 ##
 # only complete observations of
@@ -109,6 +108,9 @@ mt <-
 
 mt$AGE <-
     as.numeric( mt$AGE )
+
+mt$SEX <-
+    factor( as.character( mt$SEX ) )
 
 ##
 # plot problems withs sds values
@@ -215,39 +217,12 @@ ggsubplot(
 
 
 
-divide.and.conquere <-
-    function( x, fct ) {
-        
-        d.a.q <-
-            function( x, mn, mx, fct ) {
-            
-                if( mx < mn ) {
-                    
-                    return( NA )
-                }
-                
-                if( mx == mn ) {
-                    
-                    return( x[ mn ] )
-                }
-                
-                md <-
-                    ( mn + mx ) / 2
-                
-                d.a.q( x, mn, md, fct ) +
-                d.a.q( x, md + 1, mx, fct ) }
-        
-        d.a.q(
-            x,
-            1,
-            length( x ),
-            fct ) }
 
-divide.and.conquere(
-    c( 1 : 2 ),
-    sum
-)
 
-sum( 1:2)
-x <- c( 1 : 2 )
-fct <- sum
+
+g <- 
+    gamlss( HEIGHT ~ AGE * SEX, data = mt,family = "BCCG" )
+str( g )
+plot( mt$AGE, g$y )
+
+fft(  )
