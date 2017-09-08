@@ -2,7 +2,7 @@ rm( list = ls( ) )
 
 if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devtools" )
 
-devtools::install_github( "TPeschel/hlpr4life", force = T )
+#devtools::install_github( "TPeschel/hlpr4life", force = T )
 
 hlpr4life::load.pkgs( c( "hlpr4life", "ggplot2", "broom" ) )
 
