@@ -33,7 +33,7 @@ hlpr4life::load.pkgs(
 l.m.s <-
     function( y, x, f = c( "NO", "BCPEo", "BCCGo", "BCTo" ) ) {
         
-        lms( y, x, families = f, cent = c( 1, 2.5, 5, 10, 25, 50, 75, 90, 95, 97.5, 99 )  ) }
+        lms( y, x, families = f, cent = c( 1, 2.5, 5, 10, 25, 50, 75, 90, 95, 97.5, 99 ) ) }
 
 sds <-
     function( y, x, f = c( "NO", "BCPEo", "BCCGo", "BCTo" ) ) {
