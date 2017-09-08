@@ -1,0 +1,59 @@
+.
+├── data
+│   ├── 20170508
+│   │   ├── CSV_tobias_pseudomized_raw_data.csv
+│   │   └── Daten 2
+│   │       ├── acrf
+│   │       │   ├── D00077_C_PUB_STAT.pdf
+│   │       │   ├── D00128_C_SOZ_WI.pdf
+│   │       │   ├── T00162_FB_zu_Halsschm_und_Stimme_4-10_Jahre.pdf
+│   │       │   ├── T00163_FB_zu_Halsschm_und_Stimme_11-17_Jahre.pdf
+│   │       │   ├── T00164_FB_zu_Halsschm_und_Stimme_E.pdf
+│   │       │   ├── T00328_Einschaetzungsbogen_Sing-_und_Sprechstimme.pdf
+│   │       │   ├── T00865_Sing-_und_Sprechdaten_LIFE-Child.pdf
+│   │       │   └── Thumbs.db
+│   │       ├── data_20161004
+│   │       │   ├── D00128_C_SOZ_WI.pdf
+│   │       │   ├── D00159_WINKLER.pdf
+│   │       │   ├── PV0278_D00128.xlsx
+│   │       │   ├── PV0278_datajoin_20161004.xlsx
+│   │       │   ├── PV0278_T00162.xlsx
+│   │       │   └── PV0278_T00163.xlsx
+│   │       └── PV0278_data20161004.rdata
+│   ├── main
+│   │   ├── main.table.Rd
+│   │   ├── PV0278_datajoin_20161004.xlsx
+│   │   ├── PV0278_datajoin20161205.xlsx
+│   │   └── PV0278_datajoin_20170929.xlsx
+│   ├── PV0278_D00040_NODUP.xlsx
+│   ├── PV0278_D00077_NODUP.xlsx
+│   ├── PV0278_D00078_NODUP.xlsx
+│   ├── PV0278_D00128_NODUP.xlsx
+│   ├── PV0278_D00159_NODUP.xlsx
+│   ├── PV0278_D00174_NODUP.xlsx
+│   ├── PV0278_data20161205.rdata
+│   ├── PV0278_datajoin20161205.xlsx
+│   ├── PV0278_R00001.xlsx
+│   ├── PV0278_T00162_NODUP.xlsx
+│   ├── PV0278_T00163_NODUP.xlsx
+│   ├── PV0278_T00164_NODUP.xlsx
+│   ├── PV0278_T00328_NODUP.xlsx
+│   └── PV0278_T00865_NODUP.xlsx
+├── data.txt
+├── docs
+│   ├── divas-vrp-format-2.1.11.pdf
+│   ├── Fuchs_20160316.xlsx
+│   ├── Fuchs-2016-278-05.pdf
+│   └── Fuchs-2016-278-05-V2.pdf
+├── email
+├── original
+├── PV0278_datajoin_20170929.xlsx
+├── r
+│   ├── join.R
+│   └── r.Rproj
+├── results
+└── sent
+    └── 2017.08.17
+        └── Prom_non_usable.xlsx
+
+13 directories, 43 files

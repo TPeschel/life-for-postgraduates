@@ -54,3 +54,4 @@ sum( is.na( main.1004$sex ) )
 ###############################################
 WriteXLS( main.1004, ExcelFileName = "data/main/PV0278_datajoin_20170929.xlsx" )
 save( main.1004, file = "data/main/main.table.Rd" )
+    
