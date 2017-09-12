@@ -52,7 +52,7 @@ lms.shrt <-
 					PRED = res.,
 					FAIL = lms.$failed ) ) }
 			
-		if( lms.$family[ 1 ] %in% c( "BCCG", "BCPE", "BCCGo", "BCPEo" ) ) {
+		if( lms.$family[ 1 ] %in% c( "BCCG", "BCPE", "BCTo", "BCPEo" ) ) {
 			
 			res. <-
 				as.data.frame(
@@ -89,11 +89,13 @@ lms.shrt <-
 
 (a<-data.frame(x=x<-runif(1000,0,10),y=abs(x**2+rnorm(1000,0,x))))
 (b<-hlpr4life::rename.columns(a,c("age","val"),c("x","y")))
-(lms.<-lms.shrt(b,families = c( "NO", "BCCG", "BCPE", "BCT", "BCGGo", "BCPEo", "BCTo" ) ) )
+#(lms.<-lms.shrt(b,families = c( "NO", "BCCG", "BCPE", "BCT", "BCGGo", "BCPEo", "BCTo" ) ) )
 (lms.NO<-lms.shrt(b,families = c( "NO" ) ) )
-(BCCGo<-lms.shrt(b,families = c(  "BCCGo" ) ) )
+(lms.BCTo<-lms.shrt(b,families = c(  "BCTo" ) ) )
 
-
+lms.BCTo$PRED$sigma <-
+	lms.BCTo$PRED$SIG * sqrt( lms.BCTo$PRED$TAU / ( lms.BCTo$PRED$TAU - 2 ) )
+	
 ggsubplot(
 	ggplot( ) + theme_bw( ) + scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
 		geom_point( aes( x, y ), b, col = "blue", alpha = .1 ) +
@@ -109,15 +111,15 @@ ggsubplot(
 
 	ggplot( ) + theme_bw( ) + scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
 		geom_point( aes( x, y ), b, col = "blue", alpha = .1 ) +
-		geom_line( aes( X, MUE ), BCCGo$PRED, col = "red" ) +
-		geom_line( aes( X, MUE - SIG ), BCCGo$PRED, col = "black" ) +
-		geom_line( aes( X, MUE + SIG ), BCCGo$PRED, col = "green" ),
+		geom_line( aes( X, MUE ), lms.BCTo$PRED, col = "red" ) +
+		geom_line( aes( X, MUE - sigma ), lms.BCTo$PRED, col = "black" ) +
+		geom_line( aes( X, MUE + sigma ), lms.BCTo$PRED, col = "green" ),
 	
 	ggplot( ) + theme_bw( ) + scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
-		geom_line( aes( X, MUE ), BCCGo$PRED, col = "orange" ),
+		geom_line( aes( X, MUE ), lms.BCTo$PRED, col = "orange" ),
 	
 	ggplot( ) + theme_bw( ) + scale_color_manual( values = c( "deeppink", "deepskyblue" ) ) +
-		geom_line( aes( X, SIG ), BCCGo$PRED, col = "orange" ),
+		geom_line( aes( X, sigma ), lms.BCTo$PRED, col = "orange" ),
 	
 	cols = 2 )
 

@@ -12,6 +12,7 @@ library( reshape2 )
 library( svglite )
 
 setwd( "~/LIFE/github-tpeschel/R/ThomasBerger/results/" )
+setwd( "~/LIFE/github-tpeschel/R/ThomasBerger/results/" )
 
 load( "LMS_F0_SPRECH_1_20170328.Rda" )
 res.boys.1  <- res.boys

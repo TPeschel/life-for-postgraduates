@@ -218,7 +218,7 @@ d$log10Y <-
 lmss.Y <-
 	h4l.lmss.no.sex( y = "Y", age = "AGE", data = d )
 
-l$r <-
+l <-
 	lms( Y, AGE, data = d )
 
 lmss.logY <-
