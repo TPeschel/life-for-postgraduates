@@ -24,7 +24,7 @@ ifnot(
 	{install.packages( "devtools" );library( devtools ) },
 	library( devtools ) )
 
-#install_github( "TPeschel/hlpr4life" )
+install_github( "TPeschel/hlpr4life" )
 
 hlpr4life::load.pkgs(
 	c(
@@ -37,8 +37,11 @@ hlpr4life::load.pkgs(
 
 source( "get.mu.nu.sigma.tau.R" )
 
+# d1 <-
+# 	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/AktuelleTabelle220517excel.xlsx" )
+
 d <-
-	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/AktuelleTabelle220517excel.xlsx" )
+	read_excel( "/home/tpeschel/LIFE/life-for-postgraduates/JulianeWilz/sent/data.2017.08.31/AktuelleTabelle190517excel.xlsx" )
 
 # nt <-
 # 	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/NeueTabelle170517excel.xlsx" )
@@ -49,7 +52,7 @@ d <-
 my.thm <-
 	list(
 		theme_bw( ),
-		scale_color_manual( guide = F, values = c( "yellow", "green" ) ),
+		scale_color_manual( guide = F, values = c( "deeppink4", "deepskyblue4" ) ),
 		scale_fill_manual( guide = F, values = c( "orange", "royalblue" ) ),
 		facet_grid( SEX ~ . ),
 		theme( axis.text.x = element_text( angle = 90, size = 7 ) ) )
@@ -167,7 +170,7 @@ for( loop in c( 1 : 1000 ) ) {
 			d.m,
 			ages = ages,
 			family = "BCTo",
-			.75 )
+			.5 )
 	
 	if( !is.null( MSNT.m ) ) {
 		
@@ -189,7 +192,7 @@ for( loop in c( 1 : 1000 ) ) {
 			d.f,
 			ages = ages,
 			family = "BCTo",
-			.75 )
+			.5 )
 	
 	if( !is.null( MSNT.f ) ) {
 		
@@ -203,6 +206,7 @@ for( loop in c( 1 : 1000 ) ) {
 			list.append( list.STAT.f, MSNT.f$STAT ) 
 		
 		print( paste0( "females fit success: ", length( list.LMS.f ) ) ) } }
+
 
 ( 
 	st.f <-
@@ -239,8 +243,8 @@ lms.m.$family <-
 l <-
 	as.data.frame( rbind( lms.f., lms.m. ) )
 
-l$loop <-
-	as.factor( l$loop )
+# l$loop <-
+# 	as.factor( l$loop )
 
 l. <-
 	(
@@ -252,6 +256,13 @@ l. <-
 	group_by( SEX, FAMILY, AGE, VAR ) %>%
 	summarise( MEAN.VAL = mean( VAL ) )
 
+ggplot( ) +
+		my.thm +
+		geom_line( aes( AGE, VAL, group = paste0( LOOP, SEX ), col = SEX ), l, alpha = .1 ) +
+		facet_grid( VAR ~ ., scales = "free" ) +
+		scale_x_continuous( breaks = c( 0 : 20 ) ) +
+		theme( axis.text.x = element_text( angle = 90 ) ) #+
+		#geom_line( aes( AGE, MEAN.VAL, group = SEX ), l., col = "black" )
 
 ggsubplot(
 	ggplot( ) + 
@@ -259,7 +270,55 @@ ggsubplot(
 		scale_x_continuous( breaks = c( 0 : 20 ) ) +
 		geom_point( aes( AGE, CALCITONIN, col = SEX ), d, alpha = .1 ) +
 		geom_smooth( aes( AGE, CALCITONIN, col = SEX ), d, method = "loess" ) +
-		geom_line( aes( AGE, MEAN.VAL, group = SEX ), l.[ l.$VAR == "mu",], col = "black" ),
+		geom_line( aes( AGE, MEAN.VAL, group = SEX ), l.[ l.$VAR == "mu", ], col = "black" ),
+	ggplot( ) +
+		my.thm +
+		geom_line( aes( AGE, VAL, group = paste0( LOOP, SEX ), col = SEX ), l, alpha = .1 ) +
+		facet_grid( VAR ~ ., scales = "free" ) +
+		scale_x_continuous( breaks = c( 0 : 20 ) ) +
+		theme( axis.text.x = element_text( angle = 90 ) ) +
+		geom_line( aes( AGE, MEAN.VAL, group = SEX ), l., col = "black" ),
+	cols = 2 )
+
+#save( l, list.LMS.f, list.LMS.m, list.STAT.f, list.STAT.m, file = "dat.Calcitonin.2017.09.12.Rd"  )
+
+# load( file = "dat.Rd" )
+# 
+# l$LOOP <-
+# 	as.numeric( l$LOOP )
+# 
+# l. <- 
+# 	l
+# 
+# load( file = "dat1.Rd" )
+# 
+# l$LOOP <-
+# 	as.numeric( l$LOOP )
+# 
+# l$LOOP <-
+# 	l$LOOP + max( l.$LOOP )
+# 
+# l <-
+# 	rbind( l., l )
+# 
+# l. <-
+# 	(
+# 		l <-
+# 		rename.columns(
+# 			l,
+# 			c( "sex", "family", "age", "variable", "value", "loop" ),
+# 			c( "SEX", "FAMILY", "AGE", "VAR", "VAL", "LOOP" ) ) ) %>%
+# 	group_by( SEX, FAMILY, AGE, VAR ) %>%
+# 	summarise( MEAN.VAL = mean( VAL, na.rm = T ) )
+
+
+ggsubplot(
+	ggplot( ) + 
+		my.thm + 
+		scale_x_continuous( breaks = c( 0 : 20 ) ) +
+		geom_point( aes( AGE, CALCITONIN, col = SEX ), d, alpha = .1 ) +
+		geom_smooth( aes( AGE, CALCITONIN, col = SEX ), d, method = "loess" ) +
+		geom_line( aes( AGE, MEAN.VAL, group = SEX ), l.[ l.$VAR == "mu", ], col = "black" ),
 	ggplot( ) +
 		my.thm +
 		geom_line( aes( AGE, VAL, group = paste0( LOOP, SEX ), col = SEX ), l, alpha = .01 ) +
@@ -269,4 +328,66 @@ ggsubplot(
 		geom_line( aes( AGE, MEAN.VAL, group = SEX ), l., col = "black" ),
 	cols = 2 )
 
-save( l, list.LMS.f, list.LMS.m, list.STAT.f, list.STAT.m, file = "dat1.Rd"  )
+sds.BCTo <-
+	function( perc, mu, sigma, nu, tau = 10 ) {
+
+		z <-
+			qnorm( perc )
+				
+		f <- 
+			ifelse( 
+				nu < .000001,
+				mu * exp( sigma * z ),
+				mu * ( z * nu * sigma + 1 ) ** ( 1 / nu ) ) 
+		f }
+	
+sds.BCCGo <-
+	function( perc, mu, sigma, nu ) {
+		
+		z <-
+			qnorm( perc )
+				
+		f <- 
+			ifelse( 
+				nu < .000001,
+				mu * exp( sigma * z ),
+				mu * ( z * nu * sigma + 1 ) ** ( 1 / nu ) ) 
+		f }
+
+sds.NORM <-
+	function( perc, mu, sigma ) qnorm( perc ) * sigma + mu
+
+
+ll <-
+	dcast( data = l., AGE + SEX + FAMILY ~ VAR, value.var = "MEAN.VAL" )
+
+perc <-
+	melt(
+		perc.<-data.frame(
+			age  = ll$AGE,
+			sex  = ll$SEX, 
+			p001 = sds.BCTo( .01, ll$mu, ll$sigma, ll$nu, ll$tau ),
+			p003 = sds.BCTo( .03, ll$mu, ll$sigma, ll$nu, ll$tau ),
+			p010 = sds.BCTo( .10, ll$mu, ll$sigma, ll$nu, ll$tau ),
+			p025 = sds.BCTo( .25, ll$mu, ll$sigma, ll$nu, ll$tau ),
+			p050 = sds.BCTo( .50, ll$mu, ll$sigma, ll$nu, ll$tau ),
+			p075 = sds.BCTo( .75, ll$mu, ll$sigma, ll$nu, ll$tau ),
+			p090 = sds.BCTo( .90, ll$mu, ll$sigma, ll$nu, ll$tau ),
+			p097 = sds.BCTo( .97, ll$mu, ll$sigma, ll$nu, ll$tau ),
+			p099 = sds.BCTo( .99, ll$mu, ll$sigma, ll$nu, ll$tau ) ),
+		c( "sex", "age" ) )
+
+ggplot( ) + 
+	theme_bw( ) +
+	geom_point( aes( AGE, CALCITONIN ), d, alpha = .1 ) +
+	geom_line( aes( age, value, col = variable ), perc ) + facet_grid( sex ~ . )
+	
+
+perc.$age. <-
+	cut( perc.$age, breaks = c(0:21))
+
+perc.. <-
+	perc. %>% group_by( age., sex ) %>% summarise( m = mean( p050 ) )
+
+View( perc.. )
+
