@@ -1,16 +1,13 @@
+#! /usr/bin/env Rscript
 rm( list = ls( ) )
 
-<<<<<<< HEAD
-library( hlpr4life )
-
-load.pkgs( c( "ggplot2", "ggthemes", "dplyr" ) )
+hlpr4life::load.pkgs( 
+	c(
+		"hlpr4life",
+		"ggplot2",
+		"ggthemes",
+		"dplyr" ) )
 	
-=======
-library( "hlpr4life" )
-
-load.pkgs( c( "dplyr", "ggplot2", "ggthemes" ) )
-
->>>>>>> 187e995494562e997f18a8b5662bd092fa09d831
 the.piano <-
 	piano( 4, 88 )
 
