@@ -1,5 +1,5 @@
 get.msnt <-
-	function( data, ages, family = "BCTo", sample.density = .5 ) {
+	function( data, ages, family = c( "BCCGo", "BCPEo", "BCTo" ), sample.density = .75 ) {
 
 		# data <- d..[ d..$sex == "male", ]
 		# ages <- ages
@@ -40,9 +40,13 @@ get.msnt <-
 				elms$age <-
 					ages
 				
+				elms$family <-
+					rep( dlms$family[ 1 ], length( ages ) )
+				
 				return( list( LMS = elms, STAT = st ) ) } }
 		
-		return( list( LMS = NA, STAT = st) ) }
+		#return( list( LMS = NA, STAT = st ) ) }
+		return( NA ) }
 
 # get.msnt(
 # 	rename.columns(

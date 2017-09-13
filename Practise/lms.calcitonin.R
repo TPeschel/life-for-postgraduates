@@ -37,23 +37,34 @@ hlpr4life::load.pkgs(
 
 source( "get.mu.nu.sigma.tau.R" )
 
-# d1 <-
+# d <-
 # 	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/AktuelleTabelle220517excel.xlsx" )
 
-d <-
-	read_excel( "/home/tpeschel/LIFE/life-for-postgraduates/JulianeWilz/sent/data.2017.08.31/AktuelleTabelle190517excel.xlsx" )
+# d <-
+# 	read_excel( "/home/tpeschel/LIFE/life-for-postgraduates/JulianeWilz/sent/data.2017.08.31/AktuelleTabelle190517excel.xlsx" )
 
 # nt <-
 # 	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/NeueTabelle170517excel.xlsx" )
 # 
-# nf <-
-# 	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/Nach_Filterung230417.xlsx" )
+nf <-
+	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/Nach_Filterung230417.xlsx" )
+
+d <-
+	nf
 
 my.thm <-
 	list(
 		theme_bw( ),
 		scale_color_manual( guide = F, values = c( "deeppink4", "deepskyblue4" ) ),
 		scale_fill_manual( guide = F, values = c( "orange", "royalblue" ) ),
+		facet_grid( SEX ~ . ),
+		theme( axis.text.x = element_text( angle = 90, size = 7 ) ) )
+
+my.thm.1 <-
+	list(
+		theme_bw( ),
+		scale_color_brewer( type = "qual", palette = 2 ),
+		scale_fill_brewer( type = "qual", palette = 2 ),
 		facet_grid( SEX ~ . ),
 		theme( axis.text.x = element_text( angle = 90, size = 7 ) ) )
 
@@ -159,7 +170,7 @@ list.STAT.m <-
 list.STAT.f <-
 	list( )
 
-for( loop in c( 1 : 1000 ) ) {
+for( loop in c( 1 : 500 ) ) {
 	
 	print( paste0( "Loop: ", loop ) )
 	
@@ -169,8 +180,8 @@ for( loop in c( 1 : 1000 ) ) {
 		get.msnt( 
 			d.m,
 			ages = ages,
-			family = "BCTo",
-			.5 )
+			#family = c( "BCPEo", "BCCGo", "BCTo" ),
+			sample.density = .75 )
 	
 	if( !is.null( MSNT.m ) ) {
 		
@@ -191,8 +202,8 @@ for( loop in c( 1 : 1000 ) ) {
 		get.msnt( 
 			d.f,
 			ages = ages,
-			family = "BCTo",
-			.5 )
+			#family = c( "BCPEo", "BCCGo", "BCTo" ),
+			sample.density = .75 )
 	
 	if( !is.null( MSNT.f ) ) {
 		
@@ -206,7 +217,6 @@ for( loop in c( 1 : 1000 ) ) {
 			list.append( list.STAT.f, MSNT.f$STAT ) 
 		
 		print( paste0( "females fit success: ", length( list.LMS.f ) ) ) } }
-
 
 ( 
 	st.f <-
@@ -223,10 +233,10 @@ summary( st.f )
 summary( st.m )
 
 lms.f. <-
-	melt( Reduce( bind_rows, list.LMS.f ), c( "age", "loop" ) ) 
+	melt( Reduce( bind_rows, list.LMS.f ), c( "age", "loop", "family" ) ) 
 
 lms.m. <-
-	melt( Reduce( bind_rows, list.LMS.m ), c( "age", "loop" ) ) 
+	melt( Reduce( bind_rows, list.LMS.m ), c( "age", "loop", "family" ) ) 
 
 lms.f.$sex <-
 	"female"
@@ -234,11 +244,11 @@ lms.f.$sex <-
 lms.m.$sex <-
 	"male"
 
-lms.f.$family <-
-	"BCTo"
-
-lms.m.$family <-
-	"BCTo"
+# lms.f.$family <-
+# 	"BCTo"
+# 
+# lms.m.$family <-
+# 	"BCTo"
 
 l <-
 	as.data.frame( rbind( lms.f., lms.m. ) )
@@ -257,30 +267,34 @@ l. <-
 	summarise( MEAN.VAL = mean( VAL ) )
 
 ggplot( ) +
-		my.thm +
-		geom_line( aes( AGE, VAL, group = paste0( LOOP, SEX ), col = SEX ), l, alpha = .1 ) +
-		facet_grid( VAR ~ ., scales = "free" ) +
-		scale_x_continuous( breaks = c( 0 : 20 ) ) +
-		theme( axis.text.x = element_text( angle = 90 ) ) #+
-		#geom_line( aes( AGE, MEAN.VAL, group = SEX ), l., col = "black" )
-
-ggsubplot(
-	ggplot( ) + 
-		my.thm + 
-		scale_x_continuous( breaks = c( 0 : 20 ) ) +
-		geom_point( aes( AGE, CALCITONIN, col = SEX ), d, alpha = .1 ) +
-		geom_smooth( aes( AGE, CALCITONIN, col = SEX ), d, method = "loess" ) +
-		geom_line( aes( AGE, MEAN.VAL, group = SEX ), l.[ l.$VAR == "mu", ], col = "black" ),
-	ggplot( ) +
-		my.thm +
-		geom_line( aes( AGE, VAL, group = paste0( LOOP, SEX ), col = SEX ), l, alpha = .1 ) +
+		my.thm.1 +
+		scale_color_brewer( "SEX-FAMILY", type = "qual", palette = 2 ) +
+		geom_line( aes( AGE, VAL, group = paste0( SEX, FAMILY, LOOP ), col = paste0( SEX, "-", FAMILY ) ), l, alpha = .1 ) +
 		facet_grid( VAR ~ ., scales = "free" ) +
 		scale_x_continuous( breaks = c( 0 : 20 ) ) +
 		theme( axis.text.x = element_text( angle = 90 ) ) +
-		geom_line( aes( AGE, MEAN.VAL, group = SEX ), l., col = "black" ),
+		geom_line( aes( AGE, MEAN.VAL, group = paste( SEX, FAMILY ), col = paste0( SEX, "-", FAMILY ) ), l. )
+
+ggsubplot(
+	ggplot( ) + 
+		my.thm.1 + 
+		facet_grid( SEX ~ ., scales = "free" ) +
+		scale_color_brewer( "SEX-FAMILY", type = "qual", palette = 2, guide = F ) +
+		scale_x_continuous( breaks = c( 0 : 20 ) ) +
+		geom_point( aes( AGE, CALCITONIN ), d, col = "black", alpha = .1 ) +
+		geom_smooth( aes( AGE, CALCITONIN ), d, col = "black", method = "loess" ) +
+		geom_line( aes( AGE, MEAN.VAL, group = paste0( SEX, "-", FAMILY ), col = paste0( SEX, "-", FAMILY ) ), l.[ l.$VAR == "mu", ] ),
+	ggplot( ) +
+		my.thm.1 +
+		scale_color_brewer( "SEX-FAMILY", type = "qual", palette = 2 ) +
+		geom_line( aes( AGE, VAL, group = paste0( SEX, FAMILY, LOOP ), col = paste0( SEX, "-", FAMILY ) ), l, alpha = .1 ) +
+		facet_grid( VAR ~ ., scales = "free" ) +
+		scale_x_continuous( breaks = c( 0 : 20 ) ) +
+		theme( axis.text.x = element_text( angle = 90 ) ) +
+		geom_line( aes( AGE, MEAN.VAL, group = paste( SEX, FAMILY ), col = paste0( SEX, "-", FAMILY ) ), l. ),
 	cols = 2 )
 
-#save( l, list.LMS.f, list.LMS.m, list.STAT.f, list.STAT.m, file = "dat.Calcitonin.2017.09.12.Rd"  )
+save( l, list.LMS.f, list.LMS.m, list.STAT.f, list.STAT.m, file = "dat.Calcitonin.2017.09.13.Rd"  )
 
 # load( file = "dat.Rd" )
 # 
