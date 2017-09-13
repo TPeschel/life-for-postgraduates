@@ -1,27 +1,38 @@
-#! usr/bin/env Rscript
-
+#!/usr/bin/env Rscript
 rm( list = ls( ) )
 
-ifnot <-
-	function( cond, optTrue, optFalse = { } ) {
-		
-		if( !cond ) {
-			
-			optTrue 
-			
-		} else {
-			
-			optFalse } }
+arg <-
+	commandArgs( trailingOnly = T )
 
-list.append <-
-	function( lst, x ) {
-	
-	lst[[ length( lst ) + 1 ]] <-
-		x
-	
-	lst }
+loops <- 
+	10
 
-ifnot(
+if( 0 < length( arg ) ) {
+	
+	loops <-
+		as.numeric( arg ) }
+	
+	
+# ifnot <-
+# 	function( cond, optTrue, optFalse = { } ) {
+# 		
+# 		if( !cond ) {
+# 			
+# 			optTrue 
+# 			
+# 		} else {
+# 			
+# 			optFalse } }
+# 
+# list.append <-
+# 	function( lst, x ) {
+# 	
+# 	lst[[ length( lst ) + 1 ]] <-
+# 		x
+# 	
+# 	lst }
+
+hlpr4life::ifnot(
 	"devtools" %in% rownames( installed.packages( ) ),
 	{install.packages( "devtools" );library( devtools ) },
 	library( devtools ) )
@@ -39,8 +50,8 @@ hlpr4life::load.pkgs(
 
 source( "get.mu.nu.sigma.tau.R" )
 
-# d <-
-# 	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/AktuelleTabelle220517excel.xlsx" )
+d <-
+	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/AktuelleTabelle220517excel.xlsx" )
 
 # d <-
 # 	read_excel( "/home/tpeschel/LIFE/life-for-postgraduates/JulianeWilz/sent/data.2017.08.31/AktuelleTabelle190517excel.xlsx" )
@@ -48,11 +59,11 @@ source( "get.mu.nu.sigma.tau.R" )
 # nt <-
 # 	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/NeueTabelle170517excel.xlsx" )
 # 
-nf <-
-	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/Nach_Filterung230417.xlsx" )
+# nf <-
+# 	read_excel( "~/LIFE/life-for-postgraduates/JulianeWilz/data/Nach_Filterung230417.xlsx" )
 
 d <-
-	nf
+	d
 
 my.thm <-
 	list(
@@ -172,7 +183,7 @@ list.STAT.m <-
 list.STAT.f <-
 	list( )
 
-for( loop in c( 1 : 500 ) ) {
+for( loop in c( 1 : loops ) ) {
 	
 	print( paste0( "Loop: ", loop ) )
 	
@@ -182,7 +193,7 @@ for( loop in c( 1 : 500 ) ) {
 		get.msnt( 
 			d.m,
 			ages = ages,
-			family = c( "BCPEo", "BCCGo", "BCTo" ),
+#			family = c( "BCPEo", "BCCGo", "BCTo" ),
 			sample.density = 1 )
 	
 	if( !is.null( MSNT.m ) ) {
@@ -191,10 +202,10 @@ for( loop in c( 1 : 500 ) ) {
 			rep( length( list.LMS.m ) + 1, length( ages ) )
 		
 		list.LMS.m <-
-			list.append( list.LMS.m, MSNT.m$LMS )
+			list.append( list = list.LMS.m, x = MSNT.m$LMS )
 		
 		list.STAT.m <-
-			list.append( list.STAT.m, MSNT.m$STAT ) 
+			list.append( list = list.STAT.m, x = MSNT.m$STAT ) 
 		
 		print( paste0( "males fit success: ", length( list.LMS.m ) ) ) }
 	
@@ -204,7 +215,7 @@ for( loop in c( 1 : 500 ) ) {
 		get.msnt( 
 			d.f,
 			ages = ages,
-			family = c( "BCPEo", "BCCGo", "BCTo" ),
+#			family = c( "BCPEo", "BCCGo", "BCTo" ),
 			sample.density = 1 )
 	
 	if( !is.null( MSNT.f ) ) {
@@ -213,10 +224,10 @@ for( loop in c( 1 : 500 ) ) {
 			rep( length( list.LMS.f ) + 1, length( ages ) )
 		
 		list.LMS.f <-
-			list.append( list.LMS.f, MSNT.f$LMS )
+			list.append( list = list.LMS.f, x = MSNT.f$LMS )
 	
 		list.STAT.f <-
-			list.append( list.STAT.f, MSNT.f$STAT ) 
+			list.append( list = list.STAT.f, x = MSNT.f$STAT ) 
 		
 		print( paste0( "females fit success: ", length( list.LMS.f ) ) ) } }
 
@@ -296,7 +307,8 @@ ggsubplot(
 		geom_line( aes( AGE, MEAN.VAL, group = paste( SEX, FAMILY ), col = paste0( SEX, "-", FAMILY ) ), l. ),
 	cols = 2 )
 
-save( l, list.LMS.f, list.LMS.m, list.STAT.f, list.STAT.m, file = "dat.Calcitonin.2017.09.13.Rd"  )
+
+save( l, list.LMS.f, list.LMS.m, list.STAT.f, list.STAT.m, file = paste0( "LMS.Calcitonin.", gsub( "[-: CEST]","" ,Sys.time( ) ), ".Rd" ) )
 
 # load( file = "dat.Rd" )
 # 
@@ -328,38 +340,9 @@ save( l, list.LMS.f, list.LMS.m, list.STAT.f, list.STAT.m, file = "dat.Calcitoni
 # 	summarise( MEAN.VAL = mean( VAL, na.rm = T ) )
 
 
-ggsubplot(
-	ggplot( ) + 
-		my.thm + 
-		scale_x_continuous( breaks = c( 0 : 20 ) ) +
-		geom_point( aes( AGE, CALCITONIN, col = SEX ), d, alpha = .1 ) +
-		geom_smooth( aes( AGE, CALCITONIN, col = SEX ), d, method = "loess" ) +
-		geom_line( aes( AGE, MEAN.VAL, group = SEX ), l.[ l.$VAR == "mu", ], col = "black" ),
-	ggplot( ) +
-		my.thm +
-		geom_line( aes( AGE, VAL, group = paste0( LOOP, SEX ), col = SEX ), l, alpha = .01 ) +
-		facet_grid( VAR ~ ., scales = "free" ) +
-		scale_x_continuous( breaks = c( 0 : 20 ) ) +
-		theme( axis.text.x = element_text( angle = 90 ) ) +
-		geom_line( aes( AGE, MEAN.VAL, group = SEX ), l., col = "black" ),
-	cols = 2 )
-
-sds.BCTo <-
+sds.BC <-
 	function( perc, mu, sigma, nu, tau = 10 ) {
 
-		z <-
-			qnorm( perc )
-				
-		f <- 
-			ifelse( 
-				nu < .000001,
-				mu * exp( sigma * z ),
-				mu * ( z * nu * sigma + 1 ) ** ( 1 / nu ) ) 
-		f }
-	
-sds.BCCGo <-
-	function( perc, mu, sigma, nu ) {
-		
 		z <-
 			qnorm( perc )
 				
@@ -377,33 +360,80 @@ sds.NORM <-
 ll <-
 	dcast( data = l., AGE + SEX + FAMILY ~ VAR, value.var = "MEAN.VAL" )
 
+
+ll.BCTo <-
+	ll[ ll$FAMILY=="BCTo", ]
+
+ll.BCPEo <-
+	ll[ ll$FAMILY=="BCPEo", ]
+
+ll.BCCGo <-
+	ll[ ll$FAMILY=="BCCGo", ]
+
+
+perc.BCTo <-
+	data.frame(
+		age  = ll.BCTo$AGE,
+		sex  = ll.BCTo$SEX, 
+		fam  = rep( "BCTo", length( ll.BCTo$AGE ) ),
+		p001 = sds.BC( .01, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ),
+		p003 = sds.BC( .03, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ),
+		p010 = sds.BC( .10, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ),
+		p025 = sds.BC( .25, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ),
+		p050 = sds.BC( .50, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ),
+		p075 = sds.BC( .75, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ),
+		p090 = sds.BC( .90, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ),
+		p097 = sds.BC( .97, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ),
+		p099 = sds.BC( .99, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ) )
+
+
+perc.BCPEo <-
+	data.frame(
+		age  = ll.BCPEo$AGE,
+		sex  = ll.BCPEo$SEX, 
+		fam  = rep( "BCPEo", length( ll.BCPEo$AGE ) ),
+		p001 = sds.BC( .01, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ),
+		p003 = sds.BC( .03, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ),
+		p010 = sds.BC( .10, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ),
+		p025 = sds.BC( .25, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ),
+		p050 = sds.BC( .50, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ),
+		p075 = sds.BC( .75, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ),
+		p090 = sds.BC( .90, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ),
+		p097 = sds.BC( .97, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ),
+		p099 = sds.BC( .99, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ) )
+
+
+perc.BCCGo <-
+	data.frame(
+		age  = ll.BCCGo$AGE,
+		sex  = ll.BCCGo$SEX,
+		fam  = rep( "BCCGo", length( ll.BCCGo$AGE ) ),
+		p001 = sds.BC( .01, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ),
+		p003 = sds.BC( .03, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ),
+		p010 = sds.BC( .10, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ),
+		p025 = sds.BC( .25, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ),
+		p050 = sds.BC( .50, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ),
+		p075 = sds.BC( .75, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ),
+		p090 = sds.BC( .90, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ),
+		p097 = sds.BC( .97, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ),
+		p099 = sds.BC( .99, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ) )
+
+
 perc <-
-	melt(
-		perc.<-data.frame(
-			age  = ll$AGE,
-			sex  = ll$SEX, 
-			p001 = sds.BCTo( .01, ll$mu, ll$sigma, ll$nu, ll$tau ),
-			p003 = sds.BCTo( .03, ll$mu, ll$sigma, ll$nu, ll$tau ),
-			p010 = sds.BCTo( .10, ll$mu, ll$sigma, ll$nu, ll$tau ),
-			p025 = sds.BCTo( .25, ll$mu, ll$sigma, ll$nu, ll$tau ),
-			p050 = sds.BCTo( .50, ll$mu, ll$sigma, ll$nu, ll$tau ),
-			p075 = sds.BCTo( .75, ll$mu, ll$sigma, ll$nu, ll$tau ),
-			p090 = sds.BCTo( .90, ll$mu, ll$sigma, ll$nu, ll$tau ),
-			p097 = sds.BCTo( .97, ll$mu, ll$sigma, ll$nu, ll$tau ),
-			p099 = sds.BCTo( .99, ll$mu, ll$sigma, ll$nu, ll$tau ) ),
-		c( "sex", "age" ) )
+	rbind(
+		melt(
+			perc.BCCGo,
+			c( "sex", "age", "fam" ) ),
+		melt(
+			perc.BCPEo,
+			c( "sex", "age", "fam" ) ),
+		melt(
+			perc.BCTo,
+			c( "sex", "age", "fam" ) ) )
+
 
 ggplot( ) + 
 	theme_bw( ) +
 	geom_point( aes( AGE, CALCITONIN ), d, alpha = .1 ) +
-	geom_line( aes( age, value, col = variable ), perc ) + facet_grid( sex ~ . )
+	geom_line( aes( age, value, group = variable, col = variable ), perc ) + facet_grid( sex ~ fam )
 	
-
-perc.$age. <-
-	cut( perc.$age, breaks = c(0:21))
-
-perc.. <-
-	perc. %>% group_by( age., sex ) %>% summarise( m = mean( p050 ) )
-
-View( perc.. )
-

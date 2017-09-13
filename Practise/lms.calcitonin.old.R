@@ -2,26 +2,26 @@
 
 rm( list = ls( ) )
 
-ifnot <-
-	function( cond, optTrue, optFalse = { } ) {
-		
-		if( !cond ) {
-			
-			optTrue 
-			
-		} else {
-			
-			optFalse } }
+# ifnot <-
+# 	function( cond, optTrue, optFalse = { } ) {
+# 		
+# 		if( !cond ) {
+# 			
+# 			optTrue 
+# 			
+# 		} else {
+# 			
+# 			optFalse } }
+# 
+# list.append <-
+# 	function( lst, x ) {
+# 	
+# 	lst[[ length( lst ) + 1 ]] <-
+# 		x
+# 	
+# 	lst }
 
-list.append <-
-	function( lst, x ) {
-	
-	lst[[ length( lst ) + 1 ]] <-
-		x
-	
-	lst }
-
-ifnot(
+hlpr4life::ifnot(
 	"devtools" %in% rownames( installed.packages( ) ),
 	{install.packages( "devtools" );library( devtools ) },
 	library( devtools ) )
