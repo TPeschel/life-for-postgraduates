@@ -381,7 +381,56 @@ ggplot( ) +
 	facet_grid( hair ~ sex )
 
 
-anova( lm.d.y.age.sex.hair.1, lm.d.y.age.sex.hair.2, lm.d.y.age.sex.hair.3 )
+
+
+
+(
+	lm.d.y.age.sex.hair.4 <-
+		lm( y ~ age * sex * hair, d ) )
+
+tidy( summary( lm.d.y.age.sex.hair.4 ) )
+
+mm <-
+	(
+		data.frame(
+			'(Intercept)' = 1,
+			age =
+				c( 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 18, 18, 18, 18, 18, 18 ),
+			sexmale =
+				c( 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1,  0,  0,  0,  1,  1,  1 ),
+			'hairblonde' =
+				c( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,  0,  1,  0,  0,  1,  0 ),
+			"hairbrown" =
+				c( 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,  0,  0,  1,  0,  0,  1  ),
+			'age:sexmale' =
+				c( 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3,  0,  0,  0, 18, 18, 18 ),
+			'age:hairblonde' =
+				c( 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 3, 0,  0, 18,  0,  0, 18,  0 ),
+			"age:hairbrown" =
+				c( 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 3,  0,  0, 18,  0,  0, 18  ) ) )
+
+co <-
+	lm.d.y.age.sex.hair.4$coefficients
+
+lm.d.y.age.sex.hair.4.line <-
+	data.frame( 
+		sex = sex.lvls[ match( mm$sexmale, c( 0, 1 ) ) ],
+		hair = rep( hair.lvls, 6 ), 
+		x =  mm$age,
+		y = as.matrix( mm ) %*% co )
+
+ggplot( ) +
+	theme_bw( ) + xlim( -1, 20 ) + ylim( 0, 250 ) +
+	scale_color_manual( values = cols.sex.hair, guide = F ) +
+	geom_point( aes( age, y, col = paste0( sex, ":", hair ) ), d, alpha = .1 ) +
+	geom_smooth( aes( age, y, col = paste0( sex, ":", hair ) ), d, method = "lm" ) +
+	geom_line( aes( x, y, col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.3.line ) +
+	geom_point( aes( x, y, shape = as.factor( x ), col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.3.line, size = 3 ) +
+	geom_text( aes( x, y, label = round( y, 2 ), col = paste0( sex, ":", hair ) ), lm.d.y.age.sex.hair.3.line, nudge_x = 0, nudge_y = -5 ) +
+	facet_grid( hair ~ sex )
+
+
+anova( lm.d.y.age.sex.hair.1, lm.d.y.age.sex.hair.2, lm.d.y.age.sex.hair.3, lm.d.y.age.sex.hair.4 )
 
 ##
 # Das 3. Modell ist wieder das beste und das engueltige

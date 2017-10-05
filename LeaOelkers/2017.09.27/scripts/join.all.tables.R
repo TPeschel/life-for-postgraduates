@@ -257,8 +257,7 @@ tbl <-
         by.y = c( "LH_S_SIC", "LH_S_GRUPPE" ),
         all = T )
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
 
 tbl <-
     rename.columns( tbl, c( "FSH_S_SIC", "FSH_S_GRUPPE", "LH_S_DATUM" ), c( "SIC", "SCI_GROUP", "EDAT" ) )
@@ -280,8 +279,7 @@ tbl <-
         by.y = c( "C_ANTHRO_KH_SIC", "C_ANTHRO_KH_GRP" ),
         all.x = T )
 #4722
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten)
 tbl <-
@@ -292,8 +290,7 @@ tbl <-
         by.y = c( "TEILNEHMER_SIC" ),
         all.x = T )
 #4722
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
 
 tbl <-
     rename.columns( 
@@ -322,8 +319,7 @@ tbl <-
     tbl[ !is.na( tbl$AGE ) & !is.na( tbl$HEIGHT ) & !is.na( tbl$WEIGHT ) & !is.na( tbl$BMI ), ]
 # 4702
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat)
 tbl <-
@@ -335,8 +331,7 @@ tbl <-
         all.x = T)
 # 4702
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
 
 # fuege Spalte hinzu, die nur das Jahr des EDATs enthaelt 
 tbl$Y <-
@@ -422,8 +417,8 @@ tbl <-
 # 4701
 
 # zeige resultat
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 
 # benenne EDAT.x in EDAT um
 tbl<- 
@@ -442,8 +437,8 @@ tbl <-
         by.y = c( "C_DISEASE_TX_SIC", "C_DISEASE_TX_SCI_GROUP" ),
         all.x = T )
 # 4701
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente)
@@ -455,8 +450,8 @@ tbl <-
         by.y = c( "CHILD_MED_H_SIC", "CHILD_MED_H_SCI_GROUP" ),
         all.x = T )
 # 4701
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron)
@@ -469,8 +464,8 @@ tbl <-
         all.x = T )
 # 4701
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron), t488(Estradiol)
@@ -484,8 +479,8 @@ tbl <-
 
 # 4701
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG)
 tbl <-
@@ -497,8 +492,8 @@ tbl <-
         all.x = T )
 # 4701
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG), t490(DHEAS)
@@ -512,8 +507,8 @@ tbl <-
 
 # 4701
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten),
 # d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG), t490(DHEAS), t976(Stimmbruch)
@@ -527,8 +522,8 @@ tbl <-
 
 # 4701
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten),
@@ -543,8 +538,8 @@ tbl <-
 
 # 4701
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 
 # Merge mit geburtsgewicht
 # Wir nehemn nur bestimmete Spalten mit rein.(EDAT raus, damit es nicht gedoppelt wird.)
@@ -558,8 +553,8 @@ tbl <-
 
 # 4701
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 
 # Geburtsgewichts- und Stimmbruchspalten umbenennen
 tbl <-
@@ -570,8 +565,8 @@ tbl <-
  
 # 4701
 
-table.columns( tbl )
-table.columns( tbl, T )
+table.df( tbl )
+table.df( tbl, T )
 #4496 Geburtsgewicht
 #4442 Geburtsgroesse
 #918  C_PUB_STAT_MENARCHE_WANN
