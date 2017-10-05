@@ -1,0 +1,29 @@
+\documentclass[a4]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{longtable}
+
+%\usepackage[margin=1in]{geometry}
+
+\setlength{\topmargin}{0.5cm}
+\setlength{\headheight}{0cm}
+\setlength{\headsep}{0cm}
+\setlength{\topskip}{0cm}
+\setlength{\oddsidemargin}{0.5cm}
+\setlength{\evensidemargin}{0.5cm}
+\setlength{\textwidth}{17cm}
+\setlength{\textheight}{22cm}
+
+\title{Plots of extreme - Singing Voice}
+\author{Thomas Peschel}
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+\maketitle
+\tableofcontents
+\newpage
+\section{Extreme Measurements}
+<<fig-allplots,echo=F,fig.width=10,fig.height=5>>=
+plot.list$plot
+@
+
+\end{document}
