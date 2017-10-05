@@ -9,24 +9,23 @@ if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devt
 # installiere neueste Version von helperForLife, falls noch nicht geschehen
 devtools::install_github( "TPeschel/hlpr4life" )
 
-# lade hlpr4life
-library( hlpr4life )
-
-load.pkgs(
+hlpr4life::load.pkgs(
     c(
+        "hlpr4life",
         "dplyr",
-        "reshape",
+        "reshape2",
         "readxl",
-        "openxlsx" ) )
+        "openxlsx",
+        "lubridate") )   ##openxlsx ist viel schneller als xlsx, WriteXLS ist nicht gut
 
 
-# setze Zeitzobe auf Berlin Mean Time
-Sys.setenv( TZ = "BMT" ) 
+# setze Zeitzone auf Berlin Mean Time
+Sys.setenv( TZ = "Europe/Berlin" ) 
 
 ##
 # setze Pfad zu aktuellem R-Arbeitsverzeichnis, Pfad zum Laden
-setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/AllesNeu20170725/data/original/" )
-#setwd( "c:/Users/Lea/Desktop/DA/LIFE-Daten/data/" )
+setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/2017.09.27/data/original/" )
+# setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/original/" )  ##Pfad in dem die original Excel tabl stehen
 
 ##
 # liste Verzeichnis auf, um zu schauen, welche Tabellen vorhanden sind
@@ -136,7 +135,6 @@ d129 <-
 ##
 d177 <-
     read_excel( "PV0298_D00177.xlsx" )
-
 ##
 # Zieltabelle:
 # Teilnehmer (R00001)
@@ -237,6 +235,19 @@ t509 <-
     read_excel( "PV0298_T00509_NODUP.xlsx" )
 
 
+# Stimmbruchdaten
+t976 <-
+    read_excel( "PV0298_T00976_NODUP.xlsx")
+
+t109 <-
+    read_excel( "PV0298_T00109_NODUP.xlsx")
+
+#  Geburtsgewicht
+t139 <-
+  read_excel( "PV0298_D00139U1.xlsx")
+
+## Mergen
+
 # t508(LH), t487(FSH)
 tbl <-
     merge(
@@ -246,18 +257,19 @@ tbl <-
         by.y = c( "LH_S_SIC", "LH_S_GRUPPE" ),
         all = T )
 
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
+table.columns( tbl )
+table.columns( tbl, T )
 
 tbl <-
-    rename.columns( tbl, c( "FSH_S_SIC", "FSH_S_GRUPPE", "FSH_S_DATUM" ), c( "SIC", "SCI_GROUP", "EDAT" ) )
+    rename.columns( tbl, c( "FSH_S_SIC", "FSH_S_GRUPPE", "LH_S_DATUM" ), c( "SIC", "SCI_GROUP", "EDAT" ) )
         
 table( tbl$SCI_GROUP )
 
+
 # depressive Kinder fliegen erstmal raus    
+# sind eigentlich gar keine mehr drin (O;)
 tbl <-
     tbl[ tbl$SCI_GROUP != "Z00", ]
-
 
 # t508(LH), t487(FSH), d040(ANTHRO)
 tbl <-
@@ -267,10 +279,9 @@ tbl <-
         by.x = c( "SIC", "SCI_GROUP" ),
         by.y = c( "C_ANTHRO_KH_SIC", "C_ANTHRO_KH_GRP" ),
         all.x = T )
-
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
-
+#4722
+table.columns( tbl )
+table.columns( tbl, T )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten)
 tbl <-
@@ -280,10 +291,39 @@ tbl <-
         by.x = c( "SIC" ),
         by.y = c( "TEILNEHMER_SIC" ),
         all.x = T )
+#4722
+table.columns( tbl )
+table.columns( tbl, T )
 
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
+tbl <-
+    rename.columns( 
+        tbl, 
+        c( 
+            "C_ANTHRO_KH_AGE",
+            "C_ANTHRO_KH_HEIGHT_ORIG",
+            "C_ANTHRO_KH_WEIGHT_ORIG",
+            "C_ANTHRO_KH_BMI_ORIG",
+            "C_ANTHRO_KH_HEIGHT_ADJ",
+            "C_ANTHRO_KH_WEIGHT_ADJ",
+            "C_ANTHRO_KH_BMI_ADJ",
+            "TEILNEHMER_GESCHLECHT" ),
+        c( 
+            "AGE",
+            "HEIGHT",
+            "WEIGHT",
+            "BMI",
+            "HEIGHT.ADJ",
+            "WEIGHT.ADJ",
+            "BMI.ADJ",
+            "SEX" ) )
 
+# schmeisse alle ohne alter und groesse und gewicht raus, 20 leute
+tbl <-
+    tbl[ !is.na( tbl$AGE ) & !is.na( tbl$HEIGHT ) & !is.na( tbl$WEIGHT ) & !is.na( tbl$BMI ), ]
+# 4702
+
+table.columns( tbl )
+table.columns( tbl, T )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat)
 tbl <-
@@ -293,29 +333,105 @@ tbl <-
         by.x = c( "SIC", "SCI_GROUP" ),
         by.y = c( "C_PUB_STAT_SIC", "C_PUB_STAT_GRUPPE" ),
         all.x = T)
+# 4702
 
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
-
-# zu 9 sics gibt es keinen Winkler
-sum( !tbl$SIC %in% d177$PSEUDONYM )
+table.columns( tbl )
+table.columns( tbl, T )
 
 # fuege Spalte hinzu, die nur das Jahr des EDATs enthaelt 
 tbl$Y <-
     year( tbl$EDAT )
 
+# haben wir zu jedem ein edat?
+sum( is.na( tbl$EDAT ) ) 
+# ja
+
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler)
+
+# zu 1 sic gibt es keinen Winkler
+sum( !tbl$SIC %in% d177$PSEUDONYM )
+
 tbl <-
     merge(
         tbl,
         d177,
         by.x = c( "SIC", "Y" ),
         by.y = c( "PSEUDONYM", "D00177_JAHR" ),
-        all.x = T )
+        all.x = T ) ##4707 = F
+# 4702
+sics <-
+    tbl$SIC[ is.na( tbl$FAM_PSEUDO ) ]
 
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
+tbl[ is.na( tbl$FAM_PSEUDO ), ] 
 
+sci.grp <-
+    tbl$SCI_GROUP[ is.na( tbl$FAM_PSEUDO ) ] 
+
+# 15 kinder haben keinen besuch in der d177
+length( unique( sics ) )
+
+# wirf den einen raus, den es in der d177 nicht gibt!
+sics <-
+    intersect( sics, d177$PSEUDONYM )
+
+# 14 kinder haben keinen besuch in der d177
+length( unique( sics ) )
+
+# hole alle eintraege zu diesen sics aus der d177
+d177.sub <-
+    d177[ d177$PSEUDONYM %in% sics, ]
+
+length( unique( d177.sub$PSEUDONYM ) )
+
+# zaehle missings pro zeilen und vermerke dies in der Spalte Num.Of.Missings
+d177.sub$Num.Of.Missings <-
+  sapply( 1 : nrow( d177.sub ), function( z ) sum( is.na( d177.sub[ z , ] ) ) )
+
+# suche Zeile mit det geringsten Anzahl an Missings und 
+# vemerke das dazugehoerige Jahr in der Spalte "J"
+d177.sub %<>%
+    group_by( PSEUDONYM ) %>%
+    mutate( J = D00177_JAHR[ which.min( Num.Of.Missings ) ] ) 
+
+# sollten 14 sein
+nrow( d177.sub <- d177.sub[ d177.sub$D00177_JAHR == d177.sub$J, ] )
+
+# ermittle Zeilen in tbl, zu fehlenden Werten in tbl
+tbl.rows <-
+    which( tbl$SIC %in% sics & is.na( tbl$D00177_SCORE_FAM ) )
+
+# ermittle Zeilen in d177.sub, zu fehlenden Werten in tbl
+d177.rows <-
+    which( d177.sub$PSEUDONYM %in% sics )
+
+# ermittle namen der fehlenden Werte
+names.d177 <-
+    intersect( names( tbl ), names( d177.sub ) )
+
+# ersetze fehlende Werte in tbl
+for( i in 1 : length( tbl.rows ) ) {
+    
+    tbl[ tbl.rows[ i ], names.d177 ] <-
+        d177.sub[ d177.rows[ i ], names.d177 ]
+}
+
+# schmeiss den einen raus, der keine  FamPseudo hat
+tbl <-
+    tbl[ !is.na( tbl$FAM_PSEUDO ), ]
+
+# 4701
+
+# zeige resultat
+table.columns( tbl )
+table.columns( tbl, T )
+
+# benenne EDAT.x in EDAT um
+tbl<- 
+    rename.columns( tbl, "EDAT.x", "EDAT" ) #EDAT.x wird in EDAT umbenannt
+
+# loesche EDAT.y
+tbl <-
+    tbl[ , setdiff( names( tbl ), c( "EDAT.y" ) ) ]
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten)
 tbl <-
@@ -325,9 +441,9 @@ tbl <-
         by.x = c( "SIC", "SCI_GROUP" ),
         by.y = c( "C_DISEASE_TX_SIC", "C_DISEASE_TX_SCI_GROUP" ),
         all.x = T )
-
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
+# 4701
+table.columns( tbl )
+table.columns( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente)
@@ -338,9 +454,9 @@ tbl <-
         by.x = c( "SIC", "SCI_GROUP" ),
         by.y = c( "CHILD_MED_H_SIC", "CHILD_MED_H_SCI_GROUP" ),
         all.x = T )
-
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
+# 4701
+table.columns( tbl )
+table.columns( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron)
@@ -351,9 +467,10 @@ tbl <-
         by.x = c( "SIC", "SCI_GROUP" ),
         by.y = c( "TESTO_S_SIC", "TESTO_S_GRUPPE" ),
         all.x = T )
+# 4701
 
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
+table.columns( tbl )
+table.columns( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron), t488(Estradiol)
@@ -365,8 +482,10 @@ tbl <-
         by.y = c( "E2_S_SIC", "E2_S_GRUPPE" ),
         all.x = T )
 
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
+# 4701
+
+table.columns( tbl )
+table.columns( tbl, T )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG)
 tbl <-
@@ -376,9 +495,10 @@ tbl <-
         by.x = c( "SIC", "SCI_GROUP" ),
         by.y = c( "SHBG_S_SIC", "SHBG_S_GRUPPE" ),
         all.x = T )
+# 4701
 
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
+table.columns( tbl )
+table.columns( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG), t490(DHEAS)
@@ -390,17 +510,130 @@ tbl <-
         by.y = c( "DHEAS_S_SIC", "DHEAS_S_GRUPPE" ),
         all.x = T )
 
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
+# 4701
+
+table.columns( tbl )
+table.columns( tbl, T )
+
+# t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten),
+# d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG), t490(DHEAS), t976(Stimmbruch)
+tbl <-
+    merge(
+        tbl,
+        t976[, c( "FB_KS_SIC", "FB_KS_GRUPPE", "FB_KS_STIMMBRUCH", "FB_KS_STIMM_ALTER" )],
+        by.x = c( "SIC", "SCI_GROUP" ),
+        by.y = c( "FB_KS_SIC", "FB_KS_GRUPPE" ),
+        all.x = T )
+
+# 4701
+
+table.columns( tbl )
+table.columns( tbl, T )
+
+
+# t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten),
+# d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG), t490(DHEAS), t976(Stimmbruch), t109(stimmbruch)
+tbl <-
+    merge(
+        tbl,
+        t109[, c( "FB_SK_CH_SIC", "FB_SK_CH_GRUPPE", "FB_SK_CH_F0011", "FB_SK_CH_F0012" )],  ##nur bestimmte Spalte von Stimmbruch ranhängen
+        by.x = c( "SIC", "SCI_GROUP" ),
+        by.y = c( "FB_SK_CH_SIC", "FB_SK_CH_GRUPPE" ),
+        all.x = T )
+
+# 4701
+
+table.columns( tbl )
+table.columns( tbl, T )
+
+# Merge mit geburtsgewicht
+# Wir nehemn nur bestimmete Spalten mit rein.(EDAT raus, damit es nicht gedoppelt wird.)
+tbl <-
+  merge(
+    tbl,
+    t139[ , c( "PSEUDONYM", "D00139_U1_GEW", "D00139_U1_GROE", "D00139_SSW_W", "D00139_SSW_T" ) ],
+    by.x = c( "SIC" ),
+    by.y = c ("PSEUDONYM" ),
+    all.x = T )
+
+# 4701
+
+table.columns( tbl )
+table.columns( tbl, T )
+
+# Geburtsgewichts- und Stimmbruchspalten umbenennen
+tbl <-
+  rename.columns( 
+    tbl,
+    c( "D00139_U1_GEW", "D00139_U1_GROE", "FB_KS_STIMMBRUCH", "FB_KS_STIMM_ALTER", "FB_SK_CH_F0011", "FB_SK_CH_F0012" ),
+    c( "Geburtsgewicht", "Geburtsgroesse", "StimmbruchGehabt1", "StimmbruchAlter1","StimmbruchGehabt2", "StimmbruchAlter2" ) )
+ 
+# 4701
+
+table.columns( tbl )
+table.columns( tbl, T )
+#4496 Geburtsgewicht
+#4442 Geburtsgroesse
+#918  C_PUB_STAT_MENARCHE_WANN
+#229  StimmbruchGehabt1 = FB_KS_STIMMBRUCH 
+#117  Stimmbruchalter1 = FB_KS_STIMM_ALTER
+#1402 StimmbruchGehabt2 = FB_SK_CH_F0011
+#754  Stimmbruchalter2 = FB_SK_CH_F0012
+
+
+table( tbl$StimmbruchAlter1 + 6 )
+table( floor( tbl$StimmbruchAlter2 ) )
+
+tbl$StimmbruchAlter1 
+
+##Stimmbruchdaten: zusammenpacken, unn?tige Spalten aussortieren
+#beide Stimmbruchdaten zusammenpacken
+tbl$STIMMBRUCH_GEHABT <-
+    tbl$StimmbruchGehabt1
+
+tbl$STIMMBRUCH_GEHABT[ is.na( tbl$STIMMBRUCH_GEHABT ) ] <-
+    tbl$StimmbruchGehabt2[ is.na( tbl$STIMMBRUCH_GEHABT ) ]
+
+tbl$STIMMBRUCH_ALTER <-
+    tbl$StimmbruchAlter1 + 6
+
+tbl$STIMMBRUCH_ALTER[ is.na( tbl$STIMMBRUCH_ALTER ) ] <-
+    tbl$StimmbruchAlter2[ is.na( tbl$STIMMBRUCH_ALTER ) ]
+
+
+tbl$FB_SK_CH_F0012[ is.na( tbl$FB_SK_CH_F0012 ) & !is.na( tbl$FB_KS_STIMM_ALTER ) ] <- 
+  tbl$FB_KS_STIMM_ALTER[ is.na( tbl$FB_SK_CH_F0012 ) & !is.na( tbl$FB_KS_STIMM_ALTER ) ] + 6
+
+table( tbl$FB_SK_CH_F0012 ) ##man sieht es gibt einen 135-Wert und einige, die viel zu jung sind--> 135 in 13,5 ?ndern und cut ab 10
+tbl$FB_SK_CH_F0012[tbl$FB_SK_CH_F0012==135]<- 13.5
+tbl$FB_SK_CH_F0012[tbl$FB_SK_CH_F0012<10]<- NA
+
+
+# tbl$FB_SK_CH_F0012[ is.na( tbl$FB_SK_CH_F0012 ) & !is.na( tbl$FB_KS_STIMM_ALTER ) ] <- 
+#   tbl$FB_KS_STIMM_ALTER[ is.na( tbl$FB_SK_CH_F0012 ) & !is.na( tbl$FB_KS_STIMM_ALTER ) ] + 6
+
+#Unn?tige Spalten raus: anzeigen lassen, ausw?hlen und rausschmei?en
+tbl <-
+    tbl[ , setdiff( names( tbl ), "FB_KS_STIMM_ALTER" ) ]
+
 
 dates <-
-    names( tbl )[ grep( "EDAT|DATUM", names( tbl ) ) ]
+    names( tbl )[ grep( "EDAT|DATUM", names( tbl ) ) ] ##alle spalten mit datum suchen
 
+tbl[ , dates ]
+
+
+
+
+# EDAT.x scheint das vernuenftigste zu sein
 dates <-
-    dates[ dates != "EDAT.x" ]
+    dates[ dates != "EDAT.x" ]  ##alle nehmen, die nicht EDAT.x hei?en
 
 sci_grps <-
     names( tbl )[ grep( "SCI|GROUP", names( tbl ) ) ]
+
+tbl[ , sci_grps ]
+
 
 sci_grps <-
     sci_grps[ sci_grps != "SCI_GROUP" ]
@@ -412,12 +645,77 @@ tbl <-
     rename.columns( 
         tbl,
         c( "EDAT.x", "TEILNEHMER_GESCHLECHT", "TEILNEHMER_GEB_JJJJMM", "C_ANTHRO_KH_AGE" ),
-        c( "EDAT", "SEX", "AGE" ) )
+        c( "EDAT", "SEX", "BIRTHDAY", "AGE" ) )
+
+tbl$SEX <-
+    as.factor( c( "male", "female" )[ match( tbl$SEX, c( 1, 2 ) ) ] )
+
+
+
+##Underweights raus: ab BMI(SDS)< - 2.0
+sum(is.na(tbl$C_ANTHRO_KH_WEIGHT_ORIG)) 
+
+nrow(tbl)   ##4722
+tbl<- tbl[is.na(tbl$C_ANTHRO_KH_BMI_ADJ)|(!is.na(tbl$C_ANTHRO_KH_BMI_ADJ)&(tbl$C_ANTHRO_KH_BMI_ADJ>=-1.88)),]
+nrow(tbl) ##4350 mit -1.28, neu: 4645 mit -2.0, mit -1.88: 4621
+
+
+# WEIGHT-GROUPS
+tbl$WGHT_GRPS <-
+    cut( 
+        tbl$C_ANTHRO_KH_BMI_ADJ,
+        c( -Inf, +1.28, Inf ),
+        c(  "normalweight", "overweight.and.obese" ) ) ##normalweigth m?ssen noch umbenannt werden,da auch die underweights bis -2.0 mit drin sind
+
+# HV: neue spalte mit mean von HV_LI und HV_RE zu HV
+
+li <- tbl$C_PUB_STAT_HV_LI
+re <- tbl$C_PUB_STAT_HV_RE
+
+li[ is.na( li ) ] <- 0
+re[ is.na( re ) ] <- 0
+
+tbl$HV <-
+    ( li + re ) / ifelse( li * re == 0, 1, 2 )
+
+## WINKLER INDEX
+
+
+# low: 3 <= SCORE_FAM <= 8.4
+# mid: 8.4 < SCORE_FAM <= 15.4
+# high: 15.4 < SCORE_FAM <= 21 ##nach Kiggs-Quintilen:  "Messung des sozio?konomischen Status in der Kiggs Studie",
+##wir richten uns nach Kiggs, die Quintilen von LIFE w?rden anders aussehen...:
+quantile(tbl$D00177_SCORE_FAM, na.rm=T,c(.2,.8))
+
+tbl$SES <-
+    cut(
+        tbl$D00177_SCORE_FAM,
+        c( 2, 8.4, 15.4, 22 ),
+        c( "low", "mid", "high" ) )
+
 
 sapply( tbl, function( col ) sum( is.na( col ) ) )
 sapply( tbl, function( col ) sum( !is.na( col ) ) )
 
-setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/AllesNeu20170725/data/generated/" )
+
+# Zeige alle Spaltennamen der Tabelle tbl an!
+# names( tbl ) 
+
+
+
+
+##Pfad in dem die generierten Tabellen stehen
+# setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/AllesNeu20170725/data/generated/" )
+setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
 
 save( tbl, file = "main.table.Rd" )
+
 openxlsx::write.xlsx( x = tbl, file = "main.table.xlsx" )
+
+names( tbl)
+
+nrow(tbl) #4645
+
+
+
+

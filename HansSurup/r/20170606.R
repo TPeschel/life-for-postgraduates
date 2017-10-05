@@ -59,7 +59,7 @@ tbl$SEX <- c( "male", "female")[ match( tbl$SEX, c( 1, 2 ) ) ]
 ##
 # schaue 34 missings an
 ##
-View( tbl[ is.na( tbl$AGE ), ] )
+#View( tbl[ is.na( tbl$AGE ), ] )
 
 ##
 # raus mit!
@@ -145,13 +145,11 @@ ggplot( tbl.only.1st.visit ) +
     ylab( "count of 1st visits" ) +
     theme_bw( )
 
-
 ##
 # ermittle nur erste Besuche
 ##
 tbl.only.2nd.visit <-
     tbl[ tbl$VISIT == 2, ]
-
 
 ggplot( tbl.only.2nd.visit ) +
     geom_histogram( aes( AGE.CLASS ), stat = "count" ) +

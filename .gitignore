@@ -39,6 +39,7 @@ vignettes/*.pdf
 *.xls
 *.XLS
 *.csv
+*.Rd
 
 */data
 */results
