@@ -11,8 +11,8 @@ if( 0 < length( arg ) ) {
 	
 	loops <-
 		as.numeric( arg ) }
-	
-	
+
+
 # ifnot <-
 # 	function( cond, optTrue, optFalse = { } ) {
 # 		
@@ -33,7 +33,7 @@ if( 0 < length( arg ) ) {
 # 	lst }
 
 if( !"devtools" %in% rownames( installed.packages( ) ) ) {
-		install.packages( "devtools" ) }
+	install.packages( "devtools" ) }
 
 devtools::install_github( "TPeschel/hlpr4life" )
 
@@ -191,7 +191,7 @@ for( xtrans in c( F, T ) ) {
 		print( "fit males" )
 		
 		MSNT.m <-
-			get.msnt( 
+			get.lss( 
 				d.m,
 				ages = ages,
 				family = c( "BE", "logNO", "NOF", "SEP1", "SEP2", "SEP3", "SEP4", "BCCGo", "BCPEo", "BCTo" ),
@@ -210,11 +210,11 @@ for( xtrans in c( F, T ) ) {
 				list.append( list = list.STAT.m, x = MSNT.m$STAT ) 
 			
 			print( paste0( "males fit success: ", length( list.LMS.m ) ) ) }
-	
+		
 		print( "fit females" )
 		
 		MSNT.f <-
-			get.msnt( 
+			get.lss( 
 				d.f,
 				ages = ages,
 				family = c( "BE", "logNO", "NOF", "SEP1", "SEP2", "SEP3", "SEP4", "BCCGo", "BCPEo", "BCTo" ),
@@ -223,12 +223,12 @@ for( xtrans in c( F, T ) ) {
 		
 		if( !is.null( MSNT.f ) ) {
 			
-			MSNT.f$LMS$loop <-
+			MSNT.f$PRED$loop <-
 				rep( length( list.LMS.f ) + 1, length( ages ) )
 			
 			list.LMS.f <-
 				list.append( list = list.LMS.f, x = MSNT.f$LMS )
-		
+			
 			list.STAT.f <-
 				list.append( list = list.STAT.f, x = MSNT.f$STAT ) 
 			
@@ -291,8 +291,8 @@ ggplot( melt( cs.[ , c( "bins", "f.x", "m.x" ) ], "bins" ) ) +
 
 ggplot( melt( cs., "bins" ) ) +
 	theme_bw( ) +
-#	scale_fill_manual( values = c( "red", "blue" ), guide = F ) +
-#	geom_histogram( aes( bins, value, fill = variable ), stat = "identity" ) +
+	#	scale_fill_manual( values = c( "red", "blue" ), guide = F ) +
+	#	geom_histogram( aes( bins, value, fill = variable ), stat = "identity" ) +
 	geom_histogram( aes( log( bins ), value, fill = variable ), stat = "identity" ) +
 	facet_grid( . ~ variable )
 
@@ -334,21 +334,21 @@ l <-
 l. <-
 	(
 		l <-
-		rename.columns(
-			l,
-			c( "sex", "family", "age", "variable", "value", "loop" ),
-			c( "SEX", "FAMILY", "AGE", "VAR", "VAL", "LOOP" ) ) ) %>%
+			rename.columns(
+				l,
+				c( "sex", "family", "age", "variable", "value", "loop" ),
+				c( "SEX", "FAMILY", "AGE", "VAR", "VAL", "LOOP" ) ) ) %>%
 	group_by( SEX, FAMILY, AGE, VAR ) %>%
 	summarise( MEAN.VAL = mean( VAL ) )
 
 ggplot( ) +
-		my.thm.1 +
-		scale_color_brewer( "SEX-FAMILY", type = "qual", palette = 2 ) +
-		geom_line( aes( AGE, VAL, group = paste0( SEX, FAMILY, LOOP ), col = paste0( SEX, "-", FAMILY ) ), l, alpha = .1 ) +
-		facet_grid( VAR ~ ., scales = "free" ) +
-		scale_x_continuous( breaks = c( 0 : 20 ) ) +
-		theme( axis.text.x = element_text( angle = 90 ) ) +
-		geom_line( aes( AGE, MEAN.VAL, group = paste( SEX, FAMILY ), col = paste0( SEX, "-", FAMILY ) ), l. )
+	my.thm.1 +
+	scale_color_brewer( "SEX-FAMILY", type = "qual", palette = 2 ) +
+	geom_line( aes( AGE, VAL, group = paste0( SEX, FAMILY, LOOP ), col = paste0( SEX, "-", FAMILY ) ), l, alpha = .1 ) +
+	facet_grid( VAR ~ ., scales = "free" ) +
+	scale_x_continuous( breaks = c( 0 : 20 ) ) +
+	theme( axis.text.x = element_text( angle = 90 ) ) +
+	geom_line( aes( AGE, MEAN.VAL, group = paste( SEX, FAMILY ), col = paste0( SEX, "-", FAMILY ) ), l. )
 
 ggsubplot(
 	ggplot( ) + 
@@ -401,12 +401,8 @@ save( l, list.LMS.f, list.LMS.m, list.STAT.f, list.STAT.m, file = paste0( "LMS.C
 # 	group_by( SEX, FAMILY, AGE, VAR ) %>%
 # 	summarise( MEAN.VAL = mean( VAL, na.rm = T ) )
 
-
-
-
 ll <-
 	dcast( data = l., AGE + SEX + FAMILY ~ VAR, value.var = "MEAN.VAL" )
-
 
 ll.BCTo <-
 	ll[ ll$FAMILY=="BCTo", ]
@@ -416,7 +412,6 @@ ll.BCPEo <-
 
 ll.BCCGo <-
 	ll[ ll$FAMILY=="BCCGo", ]
-
 
 perc.BCTo <-
 	data.frame(
@@ -433,7 +428,6 @@ perc.BCTo <-
 		p097 = sds.BC( .97, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ),
 		p099 = sds.BC( .99, ll.BCTo$mu, ll.BCTo$sigma, ll.BCTo$nu, ll.BCTo$tau ) )
 
-
 perc.BCPEo <-
 	data.frame(
 		age  = ll.BCPEo$AGE,
@@ -448,7 +442,6 @@ perc.BCPEo <-
 		p090 = sds.BC( .90, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ),
 		p097 = sds.BC( .97, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ),
 		p099 = sds.BC( .99, ll.BCPEo$mu, ll.BCPEo$sigma, ll.BCPEo$nu, ll.BCPEo$tau ) )
-
 
 perc.BCCGo <-
 	data.frame(
@@ -465,7 +458,6 @@ perc.BCCGo <-
 		p097 = sds.BC( .97, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ),
 		p099 = sds.BC( .99, ll.BCCGo$mu, ll.BCCGo$sigma, ll.BCCGo$nu, ll.BCCGo$tau ) )
 
-
 perc <-
 	rbind(
 		melt(
@@ -478,9 +470,21 @@ perc <-
 			perc.BCTo,
 			c( "sex", "age", "fam" ) ) )
 
-
 ggplot( ) + 
 	theme_bw( ) +
 	geom_point( aes( AGE, CALCITONIN ), d, alpha = .1 ) +
 	geom_line( aes( age, value, group = variable, col = variable ), perc ) + facet_grid( sex ~ fam )
-	
+
+i<-0
+l <- list( )
+
+i<-i+10
+l <- list.append( l, list( STAT = list( x = i+1:3 ), LMS = list( x = i+4:7 ) ) )
+
+l
+s <- Reduce( rbind, l )
+
+str( s )
+
+drop( Reduce( rbind, s[ 1 : 4 ] ) )
+
