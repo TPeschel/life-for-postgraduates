@@ -6,11 +6,9 @@ if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devt
 # installiere neueste Version von helperForLife, falls noch nicht geschehen
 devtools::install_github( "TPeschel/hlpr4life" )
 
-# lade hlpr4life
-library( hlpr4life )
-
-load.pkgs(
+hlpr4life::load.pkgs(
     c(
+        "hlpr4life",
         "dplyr",
         "reshape2",
         "readxl",
@@ -25,12 +23,12 @@ Sys.setenv( TZ = "Europe/Berlin" )
 ##
 # setze Pfad zu aktuellem R-Arbeitsverzeichnis, Pfad zum Laden
 # setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/AllesNeu20170725/data/original/" )
-setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
+# setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
+setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/2017.09.27/")
 
-load( "main.table.curated.first.visit.complete.20170727.Rd" )
+load( "data/generated/main.table.curated_2017-10-06.Rd" )
 
-
-##Themes für Plots, um nicht jedes mal alles neu zu definieren: ohne Gitter, da Kiess dies preferiert
+##Themes f?r Plots, um nicht jedes mal alles neu zu definieren: ohne Gitter, da Kiess dies preferiert
 theme.histo <-
   list(
     theme_bw( ),
@@ -60,13 +58,18 @@ theme.scatter <-
 
 ##CNT : um n=xx in die Plots reinzuschreiben
 tbl.add <-
-    as.data.frame(table(tbl$SEX))
-tbl$CNT<- NA     ##CNT als spalte angezeigt
+    as.data.frame( table( tbl$SEX ) )
 
-tbl$CNT[ tbl$SEX == "male" ] <- tbl.add$Freq[ tbl.add$Var1=="male"]
-tbl$CNT[ tbl$SEX == "female" ] <- tbl.add$Freq[ tbl.add$Var1 =="female"]
+tbl$CNT <- 
+    NA     ##CNT als spalte angezeigt
 
-nrow(tbl)
+tbl$CNT[ tbl$SEX == "male" ] <-
+    tbl.add$Freq[ tbl.add$Var1=="male" ]
+
+tbl$CNT[ tbl$SEX == "female" ] <-
+    tbl.add$Freq[ tbl.add$Var1 =="female"]
+
+nrow( tbl )
 
 #Alterskathegorien bilden
 
@@ -76,37 +79,42 @@ nrow(tbl)
 #         labels = c(-1:20))  ##ODER:
 
 tbl$AGE.CAT1<- 
-    cut(tbl$AGE,
-        breaks = seq(4,18, by =1),   
-        labels = seq(4,17, by=1))
+    cut(
+        tbl$AGE,
+        breaks = seq( 4, 18, by = 1 ),   
+        labels = seq( 4, 17, by = 1 ) )
 
 tbl$AGE.CAT2<- 
-    cut(tbl$AGE,
-        breaks = seq(4,18, by =2),   
-        labels = seq(5,18, by=2))
+    cut(
+        tbl$AGE,
+        breaks = seq( 4, 18, by = 2 ),   
+        labels = seq( 5, 18, by = 2 ) )
 
 
 ##Age by gender
-table(tbl$SEX)
-addmargins(table(tbl$SEX, tbl$AGE.CAT1))
+table( tbl$SEX )
+addmargins( table( tbl[ , c( "SEX", "AGE.CAT1" ) ] ) )
 
 ##Mittelwert etc des ALters
-describeBy(tbl$AGE, tbl$SEX)
-summary(tbl$AGE[tbl$SEX=="male"])  
-summary(tbl$AGE[tbl$SEX=="female"]) 
+describeBy( tbl$AGE, tbl$SEX )
+
+summary( tbl$AGE[ tbl$SEX == "male" ] )  
+
+summary( tbl$AGE[ tbl$SEX == "female" ] ) 
 
 #Plot: frequency of age by sex
 
-setwd("c:/Users/Lea/Desktop/AllesNeu20170725/results/plots")
+# setwd("c:/Users/Lea/Desktop/AllesNeu20170725/results/plots" )
 
 ggplot(tbl)+
     geom_histogram(aes( AGE.CAT2, fill=SEX),stat="count", position = "dodge")  # oder stack
 
 nrow(tbl)
+
 ggplot( tbl ) +
-    geom_histogram( aes( AGE.CAT1, fill = SEX ), stat =  "count" ) + 
+    geom_histogram( aes( AGE.CAT1, fill = SEX ), stat = "count" ) + 
     # theme_bw( ) +
-    theme.histo.facet+
+    theme.histo.facet +
     ylab( "frequency" ) +
     scale_fill_manual( "sex", values = c( "deeppink", "blue" ), guide = F ) +  ##"grey85", "grey65"
     scale_x_discrete( "age [y]" )
@@ -133,6 +141,7 @@ df.mean.age <-
         MIN = c( min( tbl$AGE[tbl$SEX=="male"]),min( tbl$AGE[tbl$SEX=="female"])),
         MAX = c( max( tbl$AGE[tbl$SEX=="male"]),max( tbl$AGE[tbl$SEX=="female"]))
     )
+
 df.mean.age
 
 
@@ -146,7 +155,7 @@ df.mean.age
 #   theme_bw()  ##in schwarz-wei?
 
 #das gleiche ohne jitter: age by gender --> am besten
-ggplot(tbl)+
+ggplot( tbl )+
     geom_boxplot(aes(x=SEX, y=AGE, fill=SEX), width=.5)+ #
     geom_errorbar(data=df.mean.age,aes(x=SEX, ymin=MIN,ymax=MAX),size=.3,width=.5)+ ##size=liniendicke, witth=breite der min/MAx werte
     geom_jitter(aes(x=SEX,y=AGE),alpha=.1,width = .01)+ ##punktverteilung zus?tzlich darstellen, alpha=tranparenz
@@ -424,7 +433,7 @@ ggplot( tbl ) +
     theme( panel.grid = element_blank())#+
 # facet_grid(.~WGHT_GRPS)
 
-##das gleiche für Stimmbruch:
+##das gleiche f?r Stimmbruch:
 tbl$mutation.age.cat <-
   cut(tbl$FB_SK_CH_F0012+.001,breaks = c(0:21), labels= (0:20))
 

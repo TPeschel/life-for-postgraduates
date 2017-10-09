@@ -4,13 +4,11 @@ rm( list = ls( ) )
 if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devtools" )
 
 # installiere neueste Version von helperForLife, falls noch nicht geschehen
-devtools::install_github( "TPeschel/hlpr4life" )
+#devtools::install_github( "TPeschel/hlpr4life" )
 
-# lade hlpr4life
-library( hlpr4life )
-
-load.pkgs(
+hlpr4life::load.pkgs(
     c(
+        "hlpr4life",
         "dplyr",
         "reshape2",
         "readxl",
@@ -24,80 +22,114 @@ Sys.setenv( TZ = "Europe/Berlin" )
 ##
 # setze Pfad zu aktuellem R-Arbeitsverzeichnis, Pfad zum Laden
 # setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/AllesNeu20170725/data/original/" )
-setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  ##Pfad in dem die original Excel tabl stehen
+# setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  ##Pfad in dem die original Excel tabl stehen
+setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/2017.09.27/data/generated/" )
 
-load("main.table.Rd")
+load( "main.table.Rd" )
 
-nrow(tbl)
-
+nrow( tbl )
 # unique(tbl$SCI_GROUP) ##alle unterschiedlichen SCI groups anzeigen
+
+# Ein umfangreicheres Protokoll kuerzer geschrieben
+# hole alle Krankheitsspalten
+( dis <-
+        get.columns( tbl, "C_DISEASE_TX_" ) )
+
+# schaue mal die Werte der Spalten an
+table.df( tbl[, dis ], T, T )
+
+# schreibe Nullen fuer jedes NA in diese Spalten
+tbl[ , dis ][ is.na( tbl[, dis ] ) ] <- 0
+
+# erzeuge Protokoll
+data.frame( 
+    NUMBER = sapply( 
+        tbl[ , get.columns( tbl, "DIS" ) ],
+        function( s ) { sum( s == 1, na.rm = T ) } ) )
 
 ## NAs =0, dann protokollieren
 #f?r krankheiten:
-tbl$C_DISEASE_TX_SD_ALLG[is.na(tbl$C_DISEASE_TX_SD_ALLG)] <- 0
-tbl$C_DISEASE_TX_SD_HYPO[is.na(tbl$C_DISEASE_TX_SD_HYPO)] <- 0
-tbl$C_DISEASE_TX_SD_HYPER[is.na(tbl$C_DISEASE_TX_SD_HYPER)] <- 0
-tbl$C_DISEASE_TX_FRUEHGEB[is.na(tbl$C_DISEASE_TX_FRUEHGEB)] <- 0
-tbl$C_DISEASE_TX_ENDOKR[is.na(tbl$C_DISEASE_TX_ENDOKR)] <- 0
-tbl$C_DISEASE_TX_DM1[is.na(tbl$C_DISEASE_TX_DM1)] <- 0
-tbl$C_DISEASE_TX_DM2[is.na(tbl$C_DISEASE_TX_DM2)] <- 0
-tbl$C_DISEASE_TX_BLUT[is.na(tbl$C_DISEASE_TX_BLUT)] <- 0
-tbl$C_DISEASE_TX_GERIN[is.na(tbl$C_DISEASE_TX_GERIN)] <- 0
-tbl$C_DISEASE_TX_EPIKRAMPF[is.na(tbl$C_DISEASE_TX_EPIKRAMPF)] <- 0
+# tbl$C_DISEASE_TX_SD_ALLG[ is.na( tbl$C_DISEASE_TX_SD_ALLG ) ] <- 0
+# tbl$C_DISEASE_TX_SD_HYPO[ is.na( tbl$C_DISEASE_TX_SD_HYPO ) ] <- 0
+# tbl$C_DISEASE_TX_SD_HYPER[ is.na( tbl$C_DISEASE_TX_SD_HYPER ) ] <- 0
+# tbl$C_DISEASE_TX_FRUEHGEB[ is.na( tbl$C_DISEASE_TX_FRUEHGEB ) ] <- 0
+# tbl$C_DISEASE_TX_ENDOKR[ is.na( tbl$C_DISEASE_TX_ENDOKR ) ] <- 0
+# tbl$C_DISEASE_TX_DM1[ is.na( tbl$C_DISEASE_TX_DM1 ) ] <- 0
+# tbl$C_DISEASE_TX_DM2[ is.na( tbl$C_DISEASE_TX_DM2 ) ] <- 0
+# tbl$C_DISEASE_TX_BLUT[ is.na( tbl$C_DISEASE_TX_BLUT ) ] <- 0
+# tbl$C_DISEASE_TX_GERIN[ is.na( tbl$C_DISEASE_TX_GERIN ) ] <- 0
+# tbl$C_DISEASE_TX_EPIKRAMPF[ is.na( tbl$C_DISEASE_TX_EPIKRAMPF ) ] <- 0
+# 
+# protokoll.Krankheit <-
+#     data.frame(
+#         Krankheit = 
+#             as.character( 
+#                 c( "SD_Allg", "SD_Hypo", "Sd_Hyper", "Fruehgeb", "Endokr", 
+#                    "DM1", "DM2", "Blut", "Gerinnung", "Epikrampf" ) ),
+#         Anzahl = 
+#             c( 1 : 10 ) )
+# 
+# protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit == "SD_Allg" ] <- sum( tbl$C_DISEASE_TX_SD_ALLG == 1 )
+# protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit == "SD_Hypo" ] <- sum( tbl$C_DISEASE_TX_SD_HYPO == 1 )
+# protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit == "SD_Hyper" ] <- sum( tbl$C_DISEASE_TX_SD_HYPER == 1 )
+# protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit == "Fruehgeb" ] <- sum( tbl$C_DISEASE_TX_FRUEHGEB == 1 )
+# protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit == "Endokr" ] <- sum( tbl$C_DISEASE_TX_ENDOKR == 1 )
+# protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit == "DM1" ] <- sum( tbl$C_DISEASE_TX_DM1 == 1 )
+# protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit == "DM2" ] <- sum( tbl$C_DISEASE_TX_DM2 == 1 )
+# protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit == "Blut" ] <- sum( tbl$C_DISEASE_TX_BLUT == 1 )
+# protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit == "Gerinnung" ] <- sum( tbl$C_DISEASE_TX_GERIN == 1 )
+# protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit == "Epikrampf" ] <- sum( tbl$C_DISEASE_TX_EPIKRAMPF == 1 )
+# 
+# protokoll.Krankheit
 
-
-protokoll.Krankheit <-
-    data.frame(
-        Krankheit = as.character( c( "SD_Allg", "SD_Hypo", "Sd_Hyper", "Fruehgeb", "Endokr", "DM1", "DM2", "Blut", "Gerinnung",
-                                     "Epikrampf")),
-        Anzahl = c(1:10) )
-protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit=="SD_Allg" ] <- sum(tbl$C_DISEASE_TX_SD_ALLG == 1)
-protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit=="SD_Hypo" ] <- sum(tbl$C_DISEASE_TX_SD_HYPO == 1)
-protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit=="SD_Hyper" ] <- sum(tbl$C_DISEASE_TX_SD_HYPER == 1)
-protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit=="Fruehgeb" ] <- sum(tbl$C_DISEASE_TX_FRUEHGEB == 1)
-protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit=="Endokr" ] <- sum(tbl$C_DISEASE_TX_ENDOKR == 1)
-protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit=="DM1" ] <- sum(tbl$C_DISEASE_TX_DM1 == 1)
-protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit=="DM2" ] <- sum(tbl$C_DISEASE_TX_DM2 == 1)
-protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit=="Blut" ] <- sum(tbl$C_DISEASE_TX_BLUT == 1)
-protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit=="Gerin" ] <- sum(tbl$C_DISEASE_TX_GERIN == 1)
-protokoll.Krankheit$Anzahl[ protokoll.Krankheit$Krankheit=="Epikrampf" ] <- sum(tbl$C_DISEASE_TX_EPIKRAMPF == 1)
-
-protokoll.Krankheit
 
 #Fuer Medis:
-tbl$CHILD_MED_H_GLUCO_CORT[is.na(tbl$CHILD_MED_H_GLUCO_CORT)] <- 0
-tbl$CHILD_MED_H_INSULIN[is.na(tbl$CHILD_MED_H_INSULIN)] <- 0
-tbl$CHILD_MED_H_METFORMIN[is.na(tbl$CHILD_MED_H_METFORMIN)] <- 0
-tbl$CHILD_MED_H_LTHYROX[is.na(tbl$CHILD_MED_H_LTHYROX)] <- 0
-tbl$CHILD_MED_H_STOFFWECHSEL[is.na(tbl$CHILD_MED_H_STOFFWECHSEL)] <- 0
-tbl$CHILD_MED_H_HORMONE[is.na(tbl$CHILD_MED_H_HORMONE)] <- 0
-tbl$CHILD_MED_H_WACHSTUM[is.na(tbl$CHILD_MED_H_WACHSTUM)] <- 0
-tbl$CHILD_MED_H_IMMUNSUPP[is.na(tbl$CHILD_MED_H_IMMUNSUPP)] <- 0
-tbl$CHILD_MED_H_NEUROLEPTIKA[is.na(tbl$CHILD_MED_H_NEUROLEPTIKA)] <- 0
-tbl$CHILD_MED_H_KONTRAZEPT[is.na(tbl$CHILD_MED_H_KONTRAZEPT)] <- 0
-tbl$CHILD_MED_H_TESTO[is.na(tbl$CHILD_MED_H_TESTO)] <- 0
+# tbl$CHILD_MED_H_GLUCO_CORT[ is.na( tbl$CHILD_MED_H_GLUCO_CORT ) ] <- 0
+# tbl$CHILD_MED_H_INSULIN[ is.na( tbl$CHILD_MED_H_INSULIN ) ] <- 0
+# tbl$CHILD_MED_H_METFORMIN[ is.na( tbl$CHILD_MED_H_METFORMIN ) ] <- 0
+# tbl$CHILD_MED_H_LTHYROX[ is.na( tbl$CHILD_MED_H_LTHYROX ) ] <- 0
+# tbl$CHILD_MED_H_STOFFWECHSEL[ is.na( tbl$CHILD_MED_H_STOFFWECHSEL ) ] <- 0
+# tbl$CHILD_MED_H_HORMONE[ is.na( tbl$CHILD_MED_H_HORMONE ) ] <- 0
+# tbl$CHILD_MED_H_WACHSTUM[ is.na( tbl$CHILD_MED_H_WACHSTUM ) ] <- 0
+# tbl$CHILD_MED_H_IMMUNSUPP[ is.na( tbl$CHILD_MED_H_IMMUNSUPP ) ] <- 0
+# tbl$CHILD_MED_H_NEUROLEPTIKA[ is.na( tbl$CHILD_MED_H_NEUROLEPTIKA ) ] <- 0
+# tbl$CHILD_MED_H_KONTRAZEPT[ is.na( tbl$CHILD_MED_H_KONTRAZEPT ) ] <- 0
+# tbl$CHILD_MED_H_TESTO[ is.na( tbl$CHILD_MED_H_TESTO ) ] <- 0
 
+( med <-
+        get.columns( tbl, "CHILD_MED_H_(?!.*NAME)(?!.*CODE)" ) )
 
+# schaue mal die Werte der Spalten an
+table.df( tbl[, med ], T, T )
 
-protokoll.Medikamente <-
-    data.frame( 
-        Medikamente = as.character( c("Gluko", "Insulin", "Metformin", "L-Thyroxin","Stoffwechsel","Hormone", "Wachstumshormon",
-                                      "Immunsuppr", "Neuroleptika", "Kontrazeptiva", "Testosteron")),
-        Anzahl = c(1:11)
-    )
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Gluko" ] <- sum(tbl$CHILD_MED_H_GLUCO_CORT == 1)
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Wachstumshormon" ] <- sum(tbl$CHILD_MED_H_WACHSTUM == 1)
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Immunsuppr" ] <- sum(tbl$CHILD_MED_H_IMMUNSUPP == 1)
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Neuroleptika" ] <- sum(tbl$CHILD_MED_H_NEUROLEPTIKA == 1)
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Hormone" ] <- sum(tbl$CHILD_MED_H_HORMONE == 1)
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Stwoffwechsel" ] <- sum(tbl$CHILD_MED_H_STOFFWECHSEL == 1)
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Metformon" ] <- sum(tbl$CHILD_MED_H_METFORMIN == 1)
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Insulin" ] <- sum(tbl$CHILD_MED_H_INSULIN == 1)
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="L-Thyroxin" ] <- sum(tbl$CHILD_MED_H_LTHYROX == 1)
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Kontrazeptiva" ] <- sum(tbl$CHILD_MED_H_KONTRAZEPT == 1)
-protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Testosteron" ] <- sum(tbl$CHILD_MED_H_TESTO == 1)
+# schreibe Nullen fuer jedes NA in diese Spalten
+tbl[ , med ][ is.na( tbl[, med ] ) ] <- 0
 
-protokoll.Medikamente
+data.frame(
+    NUMBER = 
+        sapply( 
+            tbl[ , med ], 
+            function( s ) { sum( s == 1, na.rm = T ) } ) )
+
+# protokoll.Medikamente <-
+#     data.frame( 
+#         Medikamente = as.character( c("Gluko", "Insulin", "Metformin", "L-Thyroxin","Stoffwechsel","Hormone", "Wachstumshormon",
+#                                       "Immunsuppr", "Neuroleptika", "Kontrazeptiva", "Testosteron")),
+#         Anzahl = c(1:11)
+#     )
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Gluko" ] <- sum(tbl$CHILD_MED_H_GLUCO_CORT == 1)
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Wachstumshormon" ] <- sum(tbl$CHILD_MED_H_WACHSTUM == 1)
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Immunsuppr" ] <- sum(tbl$CHILD_MED_H_IMMUNSUPP == 1)
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Neuroleptika" ] <- sum(tbl$CHILD_MED_H_NEUROLEPTIKA == 1)
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Hormone" ] <- sum(tbl$CHILD_MED_H_HORMONE == 1)
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Stwoffwechsel" ] <- sum(tbl$CHILD_MED_H_STOFFWECHSEL == 1)
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Metformon" ] <- sum(tbl$CHILD_MED_H_METFORMIN == 1)
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Insulin" ] <- sum(tbl$CHILD_MED_H_INSULIN == 1)
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="L-Thyroxin" ] <- sum(tbl$CHILD_MED_H_LTHYROX == 1)
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Kontrazeptiva" ] <- sum(tbl$CHILD_MED_H_KONTRAZEPT == 1)
+# protokoll.Medikamente$Anzahl[ protokoll.Medikamente$Medikament=="Testosteron" ] <- sum(tbl$CHILD_MED_H_TESTO == 1)
+# 
+# protokoll.Medikamente
 
 
 ##Flags aussortieren
@@ -106,8 +138,11 @@ protokoll.Medikamente
 ##PubStat:
 nrow(tbl)
 tbl$C_PUB_STAT_PUB_STATUS[is.na(tbl$C_PUB_STAT_PUB_STATUS)] <- 0
-sum(tbl$C_PUB_STAT_PUB_STATUS == 0) ## 647 fehlende PubStat
-tbl <- tbl[tbl$C_PUB_STAT_PUB_STATUS != 0,] # ungleich 0= (!=), wir nehmen alle 0 raus
+#1043
+sum( tbl$C_PUB_STAT_PUB_STATUS == 0 ) ## 647 fehlende PubStat
+
+tbl <-
+    tbl[ tbl$C_PUB_STAT_PUB_STATUS != 0, ] # ungleich 0= (!=), wir nehmen alle 0 raus
 # View(tbl[,c("SIC","C_PUB_STAT_PUB_STATUS")]) ##bestimmte spalten aungucken
 nrow(tbl)
 
@@ -177,7 +212,7 @@ nrow(tbl)
 
 #outlier 1 menarchealter=16 raus
 tbl<- tbl[is.na(tbl$C_PUB_STAT_MENARCHE_WANN)|(!is.na( tbl$C_PUB_STAT_MENARCHE_WANN ) & tbl$C_PUB_STAT_MENARCHE_WANN<16), ]
- ##--> 3jährige und outlier führe ich unter "ausgeschlossene Freitexte" für die Dokumentation
+ ##--> 3j?hrige und outlier f?hre ich unter "ausgeschlossene Freitexte" f?r die Dokumentation
 
 nrow(tbl)
 save(tbl, file = "main.table.curated.20170727.Rd")
