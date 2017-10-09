@@ -418,7 +418,6 @@ tbl <-
 
 # zeige resultat
 table.df( tbl )
-table.df( tbl, T )
 
 # benenne EDAT.x in EDAT um
 tbl<- 
@@ -438,7 +437,6 @@ tbl <-
         all.x = T )
 # 4701
 table.df( tbl )
-table.df( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente)
@@ -451,7 +449,6 @@ tbl <-
         all.x = T )
 # 4701
 table.df( tbl )
-table.df( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron)
@@ -465,8 +462,6 @@ tbl <-
 # 4701
 
 table.df( tbl )
-table.df( tbl, T )
-
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron), t488(Estradiol)
 tbl <-
@@ -480,7 +475,6 @@ tbl <-
 # 4701
 
 table.df( tbl )
-table.df( tbl, T )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG)
 tbl <-
@@ -493,8 +487,6 @@ tbl <-
 # 4701
 
 table.df( tbl )
-table.df( tbl, T )
-
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG), t490(DHEAS)
 tbl <-
@@ -508,7 +500,6 @@ tbl <-
 # 4701
 
 table.df( tbl )
-table.df( tbl, T )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten),
 # d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG), t490(DHEAS), t976(Stimmbruch)
@@ -523,7 +514,6 @@ tbl <-
 # 4701
 
 table.df( tbl )
-table.df( tbl, T )
 
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten),
@@ -539,7 +529,6 @@ tbl <-
 # 4701
 
 table.df( tbl )
-table.df( tbl, T )
 
 # Merge mit geburtsgewicht
 # Wir nehemn nur bestimmete Spalten mit rein.(EDAT raus, damit es nicht gedoppelt wird.)
@@ -554,7 +543,6 @@ tbl <-
 # 4701
 
 table.df( tbl )
-table.df( tbl, T )
 
 # Geburtsgewichts- und Stimmbruchspalten umbenennen
 tbl <-
@@ -566,7 +554,7 @@ tbl <-
 # 4701
 
 table.df( tbl )
-table.df( tbl, T )
+
 #4496 Geburtsgewicht
 #4442 Geburtsgroesse
 #918  C_PUB_STAT_MENARCHE_WANN
@@ -578,8 +566,6 @@ table.df( tbl, T )
 
 table( tbl$StimmbruchAlter1 + 6 )
 table( floor( tbl$StimmbruchAlter2 ) )
-
-tbl$StimmbruchAlter1 
 
 ##Stimmbruchdaten: zusammenpacken, unn?tige Spalten aussortieren
 #beide Stimmbruchdaten zusammenpacken
@@ -595,70 +581,182 @@ tbl$STIMMBRUCH_ALTER <-
 tbl$STIMMBRUCH_ALTER[ is.na( tbl$STIMMBRUCH_ALTER ) ] <-
     tbl$StimmbruchAlter2[ is.na( tbl$STIMMBRUCH_ALTER ) ]
 
+table( tbl$STIMMBRUCH_ALTER )
 
-tbl$FB_SK_CH_F0012[ is.na( tbl$FB_SK_CH_F0012 ) & !is.na( tbl$FB_KS_STIMM_ALTER ) ] <- 
-  tbl$FB_KS_STIMM_ALTER[ is.na( tbl$FB_SK_CH_F0012 ) & !is.na( tbl$FB_KS_STIMM_ALTER ) ] + 6
+sics <-
+    tbl$SIC[ !is.na( tbl$STIMMBRUCH_ALTER ) & ( tbl$STIMMBRUCH_ALTER < 10 | 20 < tbl$STIMMBRUCH_ALTER ) ]
 
-table( tbl$FB_SK_CH_F0012 ) ##man sieht es gibt einen 135-Wert und einige, die viel zu jung sind--> 135 in 13,5 ?ndern und cut ab 10
-tbl$FB_SK_CH_F0012[tbl$FB_SK_CH_F0012==135]<- 13.5
-tbl$FB_SK_CH_F0012[tbl$FB_SK_CH_F0012<10]<- NA
+nms <-
+    c( "SIC", "SCI_GROUP", "AGE", "STIMMBRUCH_ALTER", "STIMMBRUCH_GEHABT", "StimmbruchAlter1", "StimmbruchAlter2", "StimmbruchGehabt1", "StimmbruchGehabt2" )
 
+View( tbl[ tbl$SIC %in% sics, nms ] )
 
-# tbl$FB_SK_CH_F0012[ is.na( tbl$FB_SK_CH_F0012 ) & !is.na( tbl$FB_KS_STIMM_ALTER ) ] <- 
-#   tbl$FB_KS_STIMM_ALTER[ is.na( tbl$FB_SK_CH_F0012 ) & !is.na( tbl$FB_KS_STIMM_ALTER ) ] + 6
+# zu jung
+tbl[ tbl$SIC == sics[ 1 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 1 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 1 ] ] <- NA
 
-#Unn?tige Spalten raus: anzeigen lassen, ausw?hlen und rausschmei?en
+# wahrscheinlich mit 15
+tbl[ tbl$SIC == sics[ 2 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 2 ] ] <- 15
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 2 ] ] <- 1
+
+# zu jung
+tbl[ tbl$SIC == sics[ 3 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 3 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 3 ] ] <- NA
+
+# sgen wir 13.5
+tbl[ tbl$SIC == sics[ 4 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 4 ] ] <- 13.5
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 4 ] ] <- 1
+
+# zu jung
+tbl[ tbl$SIC == sics[ 5 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 5 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 5 ] ] <- NA
+
+# keine Ahnung
+tbl[ tbl$SIC == sics[ 6 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 6 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 6 ] ] <- NA
+
+# keine Ahnung
+tbl[ tbl$SIC == sics[ 7 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 7 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 7 ] ] <- NA
+
+# wahrscheinlich 14.1
+tbl[ tbl$SIC == sics[ 8 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 8 ] ] <- 14.1
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 8 ] ] <- 1
+
+# keine Ahnung
+tbl[ tbl$SIC == sics[ 9 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 9 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 9 ] ] <- NA
+
+# ist erst 10 und wird mit 24.7 seinen Stimmbruch bekommen
+tbl[ tbl$SIC == sics[ 10 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 10 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 10 ] ] <- NA
+
+# zu jung
+tbl[ tbl$SIC == sics[ 11 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 11 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 11 ] ] <- NA
+
+# zu jung
+tbl[ tbl$SIC == sics[ 12 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 12 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 12 ] ] <- NA
+
+# zu jung
+tbl[ tbl$SIC == sics[ 13 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 13 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 13 ] ] <- NA
+
+# nur den letzten Besuch korrigieren
+tbl[ tbl$SIC == sics[ 14 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 14 ] & tbl$AGE < 14 ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 14 ] & tbl$AGE < 14 ] <- NA
+
+# keine Ahnung
+tbl[ tbl$SIC == sics[ 15 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 15 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 15 ] ] <- NA
+
+# nehme, was zuerst angegeben wurde, passe auf Alter auf
+tbl[ tbl$SIC == sics[ 16 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 16 ] & 12.5 < tbl$AGE ] <- 12.5
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 16 ] & tbl$AGE < 12.5 ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 16 ] & 12.5 < tbl$AGE ] <- 1
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 16 ] & tbl$AGE < 12.5 ] <- 0
+
+# nehme nur den letzten Besuch
+tbl[ tbl$SIC == sics[ 17 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 17 ] & 13 < tbl$AGE ] <- 13.1
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 17 ] & tbl$AGE < 13 ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 17 ] & 13 < tbl$AGE ] <- 1
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 17 ] & tbl$AGE < 13 ] <- 0
+
+# nehme nur den letzten Besuch
+tbl[ tbl$SIC == sics[ 18 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 18 ] & 15 < tbl$AGE ] <- 15
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 18 ] & tbl$AGE < 15 ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 18 ] & 15 < tbl$AGE ] <- 1
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 18 ] & tbl$AGE < 15 ] <- 0
+
+# keine Ahnung
+tbl[ tbl$SIC == sics[ 19 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 19 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 19 ] ] <- NA
+
+# keine Ahnung
+tbl[ tbl$SIC == sics[ 20 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 20 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 20 ] ] <- NA
+
+# kann nicht sein
+tbl[ tbl$SIC == sics[ 21 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 21 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 21 ] ] <- NA
+
+# kann nicht sein
+tbl[ tbl$SIC == sics[ 22 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 22 ] ] <- 13
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 22 ] ] <- 1
+
+# kann nicht sein
+tbl[ tbl$SIC == sics[ 23 ], nms ]
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 23 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 23 ] ] <- NA
+
+tbl$STIMMBRUCH_ALTER[ !is.na( tbl$STIMMBRUCH_ALTER ) & ( tbl$STIMMBRUCH_ALTER < 10 | 20 < tbl$STIMMBRUCH_ALTER ) ] <-
+    NA
+
+# loesche unnoetige Spalten
 tbl <-
-    tbl[ , setdiff( names( tbl ), "FB_KS_STIMM_ALTER" ) ]
+    remove.columns( tbl, names( tbl )[ grep( "Stimmbruch", names( tbl ) ) ] )
 
+table( tbl$STIMMBRUCH_ALTER )
 
-dates <-
-    names( tbl )[ grep( "EDAT|DATUM", names( tbl ) ) ] ##alle spalten mit datum suchen
+# zeige alle Datumsspalten an
+table.df( tbl[ , get.date.columns( tbl ) ] )
 
-tbl[ , dates ]
-
-
-
-
-# EDAT.x scheint das vernuenftigste zu sein
-dates <-
-    dates[ dates != "EDAT.x" ]  ##alle nehmen, die nicht EDAT.x hei?en
-
-sci_grps <-
-    names( tbl )[ grep( "SCI|GROUP", names( tbl ) ) ]
-
-tbl[ , sci_grps ]
-
-
-sci_grps <-
-    sci_grps[ sci_grps != "SCI_GROUP" ]
-
+# loesche alle ausser EDAT 
 tbl <-
-    tbl[ , setdiff( names( tbl ), c( "Y", dates, sci_grps ) ) ]
+    remove.columns( tbl, setdiff( get.date.columns( tbl ), "EDAT" ) )
 
+# Kind und FamSics und Gruppen
+table.df( tbl[ , get.sic.columns( tbl ) ] )
+table.df( tbl[ , get.scigroup.columns( tbl ) ] )
+
+# loesche Jahresspalte
 tbl <-
-    rename.columns( 
-        tbl,
-        c( "EDAT.x", "TEILNEHMER_GESCHLECHT", "TEILNEHMER_GEB_JJJJMM", "C_ANTHRO_KH_AGE" ),
-        c( "EDAT", "SEX", "BIRTHDAY", "AGE" ) )
+    remove.columns( tbl, "Y" )
 
+# kodiere Spalte SEX um
 tbl$SEX <-
     as.factor( c( "male", "female" )[ match( tbl$SEX, c( 1, 2 ) ) ] )
 
-
-
 ##Underweights raus: ab BMI(SDS)< - 2.0
-sum(is.na(tbl$C_ANTHRO_KH_WEIGHT_ORIG)) 
+sum( is.na( tbl$WEIGHT ) ) 
 
-nrow(tbl)   ##4722
-tbl<- tbl[is.na(tbl$C_ANTHRO_KH_BMI_ADJ)|(!is.na(tbl$C_ANTHRO_KH_BMI_ADJ)&(tbl$C_ANTHRO_KH_BMI_ADJ>=-1.88)),]
-nrow(tbl) ##4350 mit -1.28, neu: 4645 mit -2.0, mit -1.88: 4621
+#4701
+nrow( tbl )   ##4722
 
+tbl <-
+    tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -2 ) ), ]
+#    tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -1.88 ) ), ]
+
+#4600
+nrow( tbl ) ##4350 mit -1.28, neu: 4645 mit -2.0, mit -1.88: 4621
 
 # WEIGHT-GROUPS
 tbl$WGHT_GRPS <-
     cut( 
-        tbl$C_ANTHRO_KH_BMI_ADJ,
+        tbl$BMI.ADJ,
         c( -Inf, +1.28, Inf ),
         c(  "normalweight", "overweight.and.obese" ) ) ##normalweigth m?ssen noch umbenannt werden,da auch die underweights bis -2.0 mit drin sind
 
@@ -680,7 +778,7 @@ tbl$HV <-
 # mid: 8.4 < SCORE_FAM <= 15.4
 # high: 15.4 < SCORE_FAM <= 21 ##nach Kiggs-Quintilen:  "Messung des sozio?konomischen Status in der Kiggs Studie",
 ##wir richten uns nach Kiggs, die Quintilen von LIFE w?rden anders aussehen...:
-quantile(tbl$D00177_SCORE_FAM, na.rm=T,c(.2,.8))
+quantile( tbl$D00177_SCORE_FAM, na.rm = T, c( .2, .8 ) )
 
 tbl$SES <-
     cut(
@@ -688,20 +786,17 @@ tbl$SES <-
         c( 2, 8.4, 15.4, 22 ),
         c( "low", "mid", "high" ) )
 
-
-sapply( tbl, function( col ) sum( is.na( col ) ) )
-sapply( tbl, function( col ) sum( !is.na( col ) ) )
-
+table.df( tbl )
 
 # Zeige alle Spaltennamen der Tabelle tbl an!
 # names( tbl ) 
 
 
-
-
 ##Pfad in dem die generierten Tabellen stehen
 # setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/AllesNeu20170725/data/generated/" )
-setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
+# setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
+
+setwd( "../generated/" )
 
 save( tbl, file = "main.table.Rd" )
 
@@ -710,7 +805,5 @@ openxlsx::write.xlsx( x = tbl, file = "main.table.xlsx" )
 names( tbl)
 
 nrow(tbl) #4645
-
-
-
+#4600
 

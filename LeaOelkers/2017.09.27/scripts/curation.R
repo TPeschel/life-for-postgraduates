@@ -6,11 +6,9 @@ if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devt
 # installiere neueste Version von helperForLife, falls noch nicht geschehen
 devtools::install_github( "TPeschel/hlpr4life" )
 
-# lade hlpr4life
-library( hlpr4life )
-
-load.pkgs(
+hlpr4life::load.pkgs(
     c(
+        "hlpr4life",
         "dplyr",
         "reshape2",
         "readxl",
@@ -177,7 +175,7 @@ nrow(tbl)
 
 #outlier 1 menarchealter=16 raus
 tbl<- tbl[is.na(tbl$C_PUB_STAT_MENARCHE_WANN)|(!is.na( tbl$C_PUB_STAT_MENARCHE_WANN ) & tbl$C_PUB_STAT_MENARCHE_WANN<16), ]
- ##--> 3jährige und outlier führe ich unter "ausgeschlossene Freitexte" für die Dokumentation
+ ##--> 3j?hrige und outlier f?hre ich unter "ausgeschlossene Freitexte" f?r die Dokumentation
 
 nrow(tbl)
 save(tbl, file = "main.table.curated.20170727.Rd")

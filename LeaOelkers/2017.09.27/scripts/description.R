@@ -25,12 +25,14 @@ Sys.setenv( TZ = "Europe/Berlin" )
 ##
 # setze Pfad zu aktuellem R-Arbeitsverzeichnis, Pfad zum Laden
 # setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/AllesNeu20170725/data/original/" )
-setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
+# setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
+
+setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/2017.09.27/data/generated/" )
 
 load( "main.table.curated.first.visit.complete.20170727.Rd" )
 
 
-##Themes für Plots, um nicht jedes mal alles neu zu definieren: ohne Gitter, da Kiess dies preferiert
+##Themes f?r Plots, um nicht jedes mal alles neu zu definieren: ohne Gitter, da Kiess dies preferiert
 theme.histo <-
   list(
     theme_bw( ),
@@ -424,7 +426,7 @@ ggplot( tbl ) +
     theme( panel.grid = element_blank())#+
 # facet_grid(.~WGHT_GRPS)
 
-##das gleiche für Stimmbruch:
+##das gleiche f?r Stimmbruch:
 tbl$mutation.age.cat <-
   cut(tbl$FB_SK_CH_F0012+.001,breaks = c(0:21), labels= (0:20))
 
