@@ -22,6 +22,9 @@ hlpr4life::load.pkgs(
 # setze Zeitzone auf Berlin Mean Time
 Sys.setenv( TZ = "Europe/Berlin" ) 
 
+# mehr infos bei ausgabe
+options(max.print = 100000)
+
 ##
 # setze Pfad zu aktuellem R-Arbeitsverzeichnis, Pfad zum Laden
 setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/2017.09.27/data/original/" )
@@ -264,11 +267,11 @@ tbl <-
         
 table( tbl$SCI_GROUP )
 
-
+# jetzt ueberfluessig
 # depressive Kinder fliegen erstmal raus    
 # sind eigentlich gar keine mehr drin (O;)
-tbl <-
-    tbl[ tbl$SCI_GROUP != "Z00", ]
+# tbl <-
+#     tbl[ tbl$SCI_GROUP != "Z00", ]
 
 # t508(LH), t487(FSH), d040(ANTHRO)
 tbl <-
@@ -303,7 +306,8 @@ tbl <-
             "C_ANTHRO_KH_HEIGHT_ADJ",
             "C_ANTHRO_KH_WEIGHT_ADJ",
             "C_ANTHRO_KH_BMI_ADJ",
-            "TEILNEHMER_GESCHLECHT" ),
+            "TEILNEHMER_GESCHLECHT",
+            "TEILNEHMER_GEB_JJJJMM" ),
         c( 
             "AGE",
             "HEIGHT",
@@ -312,7 +316,10 @@ tbl <-
             "HEIGHT.ADJ",
             "WEIGHT.ADJ",
             "BMI.ADJ",
-            "SEX" ) )
+            "SEX",
+            "BIRTHDAY") )
+
+table.df( tbl )
 
 # schmeisse alle ohne alter und groesse und gewicht raus, 20 leute
 tbl <-
@@ -417,7 +424,7 @@ tbl <-
 # 4701
 
 # zeige resultat
-table.df( tbl )
+t( table.df( tbl ) )
 
 # benenne EDAT.x in EDAT um
 tbl<- 
@@ -425,7 +432,7 @@ tbl<-
 
 # loesche EDAT.y
 tbl <-
-    tbl[ , setdiff( names( tbl ), c( "EDAT.y" ) ) ]
+    remove.columns( tbl, "EDAT.y" )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten)
 tbl <-
@@ -436,8 +443,7 @@ tbl <-
         by.y = c( "C_DISEASE_TX_SIC", "C_DISEASE_TX_SCI_GROUP" ),
         all.x = T )
 # 4701
-table.df( tbl )
-
+t( table.df( tbl ) )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente)
 tbl <-
@@ -448,8 +454,7 @@ tbl <-
         by.y = c( "CHILD_MED_H_SIC", "CHILD_MED_H_SCI_GROUP" ),
         all.x = T )
 # 4701
-table.df( tbl )
-
+t( table.df( tbl ) )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron)
 tbl <-
@@ -473,7 +478,6 @@ tbl <-
         all.x = T )
 
 # 4701
-
 table.df( tbl )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten), d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG)
@@ -514,7 +518,7 @@ tbl <-
 # 4701
 
 table.df( tbl )
-
+table( tbl[ , get.columns( tbl, "stimm" ) ] )
 
 # t508(LH), t487(FSH), d040(ANTHRO), r001(Stammdaten), d077(PubStat), d177(Winkler), d127(Krankheiten),
 # d129(Medikamente), t509(Testosteron), t488(Estradiol), t489(SHBG), t490(DHEAS), t976(Stimmbruch), t109(stimmbruch)
@@ -541,7 +545,6 @@ tbl <-
     all.x = T )
 
 # 4701
-
 table.df( tbl )
 
 # Geburtsgewichts- und Stimmbruchspalten umbenennen
@@ -554,7 +557,6 @@ tbl <-
 # 4701
 
 table.df( tbl )
-
 #4496 Geburtsgewicht
 #4442 Geburtsgroesse
 #918  C_PUB_STAT_MENARCHE_WANN
@@ -737,18 +739,37 @@ tbl <-
     remove.columns( tbl, "Y" )
 
 # kodiere Spalte SEX um
+# heisst alles schon richtig
+# tbl <-
+#     rename.columns( 
+#         tbl,
+#         c( "EDAT.x", "TEILNEHMER_GESCHLECHT", "TEILNEHMER_GEB_JJJJMM", "C_ANTHRO_KH_AGE" ),
+#         c( "EDAT", "SEX", "BIRTHDAY", "AGE" ) )
+
+# SEX noch umkodieren
 tbl$SEX <-
     as.factor( c( "male", "female" )[ match( tbl$SEX, c( 1, 2 ) ) ] )
 
-##Underweights raus: ab BMI(SDS)< - 2.0
-sum( is.na( tbl$WEIGHT ) ) 
 
 #4701
 nrow( tbl )   ##4722
 
+##Underweights raus: ab BMI(SDS)< - 2.0
 tbl <-
     tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -2 ) ), ]
 #    tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -1.88 ) ), ]
+
+sum( is.na( tbl$WEIGHT ) ) 
+
+# ich hab jetzt 4701
+nrow(tbl)   ##4722 
+
+tbl<- 
+#    tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -1.88)),]
+    tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -2. ) ), ]
+
+# ich hab 4624
+nrow( tbl ) ##4350 mit -1.28, neu: 4645 mit -2.0, mit -1.88: 4621
 
 #4600
 nrow( tbl ) ##4350 mit -1.28, neu: 4645 mit -2.0, mit -1.88: 4621
@@ -771,9 +792,9 @@ re[ is.na( re ) ] <- 0
 tbl$HV <-
     ( li + re ) / ifelse( li * re == 0, 1, 2 )
 
+table( tbl[ c( "C_PUB_STAT_HV_LI", "C_PUB_STAT_HV_RE", "HV" ) ] )
+
 ## WINKLER INDEX
-
-
 # low: 3 <= SCORE_FAM <= 8.4
 # mid: 8.4 < SCORE_FAM <= 15.4
 # high: 15.4 < SCORE_FAM <= 21 ##nach Kiggs-Quintilen:  "Messung des sozio?konomischen Status in der Kiggs Studie",
@@ -791,7 +812,6 @@ table.df( tbl )
 # Zeige alle Spaltennamen der Tabelle tbl an!
 # names( tbl ) 
 
-
 ##Pfad in dem die generierten Tabellen stehen
 # setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/AllesNeu20170725/data/generated/" )
 # setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
@@ -804,6 +824,6 @@ openxlsx::write.xlsx( x = tbl, file = "main.table.xlsx" )
 
 names( tbl)
 
+# ich hab 4624
 nrow(tbl) #4645
 #4600
-

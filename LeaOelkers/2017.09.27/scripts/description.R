@@ -6,11 +6,17 @@ if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devt
 # installiere neueste Version von helperForLife, falls noch nicht geschehen
 devtools::install_github( "TPeschel/hlpr4life" )
 
+<<<<<<< HEAD
 # lade hlpr4life
 library( hlpr4life )
 
 load.pkgs(
     c(
+=======
+hlpr4life::load.pkgs(
+    c(
+        "hlpr4life",
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
         "dplyr",
         "reshape2",
         "readxl",
@@ -26,11 +32,17 @@ Sys.setenv( TZ = "Europe/Berlin" )
 # setze Pfad zu aktuellem R-Arbeitsverzeichnis, Pfad zum Laden
 # setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/AllesNeu20170725/data/original/" )
 # setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
+<<<<<<< HEAD
 
 setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/2017.09.27/data/generated/" )
 
 load( "main.table.curated.first.visit.complete.20170727.Rd" )
 
+=======
+setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/2017.09.27/")
+
+load( "data/generated/main.table.curated_2017-10-06.Rd" )
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 
 ##Themes f?r Plots, um nicht jedes mal alles neu zu definieren: ohne Gitter, da Kiess dies preferiert
 theme.histo <-
@@ -62,6 +74,7 @@ theme.scatter <-
 
 ##CNT : um n=xx in die Plots reinzuschreiben
 tbl.add <-
+<<<<<<< HEAD
     as.data.frame(table(tbl$SEX))
 tbl$CNT<- NA     ##CNT als spalte angezeigt
 
@@ -69,6 +82,20 @@ tbl$CNT[ tbl$SEX == "male" ] <- tbl.add$Freq[ tbl.add$Var1=="male"]
 tbl$CNT[ tbl$SEX == "female" ] <- tbl.add$Freq[ tbl.add$Var1 =="female"]
 
 nrow(tbl)
+=======
+    as.data.frame( table( tbl$SEX ) )
+
+tbl$CNT <- 
+    NA     ##CNT als spalte angezeigt
+
+tbl$CNT[ tbl$SEX == "male" ] <-
+    tbl.add$Freq[ tbl.add$Var1=="male" ]
+
+tbl$CNT[ tbl$SEX == "female" ] <-
+    tbl.add$Freq[ tbl.add$Var1 =="female"]
+
+nrow( tbl )
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 
 #Alterskathegorien bilden
 
@@ -78,6 +105,7 @@ nrow(tbl)
 #         labels = c(-1:20))  ##ODER:
 
 tbl$AGE.CAT1<- 
+<<<<<<< HEAD
     cut(tbl$AGE,
         breaks = seq(4,18, by =1),   
         labels = seq(4,17, by=1))
@@ -100,15 +128,51 @@ summary(tbl$AGE[tbl$SEX=="female"])
 #Plot: frequency of age by sex
 
 setwd("c:/Users/Lea/Desktop/AllesNeu20170725/results/plots")
+=======
+    cut(
+        tbl$AGE,
+        breaks = seq( 4, 18, by = 1 ),   
+        labels = seq( 4, 17, by = 1 ) )
+
+tbl$AGE.CAT2<- 
+    cut(
+        tbl$AGE,
+        breaks = seq( 4, 18, by = 2 ),   
+        labels = seq( 5, 18, by = 2 ) )
+
+
+##Age by gender
+table( tbl$SEX )
+addmargins( table( tbl[ , c( "SEX", "AGE.CAT1" ) ] ) )
+
+##Mittelwert etc des ALters
+describeBy( tbl$AGE, tbl$SEX )
+
+summary( tbl$AGE[ tbl$SEX == "male" ] )  
+
+summary( tbl$AGE[ tbl$SEX == "female" ] ) 
+
+#Plot: frequency of age by sex
+
+# setwd("c:/Users/Lea/Desktop/AllesNeu20170725/results/plots" )
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 
 ggplot(tbl)+
     geom_histogram(aes( AGE.CAT2, fill=SEX),stat="count", position = "dodge")  # oder stack
 
 nrow(tbl)
+<<<<<<< HEAD
 ggplot( tbl ) +
     geom_histogram( aes( AGE.CAT1, fill = SEX ), stat =  "count" ) + 
     # theme_bw( ) +
     theme.histo.facet+
+=======
+
+ggplot( tbl ) +
+    geom_histogram( aes( AGE.CAT1, fill = SEX ), stat = "count" ) + 
+    # theme_bw( ) +
+    theme.histo.facet +
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
     ylab( "frequency" ) +
     scale_fill_manual( "sex", values = c( "deeppink", "blue" ), guide = F ) +  ##"grey85", "grey65"
     scale_x_discrete( "age [y]" )
@@ -135,6 +199,10 @@ df.mean.age <-
         MIN = c( min( tbl$AGE[tbl$SEX=="male"]),min( tbl$AGE[tbl$SEX=="female"])),
         MAX = c( max( tbl$AGE[tbl$SEX=="male"]),max( tbl$AGE[tbl$SEX=="female"]))
     )
+<<<<<<< HEAD
+=======
+
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 df.mean.age
 
 
@@ -148,7 +216,11 @@ df.mean.age
 #   theme_bw()  ##in schwarz-wei?
 
 #das gleiche ohne jitter: age by gender --> am besten
+<<<<<<< HEAD
 ggplot(tbl)+
+=======
+ggplot( tbl )+
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
     geom_boxplot(aes(x=SEX, y=AGE, fill=SEX), width=.5)+ #
     geom_errorbar(data=df.mean.age,aes(x=SEX, ymin=MIN,ymax=MAX),size=.3,width=.5)+ ##size=liniendicke, witth=breite der min/MAx werte
     geom_jitter(aes(x=SEX,y=AGE),alpha=.1,width = .01)+ ##punktverteilung zus?tzlich darstellen, alpha=tranparenz

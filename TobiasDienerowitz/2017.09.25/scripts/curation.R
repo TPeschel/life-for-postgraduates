@@ -16,7 +16,11 @@ load( "data/original/20170922sicpseudoliste.rdata" )
 names( main.1205 )
 
 obs.non.usable <-
+<<<<<<< HEAD
     read.csv( "data/original/non_usable_obs." )
+=======
+    read.csv( "data/original/NX2P7X~W" )
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 
 # da stimmen ein paar namen nicht
 names( obs.non.usable )
@@ -49,6 +53,10 @@ names( obs.extreme )
 names( obs.extreme ) <-
     gsub( "NA\\.", "T00865\\.", names( obs.extreme ) )
 
+<<<<<<< HEAD
+=======
+names( obs.extreme )
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 
 # baue kleinen dataframe fuers mergen
 oe <-

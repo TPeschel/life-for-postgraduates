@@ -17,7 +17,7 @@ setwd( "~/LIFE/life-for-postgraduates/HansSurup/sent/20171005/" )
 # ich nenne die Tabelle mt fuer main table
 # is nich so lang (O;
 mt <-
-    read_excel( "PV0365_Gesamt_Join.xlsx" )
+    read_excel( "../PV0365_Gesamt_Join.xlsx" )
 
 table.df( mt )
 

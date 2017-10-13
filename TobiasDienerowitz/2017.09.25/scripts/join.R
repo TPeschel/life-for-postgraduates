@@ -1,4 +1,8 @@
+<<<<<<< HEAD
     # loesche speicher
+=======
+# loesche speicher
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 ###############################################
 
 rm( list = ls( ) )
@@ -29,7 +33,11 @@ hlpr4life::load.pkgs(
 setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
 
 # bei mir liegen die Tabellen in einem
+<<<<<<< HEAD
 # Unterordner data/main/
+=======
+# Unterordner data/original/
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 ###############################################
 main.1205 <-
     read_excel( "data/original/PV0278_datajoin20161205.xlsx" )

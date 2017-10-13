@@ -23,14 +23,28 @@ setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
 # lade join mit extremen werten
 ##
 load( "data/generated/main.1205.only.usable.with.extremes.Rd" )
+<<<<<<< HEAD
 m <- main.1205.only.usable.with.extremes
+=======
+
+m <- 
+    main.1205.only.usable.with.extremes
+
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 rm( main.1205.only.usable.with.extremes )
 
 ##
 # lade Rohdaten
 ##
 load( "data/original/raw.dat.Rd" )
+<<<<<<< HEAD
 r <- res
+=======
+
+r <- 
+    res
+
+>>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 rm( res )
 
 load( "data/original/20170922sicpseudoliste.rdata" ) 
