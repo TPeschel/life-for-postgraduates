@@ -5,28 +5,24 @@ hlpr4life::load.pkgs(
         "hlpr4life",
         "ggplot2",
         "dplyr",
-        "reshape2" ) )
+        "reshape2",
+        "openxlsx",
+        "db.access" ) )
+
+setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
 
 # lade join mit korrigierten Geschlechtern
-load( "data/generated/main.table.2017.09.25.Rd" ) 
-
-# lade sic pseudonym liste
-load( "data/original/20170922sicpseudoliste.rdata" ) 
-
-names( main.1205 )
+load( "data/generated/main.table.Rd" ) 
 
 obs.non.usable <-
-<<<<<<< HEAD
     read.csv( "data/original/non_usable_obs." )
-=======
-    read.csv( "data/original/NX2P7X~W" )
->>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
+#    read.csv( "data/original/NX2P7X~W" )
 
 # da stimmen ein paar namen nicht
 names( obs.non.usable )
 
 names( obs.non.usable ) <-
-    gsub( "NA\\.", "T00865\\.", names( obs.non.usable ) )
+    gsub( "^NA\\.", "T00865\\.", names( obs.non.usable ) )
 
 names( obs.non.usable )
 # out <-
@@ -39,10 +35,6 @@ names( obs.non.usable )
 main.1205.only.usable <-
     anti_join( main.1205, obs.non.usable, by = c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) )
 
-# haenge noch sic spalte ran, weil die rohdaten original daten enthalten
-main.1205.only.usable$SIC <-
-    sicpseudo$SIC[ match( main.1205.only.usable$PSEUDONYM, sicpseudo$PSEUDONYM ) ]
-
 # lade tabelle mit extremen werten
 obs.extreme <-
     read.csv( "data/original/obs_extremes" )
@@ -51,12 +43,9 @@ names( obs.extreme )
 
 # hier stimmen auch manche namen nicht
 names( obs.extreme ) <-
-    gsub( "NA\\.", "T00865\\.", names( obs.extreme ) )
+    gsub( "^NA\\.", "T00865\\.", names( obs.extreme ) )
 
-<<<<<<< HEAD
-=======
 names( obs.extreme )
->>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 
 # baue kleinen dataframe fuers mergen
 oe <-
@@ -77,10 +66,21 @@ main.1205.only.usable.with.extremes <-
 main.1205.only.usable.with.extremes$EXTREME[ is.na( main.1205.only.usable.with.extremes$EXTREME ) ] <-
     F
 
-# WriteXLS( main.1205, ExcelFileName = "data/main/PV0278_datajoin_20170929.xlsx" ) #doesn't save correctly pseudonyms
-write.xlsx( main.1205.only.usable.with.extremes, file = "data/generated/main.1205.only.usable.with.extremes.xlsx" )
+# main.1205.only.usable.with.extremes <-
+#     rename.columns( 
+#         main.1205.only.usable.with.extremes,
+#         "C_ANTHRO_KH_AGE", 
+#         "age" )
 
-save( main.1205.only.usable.with.extremes, file = "data/generated/main.1205.only.usable.with.extremes.Rd" )
+main.1205.only.usable.with.extremes$AGE <-
+    floor( main.1205.only.usable.with.extremes$age )
+
+t( table.df( main.1205.only.usable.with.extremes ) )
+
+# WriteXLS( main.1205, ExcelFileName = "data/main/PV0278_datajoin_20170929.xlsx" ) #doesn't save correctly pseudonyms
+write.xlsx( main.1205.only.usable.with.extremes, file = "data/generated/main.table.only.usable.with.extremes.xlsx" )
+
+save( main.1205.only.usable.with.extremes, file = "data/generated/main.table.only.usable.with.extremes.Rd" )
 
 rm( list = ls( ) )
 

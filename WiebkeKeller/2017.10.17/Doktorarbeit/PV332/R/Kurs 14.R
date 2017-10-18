@@ -1,0 +1,7 @@
+m1 <- glm(lowbw ~ hyp, family = binomial, data = births)
+m2 <- glm(lowbw ~ hyp + sex, family = binomial, data = births)
+m3 <- glm(lowbw ~ hyp*sex, family = binomial, data = births)
+Effect("hyp", m3)
+allEffects(m1)
+allEffects(m2)
+allEffects(m3)

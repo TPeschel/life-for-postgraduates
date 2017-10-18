@@ -14,7 +14,7 @@
 \setlength{\textwidth}{17cm}
 \setlength{\textheight}{22cm}
 
-\title{Plots of extreme - Singing Voice}
+\title{Statistics of extreme values and not usable ones - Singing Voice}
 \author{Thomas Peschel}
 \begin{document}
 %\SweaveOpts{concordance=TRUE}

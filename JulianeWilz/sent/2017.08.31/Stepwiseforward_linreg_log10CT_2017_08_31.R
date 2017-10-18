@@ -130,6 +130,11 @@ lm.log10CT.age <-
 
 summary( lm.log10CT.age ) 
 
+my.summary( rename.columns( d01m, c( "CT", "sex" ), c( "Y", "GROUP" ) ) )
+
+sum.of.squares( d01m$log10CT )
+sum.of.squares( d01m$log10CT[ d01m$age.cat == 1 ] )
+
 etaSquared( lm.log10CT.age )
 #Alter ist signifikant
 

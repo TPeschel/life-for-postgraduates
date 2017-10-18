@@ -1,4 +1,3 @@
-
 # Loesche Speicher
 rm( list =  ls( ) )
 
@@ -15,15 +14,17 @@ library( reshape2 )
 library( effects )
 
 
-setwd( "~/Desktop/pv0116_neu/")
+# setwd( "~/Desktop/pv0116_neu/")
 
 daten <-
-  read_excel( "Tabellen/AktuelleTabelle190517excel.xlsx" )
+  read_excel( "../data/AktuelleTabelle220517excel.xlsx" )
 
 
 d <-
   daten[ !is.na( daten$AGE_Calcitionin ) & !is.na( daten$CT_S_1_NUM_VALUE ), ]
+
 d$AGE_Calcitionin <- as.numeric( d$AGE_Calcitionin )
+
 d.m <- d[ d$TEILNEHMER_GESCHLECHT=="male", ]
 d.f <- d[ d$TEILNEHMER_GESCHLECHT=="female", ]
 
@@ -40,17 +41,10 @@ d01f <- d.f[between(d.f$AGE_Calcitionin, 0,1),]
 d <-
   daten[ !is.na( daten$AGE_Calcitionin ) & !is.na( daten$CT_S_1_NUM_VALUE ), ]
 
-
 d$AGE_Calcitionin <- as.numeric( d$AGE_Calcitionin )
 
 d.m <- d[ d$TEILNEHMER_GESCHLECHT=="male", ]
 d.f <- d[ d$TEILNEHMER_GESCHLECHT=="female", ]
-
-d01 <- d[between(d$AGE_Calcitionin, 0,1),]
-
-d01m <- d.m[between(d.m$AGE_Calcitionin, 0,1),]
-d01f <- d.f[between(d.f$AGE_Calcitionin, 0,1),]
-
 
 linreg <- lm(d01f$CT_S_1_NUM_VALUE ~ d01f$AGE_Calcitionin)
 summary(linreg)
@@ -274,18 +268,47 @@ summary(linreg)
 
 #n-Zahlen
 
-rm( list =  ls( ) )
-setwd( "~/Desktop/pv0116_neu/")
+# rm( list =  ls( ) )
+# #setwd( "~/Desktop/pv0116_neu/")
+# 
+# daten <-
+#   read_excel( "Tabellen/AktuelleTabelle190517excel.xlsx" )
+# 
+# d <-
+#   daten[ !is.na( daten$AGE_Calcitionin ) & !is.na( daten$CT_S_1_NUM_VALUE )& !is.na( daten$P1NP_S_NUM_VALUE )& !is.na( daten$OSTEO_S_NUM_VALUE ), ]
+# 
+# d$AGE_Calcitionin <- as.numeric( d$AGE_Calcitionin )
+# 
+# 
+# 
+# d.f <- d[ d$TEILNEHMER_GESCHLECHT=="female", ]
+# 
+# d01f <- d.f[between(d.f$AGE_Calcitionin, 0,1),]
+# 
 
-daten <-
-  read_excel( "Tabellen/AktuelleTabelle190517excel.xlsx" )
-
-d <-
-  daten[ !is.na( daten$AGE_Calcitionin ) & !is.na( daten$CT_S_1_NUM_VALUE )& !is.na( daten$P1NP_S_NUM_VALUE )& !is.na( daten$OSTEO_S_NUM_VALUE ), ]
-
-d$AGE_Calcitionin <- as.numeric( d$AGE_Calcitionin )
+length( unique( d01f$CT_S_1_SIC ) )
+length( ( d01f.$CT_S_1_SIC ) )
 
 
-d.f <- d[ d$TEILNEHMER_GESCHLECHT=="female", ]
+# Nur letzter Besuch!
+# Gruppiere alle Kinder
+# Haenge 2 neue Spalten mit dem n-ten Besuch und der Gesamtbesuchsanzahl an die Tabelle
+d01f.lst <-
+    d01f %>% group_by( CT_S_1_SIC ) %>% mutate( nter.Besuch = dense_rank( CT_S_1_DATUM ), n.Besuche = n( ) )
 
-d01f <- d.f[between(d.f$AGE_Calcitionin, 0,1),]
+# Waehle nur letzten Besuch ( Besuchsnummer = Anzahl der Besuche )
+d01f.lst <-
+    d01f.lst[ d01f.lst$nter.Besuch == d01f.lst$n.Besuche, ]
+
+# falls noch nicht gemacht:
+d01f.lst$logCT <- log10( d01f.lst$CT_S_1_NUM_VALUE )
+
+# Probiere 4 Modelle mit und ohne sds und plus und mal
+summary( plus <- lm( logCT ~ AGE_Calcitionin + C_ANTHRO_KH_HEIGHT_ORIG, d01f.lst ) )
+summary( star <- lm( logCT ~ AGE_Calcitionin * C_ANTHRO_KH_HEIGHT_ORIG, d01f.lst ) )
+summary( plus.sds <- lm( logCT ~ AGE_Calcitionin + C_ANTHRO_KH_HEIGHT_ADJ, d01f.lst ) )
+summary( star.sds <- lm( logCT ~ AGE_Calcitionin * C_ANTHRO_KH_HEIGHT_ADJ, d01f.lst ) )
+
+anova( plus, star, plus.sds, star.sds )
+
+# Das Modell mit Alter * HEIGHT-SDS scheint fuer den letzten Besuch am besten zu sein.
