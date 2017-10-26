@@ -260,7 +260,7 @@ tbl <-
         by.y = c( "LH_S_SIC", "LH_S_GRUPPE" ),
         all = T )
 
-table.df( tbl )
+table.df( tbl, horizontal = F )
 
 tbl <-
     rename.columns( tbl, c( "FSH_S_SIC", "FSH_S_GRUPPE", "LH_S_DATUM" ), c( "SIC", "SCI_GROUP", "EDAT" ) )
