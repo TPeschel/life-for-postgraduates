@@ -10,7 +10,7 @@ hlpr4life::load.pkgs(
 
 load( "sent/2017.09.14/raw.dat.Rd" )
 load( "data/main/main.table.2017.09.29.Rd" ) 
-load( "")
+
 names( main.1205 )
 
 obs.non.usable <-

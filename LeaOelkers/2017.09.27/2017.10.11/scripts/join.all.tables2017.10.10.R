@@ -260,7 +260,7 @@ tbl <-
         by.y = c( "LH_S_SIC", "LH_S_GRUPPE" ),
         all = T )
 
-table.df( tbl, horizontal = F )
+t( table.df( tbl ) ) ##zeigt anzahl Nas und availables an
 
 tbl <-
     rename.columns( tbl, c( "FSH_S_SIC", "FSH_S_GRUPPE", "LH_S_DATUM" ), c( "SIC", "SCI_GROUP", "EDAT" ) )
@@ -362,14 +362,14 @@ tbl <-
         all.x = T ) ##4707 = F
 # 4702
 sics <-
-    tbl$SIC[ is.na( tbl$FAM_PSEUDO ) ]
+    tbl$SIC[ is.na( tbl$FAM_PSEUDO ) ] ##15 sics ohne fam-ID
 
 tbl[ is.na( tbl$FAM_PSEUDO ), ] 
 
 sci.grp <-
     tbl$SCI_GROUP[ is.na( tbl$FAM_PSEUDO ) ] 
 
-# 15 kinder haben keinen besuch in der d177
+# 15 kinder haben keinen besuch in der d177, alle sind unterschiedlich
 length( unique( sics ) )
 
 # wirf den einen raus, den es in der d177 nicht gibt!
@@ -385,7 +385,7 @@ d177.sub <-
 
 length( unique( d177.sub$PSEUDONYM ) )
 
-# zaehle missings pro zeilen und vermerke dies in der Spalte Num.Of.Missings
+# zaehle missings pro zeilen und vermerke dies in der Spalte Num.Of.Missings, bei welchem besuch sind die meisten Eintraege
 d177.sub$Num.Of.Missings <-
   sapply( 1 : nrow( d177.sub ), function( z ) sum( is.na( d177.sub[ z , ] ) ) )
 
@@ -398,15 +398,15 @@ d177.sub %<>%
 # sollten 14 sein
 nrow( d177.sub <- d177.sub[ d177.sub$D00177_JAHR == d177.sub$J, ] )
 
-# ermittle Zeilen in tbl, zu fehlenden Werten in tbl
+# ermittle Zeilen in (original)tbl, zu fehlenden Werten in tbl
 tbl.rows <-
     which( tbl$SIC %in% sics & is.na( tbl$D00177_SCORE_FAM ) )
 
-# ermittle Zeilen in d177.sub, zu fehlenden Werten in tbl
+# ermittle Zeilen in d177.sub, zu fehlenden Werten in tbl, Zeieln des Winkler die in original fehlen, werden jetzt zur original tbl zugefügt
 d177.rows <-
     which( d177.sub$PSEUDONYM %in% sics )
 
-# ermittle namen der fehlenden Werte
+# ermittle namen der fehlenden Werte: diese zeilen werden aus der 177 geholt und in original tbl zugefügt
 names.d177 <-
     intersect( names( tbl ), names( d177.sub ) )
 
@@ -575,7 +575,7 @@ tbl$STIMMBRUCH_GEHABT <-
     tbl$StimmbruchGehabt1
 
 tbl$STIMMBRUCH_GEHABT[ is.na( tbl$STIMMBRUCH_GEHABT ) ] <-
-    tbl$StimmbruchGehabt2[ is.na( tbl$STIMMBRUCH_GEHABT ) ]
+    tbl$StimmbruchGehabt2[ is.na( tbl$STIMMBRUCH_GEHABT ) ]  ##wenn in STIMMBRUCH_GEHABT nichts drin ist, werden die Werte aus StimmbruchGehabt2 genommen
 
 tbl$STIMMBRUCH_ALTER <-
     tbl$StimmbruchAlter1 + 6
@@ -586,29 +586,29 @@ tbl$STIMMBRUCH_ALTER[ is.na( tbl$STIMMBRUCH_ALTER ) ] <-
 table( tbl$STIMMBRUCH_ALTER )
 
 sics <-
-    tbl$SIC[ !is.na( tbl$STIMMBRUCH_ALTER ) & ( tbl$STIMMBRUCH_ALTER < 10 | 20 < tbl$STIMMBRUCH_ALTER ) ]
+    tbl$SIC[ !is.na( tbl$STIMMBRUCH_ALTER ) & ( tbl$STIMMBRUCH_ALTER < 10 | 20 < tbl$STIMMBRUCH_ALTER ) ] ##Cut offs für Stimmbruch
 
 nms <-
     c( "SIC", "SCI_GROUP", "AGE", "STIMMBRUCH_ALTER", "STIMMBRUCH_GEHABT", "StimmbruchAlter1", "StimmbruchAlter2", "StimmbruchGehabt1", "StimmbruchGehabt2" )
 
-View( tbl[ tbl$SIC %in% sics, nms ] )
+View( tbl[ tbl$SIC %in% sics, nms ] )  ##einige machen keinen Sinn, also alles einzeln durchgehen udn kurieren
 
 # zu jung
-tbl[ tbl$SIC == sics[ 1 ], nms ]
+tbl[ tbl$SIC == sics[ 1 ], nms ] ##alle sics die außerhalb der Range liegen (10-20y)
 tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 1 ] ] <- NA
 tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 1 ] ] <- NA
 
 # wahrscheinlich mit 15
 tbl[ tbl$SIC == sics[ 2 ], nms ]
-tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 2 ] ] <- 15
-tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 2 ] ] <- 1
+tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 2 ] ] <- 15    
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 2 ] ] <- 1  ##kuriert
 
 # zu jung
 tbl[ tbl$SIC == sics[ 3 ], nms ]
 tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 3 ] ] <- NA
-tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 3 ] ] <- NA
+tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 3 ] ] <- NA  
 
-# sgen wir 13.5
+# sagen wir 13.5
 tbl[ tbl$SIC == sics[ 4 ], nms ]
 tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 4 ] ] <- 13.5
 tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 4 ] ] <- 1
@@ -675,7 +675,7 @@ tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 16 ] & tbl$AGE < 12.5 ] <- NA
 tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 16 ] & 12.5 < tbl$AGE ] <- 1
 tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 16 ] & tbl$AGE < 12.5 ] <- 0
 
-# nehme nur den letzten Besuch
+# nehme nur den letzten Besuch, damit Altersangaben zu Stimmbruch Sinn machen
 tbl[ tbl$SIC == sics[ 17 ], nms ]
 tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 17 ] & 13 < tbl$AGE ] <- 13.1
 tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 17 ] & tbl$AGE < 13 ] <- NA
@@ -715,13 +715,13 @@ tbl$STIMMBRUCH_ALTER[ tbl$SIC == sics[ 23 ] ] <- NA
 tbl$STIMMBRUCH_GEHABT[ tbl$SIC == sics[ 23 ] ] <- NA
 
 tbl$STIMMBRUCH_ALTER[ !is.na( tbl$STIMMBRUCH_ALTER ) & ( tbl$STIMMBRUCH_ALTER < 10 | 20 < tbl$STIMMBRUCH_ALTER ) ] <-
-    NA
+    NA ##alle anderen die jetzt nicht kuriert wurden wird NA zugewiesen, da außerhalb der range, nur zur Sicherheit, weil alle eigentlich angeguckt wurden die außerhalb der range lagen
 
 # loesche unnoetige Spalten
 tbl <-
     remove.columns( tbl, names( tbl )[ grep( "Stimmbruch", names( tbl ) ) ] )
 
-table( tbl$STIMMBRUCH_ALTER )
+addmargins(table( tbl$STIMMBRUCH_ALTER ))  ##range stimmbruch: 10-16.8y, 742
 
 # zeige alle Datumsspalten an
 table.df( tbl[ , get.date.columns( tbl ) ] )
@@ -731,8 +731,8 @@ tbl <-
     remove.columns( tbl, setdiff( get.date.columns( tbl ), "EDAT" ) )
 
 # Kind und FamSics und Gruppen
-table.df( tbl[ , get.sic.columns( tbl ) ] )
-table.df( tbl[ , get.scigroup.columns( tbl ) ] )
+table.df( tbl[ , get.sic.columns( tbl ) ] ) ##es gibt eine SIC für kind und eine FAM_PSEUDO für Fam.zugehoerigkeit
+table.df( tbl[ , get.scigroup.columns( tbl ) ] ) ##das selbe fuer SCIgroup
 
 # loesche Jahresspalte
 tbl <-
@@ -752,27 +752,21 @@ tbl$SEX <-
 
 
 #4701
-nrow( tbl )   ##4722
+nrow( tbl )   
 
-##Underweights raus: ab BMI(SDS)< - 2.0
+##Underweights raus: ab BMI(SDS)< - 1.88
 tbl <-
-    tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -2 ) ), ]
-#    tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -1.88 ) ), ]
+    tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -1.88 ) ), ]
+ ##24 leute werden im GG zu -2.0 mehr ausgeschlossen
 
 sum( is.na( tbl$WEIGHT ) ) 
 
-# ich hab jetzt 4701
-nrow(tbl)   ##4722 
+# jetzt 4600, wenn bmi ausschluss bei -2.0 wären es 4624
+nrow(tbl)    
 
-tbl<- 
-#    tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -1.88)),]
-    tbl[ is.na( tbl$BMI.ADJ ) | ( !is.na( tbl$BMI.ADJ ) & ( tbl$BMI.ADJ >= -2. ) ), ]
 
-# ich hab 4624
-nrow( tbl ) ##4350 mit -1.28, neu: 4645 mit -2.0, mit -1.88: 4621
 
-#4600
-nrow( tbl ) ##4350 mit -1.28, neu: 4645 mit -2.0, mit -1.88: 4621
+
 
 # WEIGHT-GROUPS
 tbl$WGHT_GRPS <-
@@ -792,14 +786,14 @@ re[ is.na( re ) ] <- 0
 tbl$HV <-
     ( li + re ) / ifelse( li * re == 0, 1, 2 )
 
-table( tbl[ c( "C_PUB_STAT_HV_LI", "C_PUB_STAT_HV_RE", "HV" ) ] )
+table( tbl[ c( "C_PUB_STAT_HV_LI", "C_PUB_STAT_HV_RE", "HV" ) ] )  ##angucken wie die zahlen zustande kommen
 
 ## WINKLER INDEX
 # low: 3 <= SCORE_FAM <= 8.4
 # mid: 8.4 < SCORE_FAM <= 15.4
 # high: 15.4 < SCORE_FAM <= 21 ##nach Kiggs-Quintilen:  "Messung des sozio?konomischen Status in der Kiggs Studie",
 ##wir richten uns nach Kiggs, die Quintilen von LIFE w?rden anders aussehen...:
-quantile( tbl$D00177_SCORE_FAM, na.rm = T, c( .2, .8 ) )
+quantile( tbl$D00177_SCORE_FAM, na.rm = T, c( .2, .8 ) ) ##angucken, wie wir es eigentlich trennen würden bei quitilen betrachtung
 
 tbl$SES <-
     cut(
@@ -824,6 +818,12 @@ openxlsx::write.xlsx( x = tbl, file = "main.table.xlsx" )
 
 names( tbl)
 
-# ich hab 4624
-nrow(tbl) #4645
+nrow(tbl)   ##main table mit aussortierten underweights
 #4600
+
+
+
+sum(is.na(tbl$SES))
+t( table.df( tbl ) ) ##zeigt anzahl Nas und availables von allen Spalten an
+#spalte "Stimmbruch_Gehabt macht keinen sinn, da viele keine altersangabe gemacht haben, deshalb nur spalte  STIMMBRUCH_ALTER angucken
+

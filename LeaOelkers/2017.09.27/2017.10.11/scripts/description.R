@@ -6,17 +6,11 @@ if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devt
 # installiere neueste Version von helperForLife, falls noch nicht geschehen
 devtools::install_github( "TPeschel/hlpr4life" )
 
-<<<<<<< HEAD
 # lade hlpr4life
 library( hlpr4life )
 
 load.pkgs(
     c(
-=======
-hlpr4life::load.pkgs(
-    c(
-        "hlpr4life",
->>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
         "dplyr",
         "reshape2",
         "readxl",
@@ -30,19 +24,12 @@ Sys.setenv( TZ = "Europe/Berlin" )
 
 ##
 # setze Pfad zu aktuellem R-Arbeitsverzeichnis, Pfad zum Laden
-# setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/AllesNeu20170725/data/original/" )
-# setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
-<<<<<<< HEAD
-
 setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/2017.09.27/data/generated/" )
+# setwd( "c:/Users/Lea/Desktop/AllesNeu20170725/data/generated/" )  
 
-load( "main.table.curated.first.visit.complete.20170727.Rd" )
+load( "tbl.ein.Besuch.Rd" )
 
-=======
-setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/2017.09.27/")
-
-load( "data/generated/main.table.curated_2017-10-06.Rd" )
->>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
+tbl<- tb.lst  ##ich nehme tb.lst als meine neue tbl mit der ich rechne, also Last visits
 
 ##Themes f?r Plots, um nicht jedes mal alles neu zu definieren: ohne Gitter, da Kiess dies preferiert
 theme.histo <-
@@ -68,34 +55,20 @@ theme.scatter <-
 
 ##Hilfe
     # list(colours())
-    # View(tbl[, c( "C_ANTHRO_KH_BMI_ADJ", "C_ANTHRO_KH_BMI_ORIG", "AGE", "WGHT_GRPS_BMI","WGHT_GRPS"  )]) ##einzelne spalten angucken
-    # sum(is.na(tbl$C_ANTHRO_KH_BMI_ORIG))  ##NAs zählen
+    # View(tbl[, c( "BMI.ADJ", "BMI", "AGE", "WGHT_GRPS_BMI","WGHT_GRPS"  )]) ##einzelne spalten angucken
+    # sum(is.na(tbl$BMI))  ##NAs zählen
 
 
 ##CNT : um n=xx in die Plots reinzuschreiben
 tbl.add <-
-<<<<<<< HEAD
     as.data.frame(table(tbl$SEX))
-tbl$CNT<- NA     ##CNT als spalte angezeigt
+
+tbl$CNT <- NA     ##CNT als spalte angezeigt
 
 tbl$CNT[ tbl$SEX == "male" ] <- tbl.add$Freq[ tbl.add$Var1=="male"]
 tbl$CNT[ tbl$SEX == "female" ] <- tbl.add$Freq[ tbl.add$Var1 =="female"]
 
 nrow(tbl)
-=======
-    as.data.frame( table( tbl$SEX ) )
-
-tbl$CNT <- 
-    NA     ##CNT als spalte angezeigt
-
-tbl$CNT[ tbl$SEX == "male" ] <-
-    tbl.add$Freq[ tbl.add$Var1=="male" ]
-
-tbl$CNT[ tbl$SEX == "female" ] <-
-    tbl.add$Freq[ tbl.add$Var1 =="female"]
-
-nrow( tbl )
->>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 
 #Alterskathegorien bilden
 
@@ -105,13 +78,12 @@ nrow( tbl )
 #         labels = c(-1:20))  ##ODER:
 
 tbl$AGE.CAT1<- 
-<<<<<<< HEAD
-    cut(tbl$AGE,
+    cut(tbl$AGE+0.001,
         breaks = seq(4,18, by =1),   
         labels = seq(4,17, by=1))
 
 tbl$AGE.CAT2<- 
-    cut(tbl$AGE,
+    cut(tbl$AGE+0.001,
         breaks = seq(4,18, by =2),   
         labels = seq(5,18, by=2))
 
@@ -127,52 +99,17 @@ summary(tbl$AGE[tbl$SEX=="female"])
 
 #Plot: frequency of age by sex
 
-setwd("c:/Users/Lea/Desktop/AllesNeu20170725/results/plots")
-=======
-    cut(
-        tbl$AGE,
-        breaks = seq( 4, 18, by = 1 ),   
-        labels = seq( 4, 17, by = 1 ) )
-
-tbl$AGE.CAT2<- 
-    cut(
-        tbl$AGE,
-        breaks = seq( 4, 18, by = 2 ),   
-        labels = seq( 5, 18, by = 2 ) )
-
-
-##Age by gender
-table( tbl$SEX )
-addmargins( table( tbl[ , c( "SEX", "AGE.CAT1" ) ] ) )
-
-##Mittelwert etc des ALters
-describeBy( tbl$AGE, tbl$SEX )
-
-summary( tbl$AGE[ tbl$SEX == "male" ] )  
-
-summary( tbl$AGE[ tbl$SEX == "female" ] ) 
-
-#Plot: frequency of age by sex
-
-# setwd("c:/Users/Lea/Desktop/AllesNeu20170725/results/plots" )
->>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
+#setwd("c:/Users/Lea/Desktop/AllesNeu20170725/results/plots")
+setwd( "~/LIFE/life-for-postgraduates/LeaOelkers/2017.09.27/")
 
 ggplot(tbl)+
     geom_histogram(aes( AGE.CAT2, fill=SEX),stat="count", position = "dodge")  # oder stack
 
 nrow(tbl)
-<<<<<<< HEAD
 ggplot( tbl ) +
     geom_histogram( aes( AGE.CAT1, fill = SEX ), stat =  "count" ) + 
     # theme_bw( ) +
     theme.histo.facet+
-=======
-
-ggplot( tbl ) +
-    geom_histogram( aes( AGE.CAT1, fill = SEX ), stat = "count" ) + 
-    # theme_bw( ) +
-    theme.histo.facet +
->>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
     ylab( "frequency" ) +
     scale_fill_manual( "sex", values = c( "deeppink", "blue" ), guide = F ) +  ##"grey85", "grey65"
     scale_x_discrete( "age [y]" )
@@ -199,10 +136,7 @@ df.mean.age <-
         MIN = c( min( tbl$AGE[tbl$SEX=="male"]),min( tbl$AGE[tbl$SEX=="female"])),
         MAX = c( max( tbl$AGE[tbl$SEX=="male"]),max( tbl$AGE[tbl$SEX=="female"]))
     )
-<<<<<<< HEAD
-=======
 
->>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
 df.mean.age
 
 
@@ -216,11 +150,7 @@ df.mean.age
 #   theme_bw()  ##in schwarz-wei?
 
 #das gleiche ohne jitter: age by gender --> am besten
-<<<<<<< HEAD
 ggplot(tbl)+
-=======
-ggplot( tbl )+
->>>>>>> e55827e4e68a2da1380e5cde1a10c31a120aab6a
     geom_boxplot(aes(x=SEX, y=AGE, fill=SEX), width=.5)+ #
     geom_errorbar(data=df.mean.age,aes(x=SEX, ymin=MIN,ymax=MAX),size=.3,width=.5)+ ##size=liniendicke, witth=breite der min/MAx werte
     geom_jitter(aes(x=SEX,y=AGE),alpha=.1,width = .01)+ ##punktverteilung zus?tzlich darstellen, alpha=tranparenz
@@ -478,7 +408,7 @@ describeBy(tbl$C_PUB_STAT_MENARCHE_WANN)
 summary(tbl$C_PUB_STAT_MENARCHE_WANN)
 
     #outlier angucken: wenn evtl. NAs drin immer check mit !is.na
-tbl[!is.na( tbl$C_PUB_STAT_MENARCHE_WANN ) & tbl$C_PUB_STAT_MENARCHE_WANN>15, c("C_DISEASE_TX_FREITEXT_ANGABE", "SEX", "C_ANTHRO_KH_BMI_ORIG", "AGE", "SIC", "CHILD_MED_H_ATC_NAME" )]
+tbl[!is.na( tbl$C_PUB_STAT_MENARCHE_WANN ) & tbl$C_PUB_STAT_MENARCHE_WANN>15, c("C_DISEASE_TX_FREITEXT_ANGABE", "SEX", "BMI", "AGE", "SIC", "CHILD_MED_H_ATC_NAME" )]
 
     #outlier 16 raus
 tbl<- tbl[is.na(tbl$C_PUB_STAT_MENARCHE_WANN)|(!is.na( tbl$C_PUB_STAT_MENARCHE_WANN ) & tbl$C_PUB_STAT_MENARCHE_WANN<16), ]
@@ -488,31 +418,33 @@ tbl<- tbl[is.na(tbl$C_PUB_STAT_MENARCHE_WANN)|(!is.na( tbl$C_PUB_STAT_MENARCHE_W
 # hist(menarchal_age, xlim = c(9, 16), ylim = c(0, 70), 
 #      col = "blue", breaks = 10, main = "menarchal age")
 
+n.menarche <- sum(!is.na(tbl$C_PUB_STAT_MENARCHE_WANN))
+
 ggplot( tbl ) +
     geom_histogram( aes(C_PUB_STAT_MENARCHE_WANN, fill=SEX), stat =  "count" ) + 
     theme_bw( ) + 
     ylab( "frequency" ) +
     scale_fill_manual(values="deeppink", guide=F)+
     scale_x_continuous( "menarchal age [y]", breaks=c(9:16), labels=c(9:16) )+ ##--> wie besser mit alterseineteilung?
-    annotate(geom="text",x=15, y=50, label="n=210" ) +
+    annotate(geom="text",x=15, y=50, label=paste0( "n = ",n.menarche ) ) +
     theme( panel.grid = element_blank())#+
 # facet_grid(.~WGHT_GRPS)
 
 ##das gleiche f?r Stimmbruch:
 tbl$mutation.age.cat <-
-  cut(tbl$FB_SK_CH_F0012+.001,breaks = c(0:21), labels= (0:20))
+  cut(tbl$STIMMBRUCH_ALTER+.001,breaks = c(0:21), labels= (0:20))
 
-View( tbl[ ,c( "mutation.age.cat", "FB_SK_CH_F0012" )])
+View( tbl[ ,c( "mutation.age.cat", "STIMMBRUCH_ALTER" )])
 
-range( tbl$FB_SK_CH_F0012, na.rm = T )
-
-
-max(tbl$FB_SK_CH_F0012,na.rm = T)
-
-table(round(tbl$FB_SK_CH_F0012))
+range( tbl$STIMMBRUCH_ALTER, na.rm = T )
 
 
-ggplot( tbl[ !is.na( tbl$FB_SK_CH_F0012 ), ] ) +
+max(tbl$STIMMBRUCH_ALTER,na.rm = T)
+
+table(round(tbl$STIMMBRUCH_ALTER))
+
+
+ggplot( tbl[ !is.na( tbl$STIMMBRUCH_ALTER ), ] ) +
   geom_histogram( aes(mutation.age.cat), stat =  "count" , fill= "blue") + 
   theme.histo +
   ylab( "frequency" ) +
@@ -520,7 +452,7 @@ ggplot( tbl[ !is.na( tbl$FB_SK_CH_F0012 ), ] ) +
  scale_x_discrete( "age of voice break [y]" )+ ##--> wie besser mit alterseineteilung?
   annotate(geom="text",x=8, y=40, label="n=125" )
   
-ggsave("Frequencies_of_voicebreak.png", width = 7, height = 5)
+#ggsave("Frequencies_of_voicebreak.png", width = 7, height = 5)
 
 ##getrennt nach weight group 
 (tbl.cnt <-
@@ -566,19 +498,19 @@ ggplot( tbl ) +
 
 ##BMI by age & gender
 
-describeBy(tbl$C_ANTHRO_KH_BMI_ORIG, tbl$SEX)
-summary(tbl$C_ANTHRO_KH_BMI_ORIG[tbl$SEX=="male"])
-summary(tbl$C_ANTHRO_KH_BMI_ORIG[tbl$SEX=="female"]) ##wie kann ich hier noch "all"/sum berechnen (k?rner s. 10)
+describeBy(tbl$BMI, tbl$SEX)
+summary(tbl$BMI[tbl$SEX=="male"])
+summary(tbl$BMI[tbl$SEX=="female"]) ##wie kann ich hier noch "all"/sum berechnen (k?rner s. 10)
 
-describeBy(tbl$C_ANTHRO_KH_BMI_ADJ, tbl$SEX)
-summary(tbl$C_ANTHRO_KH_BMI_ADJ[tbl$SEX=="male"])
-summary(tbl$C_ANTHRO_KH_BMI_ADJ[tbl$SEX=="female"])
+describeBy(tbl$BMI.ADJ, tbl$SEX)
+summary(tbl$BMI.ADJ[tbl$SEX=="male"])
+summary(tbl$BMI.ADJ[tbl$SEX=="female"])
 
 
 
 # tbl$WGHT_GRPS_BMI <-
 #  cut(
-#    x = tbl$C_ANTHRO_KH_BMI_ORIG,
+#    x = tbl$BMI,
 #    breaks =  c( -Inf, 18.5,  25, 30, +Inf ),   ##stimmt das so? Es werden viel zu viele underweights angezeigt!!!
 #    labels = c( "underweight", "normalweight", "overweight", "obese" ) )
 
@@ -588,42 +520,42 @@ df.BMI.descriptiv <-
   data.frame(
     SEX= c(rep("male",2),rep("female",2)),
     MEAN = c( 
-      mean( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"] ), 
-      mean( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"] ), 
-      mean( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"] ), 
-      mean( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"] )), 
+      mean( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"] ), 
+      mean( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"] ), 
+      mean( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"] ), 
+      mean( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"] )), 
     SD = c( 
-      sd( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"] ), 
-      sd( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"] ), 
-      sd( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"] ), 
-      sd( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"] )), 
+      sd( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"] ), 
+      sd( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"] ), 
+      sd( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"] ), 
+      sd( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"] )), 
     MEDIAN = c( 
-      median( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"] ), 
-      median( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"] ), 
-      median( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"] ), 
-      median( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"] )), 
+      median( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"] ), 
+      median( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"] ), 
+      median( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"] ), 
+      median( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"] )), 
     MIN = c( 
-      min( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"] ), 
-      min( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"] ), 
-      min( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"] ), 
-      min( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"] )), 
+      min( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"] ), 
+      min( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"] ), 
+      min( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"] ), 
+      min( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"] )), 
     MAX = c( 
-      max( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"] ), 
-      max( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"] ), 
-      max( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"] ), 
-      max( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"] )), 
+      max( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"] ), 
+      max( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"] ), 
+      max( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"] ), 
+      max( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"] )), 
     
     P25 = c( 
-      quantile( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"],c(.25)), 
-      quantile( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"],c(.25)), 
-      quantile( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"],c(.25)), 
-      quantile( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"],c(.25))), 
+      quantile( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"],c(.25)), 
+      quantile( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"],c(.25)), 
+      quantile( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"],c(.25)), 
+      quantile( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"],c(.25))), 
     
     P75 = c( 
-      quantile( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"],c(.75)), 
-      quantile( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"],c(.75)), 
-      quantile( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"],c(.75)), 
-      quantile( tbl$C_ANTHRO_KH_BMI_ORIG [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"],c(.75))), 
+      quantile( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="normalweight"],c(.75)), 
+      quantile( tbl$BMI [tbl$SEX=="male" & tbl$WGHT_GRPS=="overweight.and.obese"],c(.75)), 
+      quantile( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="normalweight"],c(.75)), 
+      quantile( tbl$BMI [tbl$SEX=="female" & tbl$WGHT_GRPS=="overweight.and.obese"],c(.75))), 
     
     weight.groups = c( c(1:2),c(1:2))  #f?r male/female
   )
@@ -634,8 +566,8 @@ addmargins(table(tbl$WGHT_GRPS,tbl$SEX))
 
 ##Boxplot: mittlerer BMIweight groups
 ggplot(tbl)+
-  geom_boxplot(aes(x=SEX, y=C_ANTHRO_KH_BMI_ORIG), fill="gray")+ #
-  geom_jitter(aes(x=SEX,y=C_ANTHRO_KH_BMI_ORIG), width = .02,alpha=.01)+ ##punktverteilung zus?tzlich darstellen, alpha=tranparenz
+  geom_boxplot(aes(x=SEX, y=BMI), fill="gray")+ #
+  geom_jitter(aes(x=SEX,y=BMI), width = .02,alpha=.01)+ ##punktverteilung zus?tzlich darstellen, alpha=tranparenz
   xlab("sex")+
   ylab("BMI")+
   theme_bw() +
@@ -646,14 +578,14 @@ ggplot(tbl)+
 
 
 ##2WG:scatterplot mit mean
-ggplot(tbl,aes( AGE, C_ANTHRO_KH_BMI_ADJ, 
+ggplot(tbl,aes( AGE, BMI.ADJ, 
                col = WGHT_GRPS ))+scale_x_continuous(name = "age [y]", seq( 3,17,by = 2))+
     geom_jitter( )+
     ylab("BMI (SDS)")+
     geom_smooth(method = "lm")
 
 #2WG: mit gleitendem mean
-ggplot(tbl,aes( AGE, C_ANTHRO_KH_BMI_ADJ, 
+ggplot(tbl,aes( AGE, BMI.ADJ, 
                col =  WGHT_GRPS ))+scale_x_continuous(name = "age [y]", seq( 3,17,by = 2))+
     geom_jitter(alpha=.5 )+
     ylab("BMI (SDS)")+
@@ -667,7 +599,7 @@ ggplot(tbl,aes( AGE, C_ANTHRO_KH_BMI_ADJ,
 # ggsave(filename = "Scatterplot_weightGroups.pdf")
 
 ##2WG:ohne means
-ggplot(tbl,aes( AGE, C_ANTHRO_KH_BMI_ADJ, 
+ggplot(tbl,aes( AGE, BMI.ADJ, 
                col =  WGHT_GRPS ))+scale_x_continuous(name = "Age", seq( 3,17,by = 2))+
     geom_jitter( )+
     ylab("BMI (SDS)")
@@ -691,12 +623,12 @@ ggplot(tbl) +
   
 
 ##Height by age&gender
-describeBy(tbl$C_ANTHRO_KH_HEIGHT_ORIG, tbl$SEX)
-summary(tbl$C_ANTHRO_KH_HEIGHT_ORIG[tbl$SEX=="male"])
-summary(tbl$C_ANTHRO_KH_HEIGHT_ORIG[tbl$SEX=="female"])
+describeBy(tbl$HEIGHT, tbl$SEX)
+summary(tbl$HEIGHT[tbl$SEX=="male"])
+summary(tbl$HEIGHT[tbl$SEX=="female"])
 
 ggplot(tbl) +
-    geom_point(aes(x = AGE, y = C_ANTHRO_KH_HEIGHT_ORIG, col=SEX))+ 
+    geom_point(aes(x = AGE, y = HEIGHT, col=SEX))+ 
     scale_x_continuous(name = "age [y]", seq( 3,17,by = 2))+
     scale_color_manual( "sex", values = c( "deeppink", "blue" ) ) +
     xlab("age [y]") +
@@ -707,12 +639,12 @@ ggplot(tbl) +
 
 ##Weight by age&gender
 
-describeBy(tbl$C_ANTHRO_KH_WEIGHT_ORIG, tbl$SEX)
-summary(tbl$C_ANTHRO_KH_WEIGHT_ORIG[tbl$SEX=="male"])
-summary(tbl$C_ANTHRO_KH_WEIGHT_ORIG[tbl$SEX=="female"])
+describeBy(tbl$WEIGHT, tbl$SEX)
+summary(tbl$WEIGHT[tbl$SEX=="male"])
+summary(tbl$WEIGHT[tbl$SEX=="female"])
 
 ggplot(tbl) +
-    geom_point(aes(x = AGE, y = C_ANTHRO_KH_WEIGHT_ORIG, col=SEX))+
+    geom_point(aes(x = AGE, y = WEIGHT, col=SEX))+
     scale_x_continuous(name = "age [y]", seq( 3,17,by = 2))+
     scale_color_manual( "sex", values = c( "deeppink", "blue" ) ) +
     xlab("age [y]") +
@@ -720,7 +652,7 @@ ggplot(tbl) +
     facet_grid(.~SEX)+
     theme.histo.facet
 #outlier 180kg angucken:
-# tbl[!is.na( tbl$C_ANTHRO_KH_WEIGHT_ORIG ) & tbl$C_ANTHRO_KH_WEIGHT_ORIG>150, c("C_DISEASE_TX_FREITEXT_ANGABE", "SEX", "C_ANTHRO_KH_BMI_ORIG", "AGE", "SIC", "CHILD_MED_H_ATC_NAME" )]
+# tbl[!is.na( tbl$WEIGHT ) & tbl$WEIGHT>150, c("C_DISEASE_TX_FREITEXT_ANGABE", "SEX", "BMI", "AGE", "SIC", "CHILD_MED_H_ATC_NAME" )]
 
 
 
@@ -751,10 +683,6 @@ ggplot(tbl) +
 #   theme( panel.grid = element_blank( ) )
 
 
-scale_color_manual( values = c( "deeppink", "blue" ), guide = F ),
-scale_fill_manual( values = c( "deeppink", "blue" ), guide = F ),
-theme( panel.grid = element_blank( ) ),
-facet_grid( SEX ~ . ) )   
 
 ggplot(tbl) +
     geom_histogram(aes(tbl$SES, fill = SEX  ), stat = "count", position = "dodge") +
@@ -766,8 +694,8 @@ ggplot(tbl) +
     facet_grid(WGHT_GRPS~.)
 
 ggplot(tbl[!is.na(tbl$D00177_SCORE_FAM),])+
-    geom_point(aes(x=D00177_SCORE_FAM, y= C_ANTHRO_KH_BMI_ADJ , col=SES))+ ##col=scatterplot, fill bei boxplot/hist (hier w?re col der Rand)
-    geom_smooth(aes(x=D00177_SCORE_FAM, y= C_ANTHRO_KH_BMI_ADJ), method = "lm")+
+    geom_point(aes(x=D00177_SCORE_FAM, y= BMI.ADJ , col=SES))+ ##col=scatterplot, fill bei boxplot/hist (hier w?re col der Rand)
+    geom_smooth(aes(x=D00177_SCORE_FAM, y= BMI.ADJ), method = "lm")+
     xlab("socioecenomic score")+
     ylab("BMI (SDS)")+
     scale_color_discrete(name="socioeconomic status")  ##brewer bietet farben an
@@ -780,54 +708,54 @@ df.BMI.descriptiv.SES <-
     data.frame (
                 SEX= c(rep("male",3),rep("female",3)),
                 MEAN = c( 
-                    mean( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="low"], na.rm=T ), 
-                    mean( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="mid"] , na.rm=T), 
-                    mean( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="high"], na.rm=T ), 
-                    mean( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="low"] , na.rm=T), 
-                    mean( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="mid"], na.rm=T ), 
-                    mean( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="high"], na.rm=T )), 
+                    mean( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="low"], na.rm=T ), 
+                    mean( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="mid"] , na.rm=T), 
+                    mean( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="high"], na.rm=T ), 
+                    mean( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="low"] , na.rm=T), 
+                    mean( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="mid"], na.rm=T ), 
+                    mean( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="high"], na.rm=T )), 
                 SD = c(   
-                    sd( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="low"] , na.rm=T), 
-                    sd( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="mid"], na.rm=T ), 
-                    sd( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="high"], na.rm=T ), 
-                    sd( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="low"] , na.rm=T), 
-                    sd( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="mid"] , na.rm=T), 
-                    sd( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="high"] , na.rm=T)), 
+                    sd( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="low"] , na.rm=T), 
+                    sd( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="mid"], na.rm=T ), 
+                    sd( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="high"], na.rm=T ), 
+                    sd( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="low"] , na.rm=T), 
+                    sd( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="mid"] , na.rm=T), 
+                    sd( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="high"] , na.rm=T)), 
                 MEDIAN = c( 
-                    median( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="low"], na.rm=T ), 
-                    median( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="mid"], na.rm=T ), 
-                    median( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="high"] , na.rm=T), 
-                    median( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="low"] , na.rm=T), 
-                    median( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="mid"] , na.rm=T), 
-                    median( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="high"], na.rm=T )),
+                    median( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="low"], na.rm=T ), 
+                    median( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="mid"], na.rm=T ), 
+                    median( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="high"] , na.rm=T), 
+                    median( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="low"] , na.rm=T), 
+                    median( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="mid"] , na.rm=T), 
+                    median( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="high"], na.rm=T )),
                 MIN = c( 
-                    min( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="low"] , na.rm=T), 
-                    min( tbl.$C_ANTHRO_KH_BMI_ORIG[tbl.$SEX=="male" & tbl.$SES=="mid"], na.rm=T ), 
-                    min( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="high"], na.rm=T ), 
-                    min( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="low"] , na.rm=T), 
-                    min( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="mid"] , na.rm=T), 
-                    min( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="high"] , na.rm=T)),
+                    min( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="low"] , na.rm=T), 
+                    min( tbl.$BMI[tbl.$SEX=="male" & tbl.$SES=="mid"], na.rm=T ), 
+                    min( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="high"], na.rm=T ), 
+                    min( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="low"] , na.rm=T), 
+                    min( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="mid"] , na.rm=T), 
+                    min( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="high"] , na.rm=T)),
                 MAX = c(
-                    max( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="low"] , na.rm=T), 
-                    max( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="mid"], na.rm=T ), 
-                    max( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="high"], na.rm=T ), 
-                    max( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="low"] , na.rm=T), 
-                    max( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="mid"] , na.rm=T), 
-                    max( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="high"], na.rm=T )),
+                    max( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="low"] , na.rm=T), 
+                    max( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="mid"], na.rm=T ), 
+                    max( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="high"], na.rm=T ), 
+                    max( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="low"] , na.rm=T), 
+                    max( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="mid"] , na.rm=T), 
+                    max( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="high"], na.rm=T )),
                 P25 = c( 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="low"], c(.25), na.rm=T ), 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="mid"], c(.25), na.rm=T ), 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="high"], c(.25) , na.rm=T), 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="low"], c(.25), na.rm=T ), 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="mid"], c(.25), na.rm=T ), 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="high"], c(.25), na.rm=T )),
+                    quantile( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="low"], c(.25), na.rm=T ), 
+                    quantile( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="mid"], c(.25), na.rm=T ), 
+                    quantile( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="high"], c(.25) , na.rm=T), 
+                    quantile( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="low"], c(.25), na.rm=T ), 
+                    quantile( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="mid"], c(.25), na.rm=T ), 
+                    quantile( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="high"], c(.25), na.rm=T )),
                 P75 = c( 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="low"], c(.75), na.rm=T ), 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="mid"], c(.75), na.rm=T ), 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="male" & tbl.$SES=="high"], c(.75) , na.rm=T), 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="low"], c(.75) , na.rm=T), 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="mid"], c(.75), na.rm=T ), 
-                    quantile( tbl.$C_ANTHRO_KH_BMI_ORIG [tbl.$SEX=="female" & tbl.$SES=="high"], c(.75), na.rm=T )),
+                    quantile( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="low"], c(.75), na.rm=T ), 
+                    quantile( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="mid"], c(.75), na.rm=T ), 
+                    quantile( tbl.$BMI [tbl.$SEX=="male" & tbl.$SES=="high"], c(.75) , na.rm=T), 
+                    quantile( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="low"], c(.75) , na.rm=T), 
+                    quantile( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="mid"], c(.75), na.rm=T ), 
+                    quantile( tbl.$BMI [tbl.$SEX=="female" & tbl.$SES=="high"], c(.75), na.rm=T )),
                 
                 socioeconomic.status = c( c(1:3),c(1:3))  #f?r male/female
     )
@@ -1018,12 +946,12 @@ ggplot(lf.ratio.summary)+
 
 
 # ##lineare Regression LH
-# plot(tbl$C_ANTHRO_KH_BMI_ORIG, tbl$LH_S_NUM_VALUE, xlim = c(0, 50))
+# plot(tbl$BMI, tbl$LH_S_NUM_VALUE, xlim = c(0, 50))
 # #Regressionsgerade
-# abline(lm(tbl$C_ANTHRO_KH_BMI_ORIG~tbl$LH_S_NUM_VALUE), col="red")
+# abline(lm(tbl$BMI~tbl$LH_S_NUM_VALUE), col="red")
 #
 # # ggplot:
-# ggplot (daten, aes (x = C_ANTHRO_KH_BMI_ORIG, y = LH_S_NUM_VALUE, colour = GESCHLECHT)) + geom_point() + geom_smooth(method=loess) + ylim(0, 10)
+# ggplot (daten, aes (x = BMI, y = LH_S_NUM_VALUE, colour = GESCHLECHT)) + geom_point() + geom_smooth(method=loess) + ylim(0, 10)
 #
 # ## Boxplot: mittlerer LH wert in Abhaengigkeit vom Geschlecht,
 # # boxplot(tbl$LH_S_NUM_VALUE ~ SEX, data = tbl) #sagt kaum was aus
@@ -1124,7 +1052,7 @@ mean.height.age <-
         AGE.CAT.height, 
         SEX) %>% ##tbl gruppieren und mean angucken: neue tbl, mit mean height fpr jedes Alter und sex
     summarise(
-        height.mean=mean( C_ANTHRO_KH_HEIGHT_ORIG ) )
+        height.mean=mean( HEIGHT ) )
 
 mean.height.age.m <-mean.height.age[ mean.height.age$SEX == "male", ]
 mean.height.age.f <-mean.height.age[ mean.height.age$SEX == "female", ]
@@ -1243,7 +1171,7 @@ mean.height.age.wg <-
         SEX,
         WGHT_GRPS) %>% ##tbl gruppieren und mean angucken: neue tbl, mit mean height fpr jedes Alter und sex
     summarise(
-        height.mean=mean( C_ANTHRO_KH_HEIGHT_ORIG ) )
+        height.mean=mean( HEIGHT ) )
 
 ##datensatz in 4 Gruppen unterteilen
 mean.height.age.m.nw <-mean.height.age.wg[ mean.height.age.wg$SEX == "male"& mean.height.age.wg$WGHT_GRPS== "normalweight", ]
@@ -1352,3 +1280,15 @@ mean.height.age.m.nw$growth.vel <-
 
 ##PHV nach weight groups, SES
 
+table(t5[,c("wc2","SEX","AGE.CAT1")])
+
+ggplot(t5 )+
+    geom_boxplot(aes( x = wc2, y=AGE, fill= wc2 ) )+
+    scale_fill_manual( values=c( "forestgreen", "indianred" ), guide = F ) +
+    xlab("weight group")+
+    ylab("age[y]")+
+    theme_bw() +
+    theme( panel.grid = element_blank( ) )+
+    #ylim(0,8)+
+    facet_grid(SEX~C_PUB_STAT_PUB_STATUS)+
+    labs(title="Age by puberty groups, weight groups and sex",caption = "NW: normalweight\nOW:overweight and obese" ) 

@@ -252,3 +252,4 @@ tbl[ tbl$LH_S_NUM_VALUE > 35, c( "C_DISEASE_TX_FREITEXT_ANGABE", "SEX", "BMI", "
 
 ##theoretisch ausschließen
 # tbl<- tbl[tbl$LH_S_NUM_VALUE<35,]
+

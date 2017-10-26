@@ -17,9 +17,9 @@ setwd( "~/LIFE/life-for-postgraduates/HansSurup/sent/20171005/" )
 # ich nenne die Tabelle mt fuer main table
 # is nich so lang (O;
 mt <-
-    read_excel( "../PV0365_Gesamt_Join.xlsx" )
+    read_excel( "PV0365_Gesamt_Join.xlsx" )
 
-table.df( mt )
+t( table.df( mt ) )
 
 mt <-
     rename.columns( 
@@ -65,7 +65,7 @@ mt <-
 mt$SEX <-
     c( "male", "female" )[ match( mt$SEX, c( 1, 2 ) ) ]
 
-get.info( mt )
+t( table.df( mt ) )
 
 # sex UND alter muessen beide angegeben sein
 mt <-
@@ -116,7 +116,7 @@ sum( mt$C_DISEASE_TX_GIT == 1 ) #80 hier fehlt jetzt einer
 sum( mt$C_DISEASE_TX_EPIKRAMPF == 1 ) #54
 sum( mt$C_DISEASE_TX_SUCHT == 1 ) #20
 
-get.info( mt )
+t( table.df( mt ) )
 
 #So nur, wenn Du sicher bist, dass die Spalten keine Missings enthalten
 mt <- mt[ mt$C_DISEASE_TX_SD_ALLG == 0, ] 

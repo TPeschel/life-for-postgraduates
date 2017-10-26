@@ -49,3 +49,4 @@ vignettes/*.pdf
 */docs
 
 .Rproj.user
+.secret.R

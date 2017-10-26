@@ -1,0 +1,100 @@
+\documentclass[a4]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{longtable}
+
+%\usepackage[margin=1in]{geometry}
+
+\setlength{\topmargin}{0.5cm}
+\setlength{\headheight}{0cm}
+\setlength{\headsep}{0cm}
+\setlength{\topskip}{0cm}
+\setlength{\oddsidemargin}{0.5cm}
+\setlength{\evensidemargin}{0.5cm}
+\setlength{\textwidth}{17cm}
+\setlength{\textheight}{22cm}
+
+\title{Statistics of extreme values and not usable ones - Singing Voice}
+\author{Thomas Peschel}
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+\section{critical measurements}
+\subsection{AGE and SEX}
+\subsubsection{all data}
+<<table.tbl.sex.age,echo=F,fig.width=10,fig.height=6>>=
+table( tbl[ , c( "sex", "AGE" ) ] )
+@
+<<fig-plot.tbl.sex.age,echo=F,fig.width=8,fig.height=6>>=
+plot.tbl.age.sex
+@
+\clearpage
+\subsubsection{extreme values/outliers/octave shifts}
+<<table.extremes.sex.age,echo=F,fig.width=10,fig.height=6>>=
+table( extr[ , c( "sex", "AGE" ) ] )
+@
+<<fig-plot.extremes.sex.age,echo=F,fig.width=10,fig.height=6>>=
+plot.extr.age.sex
+@
+\clearpage
+\subsubsection{unsusable}
+<<table.not.usable.sex.age,echo=F,fig.width=10,fig.height=6>>=
+table( not.usable[ , c( "sex", "AGE" ) ] )
+@
+<<fig-plot.not.usable.sex.age,echo=F,fig.width=8,fig.height=6>>=
+plot.nu.age.sex
+@
+\clearpage
+
+\subsection{MOTIVATION}
+\subsubsection{all data}
+<<table.tbl.motivation,echo=F,fig.width=10,fig.height=6>>=
+table( tbl[ , c( "U_Sing.singen_mot" ) ] )
+@
+<<fig-plot.tbl.motivation,echo=F,fig.width=8,fig.height=6>>=
+plot.tbl.motivation
+@
+\clearpage
+\subsubsection{extreme values/outliers/octave shifts}
+<<table.extremes.motivation,echo=F,fig.width=10,fig.height=6>>=
+table( extr[ , c( "U_Sing.singen_mot" ) ] )
+@
+<<fig-plot.extremes.motivation,echo=F,fig.width=10,fig.height=6>>=
+plot.extr.motivation
+@
+\clearpage
+\subsubsection{unsusable}
+<<table.not.usable.motivation,echo=F,fig.width=10,fig.height=6>>=
+table( not.usable[ , c( "U_Sing.singen_mot" ) ] )
+@
+<<fig-plot.not.usable.motivation,echo=F,fig.width=8,fig.height=6>>=
+plot.nu.motivation
+@
+\clearpage
+\subsection{SES}
+\subsubsection{all data}
+<<table.tbl.winkler,echo=F,fig.width=10,fig.height=6>>=
+table( round( tbl[ , c( "WINKLER_SCORE_FAM" ) ] ) )
+@
+<<fig-plot.tbl.winkler,echo=F,fig.width=10,fig.height=6>>=
+plot.tbl.winkler
+@
+\clearpage
+\subsubsection{extremes/outliers/octave shifts}
+<<table.extremes.winkler,echo=F,fig.width=10,fig.height=6>>=
+table( round( extr[ , c( "WINKLER_SCORE_FAM" ) ] ) )
+@
+<<fig-plot.extremes.winkler,echo=F,fig.width=10,fig.height=6>>=
+plot.extr.winkler
+@
+\clearpage
+\subsubsection{unsusable}
+<<table.not.usable.winkler,echo=F,fig.width=10,fig.height=6>>=
+table( round( not.usable[ , c( "WINKLER_SCORE_FAM" ) ] ) )
+@
+<<fig-plot.not.usable.winkler,echo=F,fig.width=10,fig.height=6>>=
+plot.nu.winkler
+@
+\end{document}

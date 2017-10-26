@@ -22,7 +22,7 @@ setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
 ##
 # lade join mit extremen werten
 ##
-load( "data/generated/main.1205.only.usable.with.extremes.Rd" )
+load( "data/generated/main.table.only.usable.with.extremes.Rd" )
 
 m <- 
     main.1205.only.usable.with.extremes
@@ -34,17 +34,11 @@ rm( main.1205.only.usable.with.extremes )
 ##
 load( "data/original/raw.dat.Rd" )
 
+# raw.data
 r <- 
     res
 
 rm( res )
-
-load( "data/original/20170922sicpseudoliste.rdata" ) 
-
-r$PSEUDONYM <-
-    sicpseudo$PSEUDONYM[ match( r$sic, sicpseudo$SIC ) ]
-    
-rm( sicpseudo )
 
 r$proftype[ 255 < r$proftype ] <- 
     3
@@ -63,6 +57,17 @@ r$pt <-
 e <-
     m[ m$EXTREME, ]
 
+comb.cols <-
+    function( data, cols, sep = " ~ " ) {
+        s <- 
+            data[[ cols[ 1 ] ]]
+        
+        for( i in 2 : length( cols ) ) {
+            
+            s <-
+                paste0( s, sep, data[[ cols[ i ] ]] ) }
+        s }
+
 re <-
     r[ r$sic %in% e$SIC, ]
 
@@ -70,10 +75,11 @@ re <-
     merge( 
         re, 
         rename.columns( 
-            m[ , c( "PSEUDONYM",  "C_ANTHRO_KH_AGE", "C_ANTHRO_KH_GRP", "C_ANTHRO_KH_EDAT" ) ],
-            c( "PSEUDONYM",  "C_ANTHRO_KH_AGE", "C_ANTHRO_KH_GRP", "C_ANTHRO_KH_EDAT" ),
-            c( "PSEUDONYM",  "AGE", "SCI_GROUP", "EDAT" ) ),
-        by = "PSEUDONYM" ) 
+            m[ , c( "PSEUDONYM", "SIC",  "C_ANTHRO_KH_GRP", "C_ANTHRO_KH_EDAT", "AGE", "sex" ) ],
+            c( "PSEUDONYM",  "C_ANTHRO_KH_GRP", "C_ANTHRO_KH_EDAT" ),
+            c( "PSEUDONYM",  "SCI_GROUP", "EDAT" ) ),
+        by.x = "sic",
+        by.y = "SIC" ) 
 
 re$time.diff <-
     difftime( re$create_at, re$EDAT, units = "day" )
