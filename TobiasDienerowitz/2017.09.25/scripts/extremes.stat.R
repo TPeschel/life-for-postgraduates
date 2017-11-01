@@ -33,10 +33,10 @@ t( table.df( tbl[ , get.date.columns( tbl ) ] ) )
 t( table.df( tbl[ , get.columns( tbl, "sex|gender|geschlecht" ) ] ) )
 
 not.usable <-
-    read.csv( "data/original/non_usable_obs." )
+    read.csv( "data/original/non_usable_obs.csv" )
 
 extr <-
-    read.csv( "data/original/obs_extremes" )
+    read.csv( "data/original/obs_extremes.csv" )
 
 t( table.df( extr ) )
 
@@ -97,8 +97,6 @@ plot.extr.winkler <-
 plot.nu.winkler <-
     ggplot( not.usable[ !is.na( not.usable$WINKLER_SCORE_FAM ), ], aes( as.factor( round( WINKLER_SCORE_FAM ) ), fill = sex ) ) +
     theme.histo
-
-
 
 setwd( "pdf/")
 

@@ -15,7 +15,7 @@ setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
 load( "data/generated/main.table.Rd" ) 
 
 obs.non.usable <-
-    read.csv( "data/original/non_usable_obs." )
+    read.csv( "data/original/non_usable_obs.csv" )
 #    read.csv( "data/original/NX2P7X~W" )
 
 # da stimmen ein paar namen nicht
@@ -37,7 +37,7 @@ main.1205.only.usable <-
 
 # lade tabelle mit extremen werten
 obs.extreme <-
-    read.csv( "data/original/obs_extremes" )
+    read.csv( "data/original/obs_extremes.csv" )
 
 names( obs.extreme )
 
@@ -75,7 +75,7 @@ main.1205.only.usable.with.extremes$EXTREME[ is.na( main.1205.only.usable.with.e
 main.1205.only.usable.with.extremes$AGE <-
     floor( main.1205.only.usable.with.extremes$age )
 
-t( table.df( main.1205.only.usable.with.extremes ) )
+table.df( main.1205.only.usable.with.extremes, F )
 
 # WriteXLS( main.1205, ExcelFileName = "data/main/PV0278_datajoin_20170929.xlsx" ) #doesn't save correctly pseudonyms
 write.xlsx( main.1205.only.usable.with.extremes, file = "data/generated/main.table.only.usable.with.extremes.xlsx" )

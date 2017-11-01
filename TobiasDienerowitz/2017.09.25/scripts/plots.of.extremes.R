@@ -57,17 +57,6 @@ r$pt <-
 e <-
     m[ m$EXTREME, ]
 
-comb.cols <-
-    function( data, cols, sep = " ~ " ) {
-        s <- 
-            data[[ cols[ 1 ] ]]
-        
-        for( i in 2 : length( cols ) ) {
-            
-            s <-
-                paste0( s, sep, data[[ cols[ i ] ]] ) }
-        s }
-
 re <-
     r[ r$sic %in% e$SIC, ]
 
@@ -130,12 +119,6 @@ plot.list <-
 
 setwd( "pdf/")
 
-today <-
-    gsub( "-", "", Sys.Date( ) )
-
-outname <-
-    paste0( "plot.of.extremes[", today, "].tex" )
-
-knit2pdf( "../scripts/plots.of.extremes.Rnw", outname )
+knit2pdf( "../scripts/plots.of.extremes.Rnw", "plot.of.extremes.tex" )
 
 #options( warn = oldw )

@@ -26,10 +26,11 @@ setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
 ##
 # lade join mit extremen werten
 ##
-load( "data/generated/main.table.only.usable.with.extremes.Rd" )
-load( "data/generated/main.table.Rd" )
+load( "data/generated/main.table.only.usable.without.extremes.Rd" )
+#load( "data/generated/main.table.only.usable.with.extremes.Rd" )
+#load( "data/generated/main.table.Rd" )
 
-t( table.df( main.1205.only.usable.with.extremes ) )
+table.df( mt, F )
 
 source( "~/LIFE/.secret.R" )
 
@@ -41,37 +42,25 @@ t00865 <-
 
 db.close( con )
 
-# 81 sics sind nicht in der datenbank
-sum( !main.1205$SIC %in% t00865$SIC )
-
-# ohne nonusables:
 # 72 sics sind nicht in der DB 
-sum( !main.1205.only.usable.with.extremes$SIC %in% t00865$SIC )
+sum( !mt$SIC %in% t00865$SIC )
 
-load( "data/original/20170922sicpseudoliste.rdata" )
+load( "data/original/20171030sicpseudoliste.rdata" )
 
-# alle in der maintable haben einen zuordnung
-main.1205$SIC[ !main.1205$SIC %in% sicpseudo$SIC ]
+# alle in der maintable haben eine zuordnung
+mt$SIC[ !mt$SIC %in% sicpseudo$SIC ]
 
-# es gibt aber 4 in der sic-pseudo-map, die es nicht in der main table gibt 
-sicpseudo$SIC[ !sicpseudo$SIC %in% main.1205$SIC ]
+# es gibt aber 5 in der sic-pseudo-map, die es nicht in der main table gibt 
+sicpseudo$SIC[ !sicpseudo$SIC %in% mt$SIC ]
 
-# In der sic.pseudo-map gibt es 72, die es in der T00865 nicht gibt
+# In der sic.pseudo-map gibt es 70, die es in der T00865 nicht gibt
 length( unique( sicpseudo$SIC[ !sicpseudo$SIC %in% t00865$SIC ] ) )
 
-# In der main table gibt es 70, die nicht in der t865 sind
-length( unique( main.1205$SIC[ !main.1205$SIC %in% t00865$SIC ] ) )
+# In der main table gibt es 61, die nicht in der t865 sind
+length( unique( mt$SIC[ !mt$SIC %in% t00865$SIC ] ) )
 
 ( sic.not.in.t865 <-
-    unique( main.1205$SIC[ !main.1205$SIC %in% t00865$SIC ] ) )
+    unique( mt$SIC[ !mt$SIC %in% t00865$SIC ] ) )
 
-t( table.df( main.1205[ main.1205$SIC %in% sic.not.in.t865, ] ) )
-
-main.1205[ main.1205$SIC %in% sic.not.in.t865, grep( "U_Sing", names( main.1205 ) ) ]
-
-main.1205[ is.na( main.1205$T00865.EDAT ) & main.1205$SIC %in% sic.not.in.t865, c( "SIC", "sex" ) ] 
-
-ni865 <-
-    main.1205$SIC[ !is.na( main.1205$T00865.EDAT ) & main.1205$SIC %in% sic.not.in.t865 ] 
-
-sum( t00865$SIC %in% ni865 )
+# moeglicherweise muessen die auch noch raus
+table.df( mt[ mt$SIC %in% sic.not.in.t865, ], F )

@@ -39,4 +39,11 @@ get.date.columns( mt )
 ( keys <-
     key( mt[ mt$EXTREME, ], c( "SIC", "C_ANTHRO_KH_GRP" ), " | " ) )
 
-mt$sz[ key( mt, c( "SIC", "C_ANTHRO_KH_GRP" ), " | " ) %in% keys, ]
+t <-
+    mt[ !key( mt, c( "SIC", "C_ANTHRO_KH_GRP" ), " | " ) %in% keys, ]
+
+table.df( mt, F )
+
+save( mt, file = "data/generated/main.table.only.usable.without.extremes.Rd" )
+WriteXLS::WriteXLS( mt, "data/generated/main.table.only.usable.without.extremes.xlsx" )
+
