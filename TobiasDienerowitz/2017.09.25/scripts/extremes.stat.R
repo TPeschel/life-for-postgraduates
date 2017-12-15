@@ -29,8 +29,8 @@ tbl <-
 
 rm( main.1205.only.usable.with.extremes )
 
-t( table.df( tbl[ , get.date.columns( tbl ) ] ) )
-t( table.df( tbl[ , get.columns( tbl, "sex|gender|geschlecht" ) ] ) )
+table.df( tbl[ , get.date.columns( tbl ) ], F )
+table.df( tbl[ , get.columns( tbl, "sex|gender|geschlecht" ) ], F )
 
 not.usable <-
     read.csv( "data/original/non_usable_obs.csv" )
@@ -38,7 +38,7 @@ not.usable <-
 extr <-
     read.csv( "data/original/obs_extremes.csv" )
 
-t( table.df( extr ) )
+table.df( extr, F )
 
 names( extr ) <-
     gsub( "^NA.", "T00865.", names( extr ) )
@@ -52,8 +52,17 @@ extr$AGE <-
 not.usable$AGE <-
     as.factor( not.usable$AGE )
 
-t( table.df( extr[, get.date.columns( extr ) ] ) )
-t( table.df( not.usable[, get.date.columns( not.usable ) ] ) )
+tbl$WINKLER_SCORE_FAM <-
+    round( tbl$WINKLER_SCORE_FAM + .0001 )
+
+extr$WINKLER_SCORE_FAM <-
+    round( extr$WINKLER_SCORE_FAM + .0001 )
+
+not.usable$WINKLER_SCORE_FAM <-
+    round( not.usable$WINKLER_SCORE_FAM + .0001 )
+
+table.df( extr[, get.date.columns( extr ) ], F )
+table.df( not.usable[, get.date.columns( not.usable ) ], F )
 
 theme.histo <-
     list(
@@ -87,15 +96,15 @@ plot.nu.motivation <-
     theme.histo
 
 plot.tbl.winkler <-
-    ggplot( tbl[ !is.na( tbl$WINKLER_SCORE_FAM ), ], aes( as.factor( round( WINKLER_SCORE_FAM ) ), fill = sex ) ) +
+    ggplot( tbl[ !is.na( tbl$WINKLER_SCORE_FAM ), ], aes( WINKLER_SCORE_FAM, fill = sex ) ) +
     theme.histo
 
 plot.extr.winkler <-
-    ggplot( extr[ !is.na( extr$WINKLER_SCORE_FAM ), ], aes( as.factor( round( WINKLER_SCORE_FAM ) ), fill = sex ) ) +
+    ggplot( extr[ !is.na( extr$WINKLER_SCORE_FAM ), ], aes( WINKLER_SCORE_FAM, fill = sex ) ) +
     theme.histo
 
 plot.nu.winkler <-
-    ggplot( not.usable[ !is.na( not.usable$WINKLER_SCORE_FAM ), ], aes( as.factor( round( WINKLER_SCORE_FAM ) ), fill = sex ) ) +
+    ggplot( not.usable[ !is.na( not.usable$WINKLER_SCORE_FAM ), ], aes( WINKLER_SCORE_FAM, fill = sex ) ) +
     theme.histo
 
 setwd( "pdf/")
@@ -107,6 +116,8 @@ outname <-
     paste0( "extremes.stat[", today, "].tex" )
 
 knit2pdf( "../scripts/extremes.stat.Rnw", outname )
+
+setwd( ".." )
 
 #options( warn = oldw )
      

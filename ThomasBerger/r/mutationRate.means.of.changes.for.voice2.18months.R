@@ -1,4 +1,6 @@
-load( "../results/data_sprech.Rda" )
+setwd( "~/LIFE/life-for-postgraduates/ThomasBerger/gfx/mutationRate")
+
+load( "../../results/data_sprech.Rda" )
 
 library( latex2exp )
 library( reshape2 )

@@ -1,9 +1,9 @@
 ## delete all data
 rm( list = ls( ) )
 
-load( "../../results/data_sprech.Rda" )
-
 setwd( "~/LIFE/life-for-postgraduates/ThomasBerger/gfx/mutationRate")
+
+load( "../../results/data_sprech.Rda" )
 
 library( latex2exp )
 library( reshape2 )
@@ -18,7 +18,7 @@ HGHT <-
     6
 
 ENDING <-
-    "png"
+    "pdf"
 
 COL <-
     F
@@ -93,11 +93,11 @@ if( COL == T ) {
         labs( title = TeX( "monthly change of fundamental frequency of voice levels I-IV measured in steps of 18 months" ) ) +
         scale_size( name = "count of\nmeasurements" ) +
         scale_x_continuous( name = "age [y]", breaks = c( 6 : 18 ), limits = c( 6.5, 17.5 ) ) +
-        scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}=\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -6 : 4 ) ) +
+        scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}\\,\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -6 : 4 ) ) +
         geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#8030a0", nudge_y = -2 ) +
-        geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#80a0c0", nudge_y = +2 ) +
-        annotate( "text", label = "change in f0", col = "#8030a0", x = 12, y = -6 ) +
-        annotate( "text", label = "number of measurements", col = "#80a0c0", x = 12, y = 4 ) +
+        # geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#80a0c0", nudge_y = +2 ) +
+        #annotate( "text", label = "change in f0", col = "#8030a0", x = 12, y = -6 ) +
+        # annotate( "text", label = "number of measurements", col = "#80a0c0", x = 12, y = 4 ) +
         geom_hline( yintercept = 0 ) +
         theme_bw( )
 }else{
@@ -111,11 +111,11 @@ if( COL == T ) {
         labs( title = TeX( "monthly change of fundamental frequency of voice levels I-IV measured in steps of 18 months" ) ) +
         scale_size( name = "count of\nmeasurements" ) +
         scale_x_continuous( name = "age [y]", breaks = c( 6 : 18 ), limits = c( 6.5, 17.5 ) ) +
-        scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}=\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -6 : 4 ) ) +
+        scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}\\,\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -6 : 4 ) ) +
         geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#808080", nudge_y = -2 ) +
-        geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#808080", nudge_y = +2 ) +
-        annotate( "text", label = "change in f0", col = "#606060", x = 12, y = -6 ) +
-        annotate( "text", label = "number of measurements", col = "#606060", x = 12, y = 4 ) +
+#        geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#808080", nudge_y = +2 ) +
+        #annotate( "text", label = "change in f0", col = "#606060", x = 12, y = -6 ) +
+#        annotate( "text", label = "number of measurements", col = "#606060", x = 12, y = 4 ) +
         geom_hline( yintercept = 0 ) +
         theme_bw( ) }
 
@@ -146,9 +146,9 @@ if( COL == T ) {
         scale_x_continuous( name = "age [y]", breaks = c( 5 : 18 ) ) +
         scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}=\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -5 : 3 ) ) +
         geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#8030a0", nudge_y = -1 ) +
-        geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#80a0c0", nudge_y = +1 ) +
-        annotate( "text", label = "change in f0", col = "#8030a0", x = 12, y = -5 ) +
-        annotate( "text", label = "number of measurements", col = "#80a0c0", x = 12, y = 2 ) +
+        #geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#80a0c0", nudge_y = +1 ) +
+        #annotate( "text", label = "change in f0", col = "#8030a0", x = 12, y = -5 ) +
+        #annotate( "text", label = "number of measurements", col = "#80a0c0", x = 12, y = 2 ) +
         geom_hline( yintercept = 0 ) +
         theme_bw( )
 }else{
@@ -164,9 +164,9 @@ if( COL == T ) {
         scale_x_continuous( name = "age [y]", breaks = c( 5 : 18 ) ) +
         scale_y_continuous( name = TeX( "$\\frac{\\Delta f_0}{\\Delta t}=\\left[\\frac{Hz}{month}\\right]$" ), breaks = c( -5 : 3 ) ) +
         geom_text( aes( label = as.character( round( value, 1 ) ) ), col = "#808080", nudge_y = -1 ) +
-        geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#808080", nudge_y = +1 ) +
-        annotate( "text", label = "change in f0", col = "#606060", x = 12, y = -5 ) +
-        annotate( "text", label = "number of measurements", col = "#606060", x = 12, y = 2 ) +
+        #geom_text( aes( label = as.character( round( d.cnt ) ) ), col = "#808080", nudge_y = +1 ) +
+        #annotate( "text", label = "change in f0", col = "#606060", x = 12, y = -5 ) +
+        #annotate( "text", label = "number of measurements", col = "#606060", x = 12, y = 2 ) +
         geom_hline( yintercept = 0 ) +
         theme_bw( ) }
 

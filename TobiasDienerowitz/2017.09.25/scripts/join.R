@@ -6,14 +6,14 @@ rm( list = ls( ) )
 # installiere devtools, 
 # falls noch nicht geschehen
 ###############################################
-
-if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devtools" )
-
-# installiere helper for life paket von github,
-# falls noch nicht geschehen
-###############################################
-devtools::install_github( "TPeschel/hlpr4life" )
-
+# 
+# if( !"devtools" %in% rownames( installed.packages( ) ) ) install.packages( "devtools" )
+# 
+# # installiere helper for life paket von github,
+# # falls noch nicht geschehen
+# ###############################################
+# devtools::install_github( "TPeschel/hlpr4life" )
+# 
 # installiere - wenn noetig -
 # und lade Pakete
 ###############################################
@@ -26,7 +26,7 @@ hlpr4life::load.pkgs(
 
 # musste an Deinen Pfad anpassen
 ###############################################
-setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
+# setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
 
 options( max.print = 1000000 )
 
@@ -38,6 +38,7 @@ options( max.print = 1000000 )
 main.1205 <-
     read_excel( "data/original/PV0278_datajoin20161205.xlsx" )
 
+# 2907
 names( main.1205 )
 
 get.columns( main.1205, "T00865." )
@@ -70,13 +71,14 @@ main.1205$SIC <-
 main.1205 <-
     main.1205[ main.1205$SIC != "LI01301935", ]
 
+# 2904
 table.df( main.1205, F )
 
 # die 32 ohne Geschlecht haben die ganze Anthro nicht
 table.df( main.1205[ is.na( main.1205$sex ), ], F )
 
 # die 3 sind nicht ueber pubstat zu retten
-t( table.df( main.1205[ is.na( main.1205$age ) & is.na( main.1205$C_PUB_STAT_AGE ), ] ) )
+table.df( main.1205[ is.na( main.1205$age ) & is.na( main.1205$C_PUB_STAT_AGE ), ], F )
 main.1205[ is.na( main.1205$sex ) & is.na( main.1205$C_PUB_STAT_GENDER ), c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) ]
 main.1205[ is.na( main.1205$age ) & is.na( main.1205$C_PUB_STAT_AGE ), c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) ]
 
@@ -91,13 +93,14 @@ main.1205$age[ is.na( main.1205$age ) & !is.na( main.1205$C_PUB_STAT_AGE ) ] <-
     main.1205$C_PUB_STAT_AGE[ is.na( main.1205$age ) & !is.na( main.1205$C_PUB_STAT_AGE ) ]
 
 ( out <-
-    key( main.1205[ is.na( main.1205$age ) & is.na( main.1205$C_PUB_STAT_AGE ), c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) ], c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) ) )
+    key.df( main.1205[ is.na( main.1205$age ) & is.na( main.1205$C_PUB_STAT_AGE ), c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) ], c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) ) )
 
-table.df( main.1205[ key( main.1205, c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) ) %in% out, ], F )
+table.df( main.1205[ key.df( main.1205, c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) ) %in% out, ], F )
 
 # die drei fliegen raus
 main.1205 <-
-    main.1205[ !key( main.1205, c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) ) %in% out, ] 
+    main.1205[ !key.df( main.1205, c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) ) %in% out, ] 
+# 2901
 
 # geschlechter umkodieren
 main.1205$sex[ is.na( main.1205$sex ) ] <- c( "female", "male" )[ match( main.1205$C_PUB_STAT_GENDER[ is.na( main.1205$sex ) ], c( 2, 1 ) ) ]
@@ -120,9 +123,5 @@ rm( sicpseudo )
 write.xlsx( main.1205, file = "data/generated/main.table.xlsx" )
 
 save( main.1205, file = "data/generated/main.table.Rd" )
-
-
-
-
 
 rm( list = ls( ) )

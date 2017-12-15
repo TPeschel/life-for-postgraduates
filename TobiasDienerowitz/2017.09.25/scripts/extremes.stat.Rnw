@@ -24,77 +24,77 @@
 \section{critical measurements}
 \subsection{AGE and SEX}
 \subsubsection{all data}
-<<table.tbl.sex.age,echo=F,fig.width=10,fig.height=6>>=
-table( tbl[ , c( "sex", "AGE" ) ] )
+<<table_tbl_sex_age,echo=F,fig.width=10,fig.height=6>>=
+addmargins( table( tbl[ , c( "sex", "AGE" ) ] ) )
 @
-<<fig-plot.tbl.sex.age,echo=F,fig.width=8,fig.height=6>>=
+<<fig_plot_tbl_sex_age,echo=F,fig.width=8,fig.height=6>>=
 plot.tbl.age.sex
 @
 \clearpage
 \subsubsection{extreme values/outliers/octave shifts}
-<<table.extremes.sex.age,echo=F,fig.width=10,fig.height=6>>=
-table( extr[ , c( "sex", "AGE" ) ] )
+<<table_extremes_sex_age,echo=F,fig.width=10,fig.height=6>>=
+addmargins( table( extr[ , c( "sex", "AGE" ) ] ) )
 @
-<<fig-plot.extremes.sex.age,echo=F,fig.width=10,fig.height=6>>=
+<<fig-plot_extremes_sex_age,echo=F,fig.width=10,fig.height=6>>=
 plot.extr.age.sex
 @
 \clearpage
 \subsubsection{unsusable}
-<<table.not.usable.sex.age,echo=F,fig.width=10,fig.height=6>>=
-table( not.usable[ , c( "sex", "AGE" ) ] )
+<<table_not_usable_sex_age,echo=F,fig.width=10,fig.height=6>>=
+addmargins( table( not.usable[ , c( "sex", "AGE" ) ] ) )
 @
-<<fig-plot.not.usable.sex.age,echo=F,fig.width=8,fig.height=6>>=
+<<fig-plot_not_usable_sex_age,echo=F,fig.width=8,fig.height=6>>=
 plot.nu.age.sex
 @
 \clearpage
 
 \subsection{MOTIVATION}
 \subsubsection{all data}
-<<table.tbl.motivation,echo=F,fig.width=10,fig.height=6>>=
-table( tbl[ , c( "U_Sing.singen_mot" ) ] )
+<<table_tbl_motivation,echo=F,fig.width=10,fig.height=6>>=
+addmargins( table( tbl[ , c( "sex", "U_Sing.singen_mot" ) ] ) )
 @
-<<fig-plot.tbl.motivation,echo=F,fig.width=8,fig.height=6>>=
+<<fig_plot_tbl_motivation,echo=F,fig.width=8,fig.height=6>>=
 plot.tbl.motivation
 @
 \clearpage
 \subsubsection{extreme values/outliers/octave shifts}
-<<table.extremes.motivation,echo=F,fig.width=10,fig.height=6>>=
-table( extr[ , c( "U_Sing.singen_mot" ) ] )
+<<table_extremes_motivation,echo=F,fig.width=10,fig.height=6>>=
+addmargins( table( extr[ , c( "sex", "U_Sing.singen_mot" ) ] ) )
 @
-<<fig-plot.extremes.motivation,echo=F,fig.width=10,fig.height=6>>=
+<<fig-plot_extremes_motivation,echo=F,fig.width=10,fig.height=6>>=
 plot.extr.motivation
 @
 \clearpage
 \subsubsection{unsusable}
-<<table.not.usable.motivation,echo=F,fig.width=10,fig.height=6>>=
-table( not.usable[ , c( "U_Sing.singen_mot" ) ] )
+<<table_not_usable_motivation,echo=F,fig.width=10,fig.height=6>>=
+addmargins( table( not.usable[ , c( "sex", "U_Sing.singen_mot" ) ] ) )
 @
-<<fig-plot.not.usable.motivation,echo=F,fig.width=8,fig.height=6>>=
+<<fig-plot_not_usable_motivation,echo=F,fig.width=8,fig.height=6>>=
 plot.nu.motivation
 @
 \clearpage
 \subsection{SES}
 \subsubsection{all data}
-<<table.tbl.winkler,echo=F,fig.width=10,fig.height=6>>=
-table( round( tbl[ , c( "WINKLER_SCORE_FAM" ) ] ) )
+<<table_tbl_winkler,echo=F,fig.width=10,fig.height=6>>=
+addmargins( table( ( tbl[ , c( "sex", "WINKLER_SCORE_FAM" ) ] ) ) )
 @
-<<fig-plot.tbl.winkler,echo=F,fig.width=10,fig.height=6>>=
+<<fig-plot_tbl_winkler,echo=F,fig.width=10,fig.height=6>>=
 plot.tbl.winkler
 @
 \clearpage
 \subsubsection{extremes/outliers/octave shifts}
-<<table.extremes.winkler,echo=F,fig.width=10,fig.height=6>>=
-table( round( extr[ , c( "WINKLER_SCORE_FAM" ) ] ) )
+<<table_extremes_winkler,echo=F,fig.width=10,fig.height=6>>=
+addmargins( table( extr[ , c( "sex", "WINKLER_SCORE_FAM" ) ] ) )
 @
-<<fig-plot.extremes.winkler,echo=F,fig.width=10,fig.height=6>>=
+<<fig-plot_extremes_winkler,echo=F,fig.width=10,fig.height=6>>=
 plot.extr.winkler
 @
 \clearpage
 \subsubsection{unsusable}
-<<table.not.usable.winkler,echo=F,fig.width=10,fig.height=6>>=
-table( round( not.usable[ , c( "WINKLER_SCORE_FAM" ) ] ) )
+<<table_not_usable_winkler,echo=F,fig.width=10,fig.height=6>>=
+addmargins( table( not.usable[ , c( "sex", "WINKLER_SCORE_FAM" ) ] ) )
 @
-<<fig-plot.not.usable.winkler,echo=F,fig.width=10,fig.height=6>>=
+<<fig-plot_not_usable_winkler,echo=F,fig.width=10,fig.height=6>>=
 plot.nu.winkler
 @
 \end{document}

@@ -9,7 +9,7 @@ library( GGally )
 library( Hmisc )
 library( pwr )
 
-setwd( "~/LIFE/github-tpeschel/life-for-postgraduates/JulianeWilz/data/")
+setwd( "~/LIFE/life-for-postgraduates/JulianeWilz/data/")
 
 daten <-
     read_excel( "PV0116_GesamtJoin.xlsx" )

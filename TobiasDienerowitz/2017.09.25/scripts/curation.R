@@ -9,7 +9,7 @@ hlpr4life::load.pkgs(
         "openxlsx",
         "db.access" ) )
 
-setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
+#setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
 
 # lade join mit korrigierten Geschlechtern
 load( "data/generated/main.table.Rd" ) 
@@ -34,6 +34,7 @@ names( obs.non.usable )
 # macht dasselbe wie die beiden kommentierten befehle zuvor
 main.1205.only.usable <-
     anti_join( main.1205, obs.non.usable, by = c( "PSEUDONYM", "C_ANTHRO_KH_GRP" ) )
+# 2736
 
 # lade tabelle mit extremen werten
 obs.extreme <-
@@ -76,6 +77,7 @@ main.1205.only.usable.with.extremes$AGE <-
     floor( main.1205.only.usable.with.extremes$age )
 
 table.df( main.1205.only.usable.with.extremes, F )
+# 2736
 
 # WriteXLS( main.1205, ExcelFileName = "data/main/PV0278_datajoin_20170929.xlsx" ) #doesn't save correctly pseudonyms
 write.xlsx( main.1205.only.usable.with.extremes, file = "data/generated/main.table.only.usable.with.extremes.xlsx" )

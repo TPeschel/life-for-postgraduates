@@ -1,0 +1,7 @@
+setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
+source( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/scripts/join.R" ) 
+source( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/scripts/curation.R" )
+source( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/scripts/plots.of.extremes.R" ) 
+source( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/scripts/extremes.stat.R" ) 
+source( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/scripts/extremes.curation.R" )
+source( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/scripts/sync.R" ) 

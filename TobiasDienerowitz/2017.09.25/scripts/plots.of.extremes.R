@@ -17,7 +17,7 @@ hlpr4life::load.pkgs(
 ##
 # setze Pfad auf Projektverzeichnis
 ##
-setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
+#setwd( "~/LIFE/life-for-postgraduates/TobiasDienerowitz/2017.09.25/" )
 
 ##
 # lade join mit extremen werten
@@ -117,8 +117,12 @@ plot.list <-
     group_by( sic ) %>%
     do( plot = my.plot %+% . + ggtitle( paste0( .$sex, " ", .$sic, "(", .$PSEUDONYM, ")-[ ", .$commentsess, "]" ) ) )
 
-setwd( "pdf/")
+setwd( "pdf/" )
 
 knit2pdf( "../scripts/plots.of.extremes.Rnw", "plot.of.extremes.tex" )
+
+#plot.list$plot[[3]]
+
+setwd( ".." )
 
 #options( warn = oldw )

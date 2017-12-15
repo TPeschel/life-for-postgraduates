@@ -252,6 +252,13 @@ voice_speak.lmer$motivation_zaehlen <-
 voice_speak.lmer$motivation_singen <-
     factor( c( "high", "high" ,"mid" ,"low", "low" )[ match( voice_speak.lmer$u_sing_singen_mot, c( 1 : 5 ) ) ] )
 
+## hier klasaks einfuegen
+
+klasak.groups <-
+    c( "1", "2" )
+
+
+
 addmargins( table( voice_speak.lmer$u_sing_stimmbelastg ) )
 addmargins( table( voice_speak.lmer$u_sing_stimmbelastg_v ) )
 addmargins( table( voice_speak.lmer$u_sing_stimmtraining ) )

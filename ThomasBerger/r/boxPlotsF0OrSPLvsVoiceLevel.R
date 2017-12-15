@@ -1,9 +1,7 @@
 ## delete all data
 rm( list = ls( ) )
 
-library( hlpr4life )
-
-load.pkgs( c( "reshape2", "ggthemes" ) )
+hlpr4life::load.pkgs( c( "hlpr4life", "reshape2", "ggthemes", "ggplot2" ) )
 
 WDTH <-
     6
